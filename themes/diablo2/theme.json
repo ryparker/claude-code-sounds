@@ -11,8 +11,6 @@
       "description": "Session starting — Deckard Cain greets you",
       "files": [
         { "name": "stay-awhile-and-listen.mp3" },
-        { "name": "hello-my-friend.mp3" },
-        { "name": "stay-awhile-and-listen-2.mp3" },
         { "name": "town-portal.mp3" },
         { "name": "barb-select.mp3" }
       ]

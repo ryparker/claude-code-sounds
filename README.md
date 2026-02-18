@@ -65,8 +65,8 @@ npx claude-code-sounds --help       # Show help
 | **Pokemon Gen 1** (`pokemon-gen1`) | 49 | *"Wild PIKACHU appeared!"* — Cries, battle sounds, and Kanto menus |
 | **Portal** (`portal`) | 42 | *"Are you still there?"* — Turrets, portal guns, and Aperture Science |
 | **Command & Conquer** (`cnc`) | 72 | *"Construction complete"* — EVA announcements, unit voices, and Red Alert |
-| **Age of Empires 2** (`aoe2`) | 39 | *"Wololo!"* — Villager taunts, monks, and age advance fanfares |
-| **Diablo 2** (`diablo2`) | 43 | *"Stay awhile and listen"* — Deckard Cain, item drops, and the Prime Evils |
+| **Age of Empires 2** (`aoe2`) | 38 | *"Wololo!"* — Villager taunts, monks, and age advance fanfares |
+| **Diablo 2** (`diablo2`) | 41 | *"Stay awhile and listen"* — Deckard Cain, item drops, and the Prime Evils |
 | **Warhammer 40k** (`wh40k`) | 51 | *"For the Emperor!"* — Space Marines, Chaos war cries, and Ork shouts |
 | **StarCraft** (`starcraft`) | 67 | *"Not enough minerals"* — Terran, Protoss, and Zerg voice lines |
 

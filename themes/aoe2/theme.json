@@ -80,7 +80,6 @@
         { "name": "death.mp3" },
         { "name": "villager-killed.mp3" },
         { "name": "taunt-no.mp3" },
-        { "name": "housed.mp3" },
         { "name": "farm-exhausted.mp3" }
       ]
     },
@@ -98,8 +97,7 @@
       "files": [
         { "name": "being-rushed.mp3" },
         { "name": "taunt-back-to-age-1.mp3" },
-        { "name": "farm-exhausted.mp3" },
-        { "name": "housed.mp3" }
+        { "name": "farm-exhausted.mp3" }
       ]
     },
     "teammate-idle": {
