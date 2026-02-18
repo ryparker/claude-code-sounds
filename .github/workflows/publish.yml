@@ -1,0 +1,42 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - name: Verify version matches tag
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$PKG_VERSION" != "$TAG" ]; then
+            echo "Error: package.json version ($PKG_VERSION) does not match tag ($TAG)"
+            exit 1
+          fi
+
+      - name: Validate
+        run: |
+          node --check bin/cli.js
+          node -e "
+            const fs = require('fs');
+            for (const theme of fs.readdirSync('themes')) {
+              const file = 'themes/' + theme + '/theme.json';
+              if (fs.existsSync(file)) JSON.parse(fs.readFileSync(file, 'utf8'));
+            }
+            console.log('All theme.json files valid');
+          "
+
+      - name: Publish
+        run: npm publish --provenance --access public

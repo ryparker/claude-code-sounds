@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16, 18, 20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Validate theme.json files
+        run: |
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const themes = fs.readdirSync('themes');
+            let failed = false;
+            const check = (cond, msg) => { if (!cond) { console.error('  FAIL:', msg); failed = true; } };
+            for (const theme of themes) {
+              const file = path.join('themes', theme, 'theme.json');
+              if (!fs.existsSync(file)) continue;
+              console.log('Validating', file);
+              const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+              check(data.name, 'missing name');
+              check(data.description, 'missing description');
+              check(data.sounds, 'missing sounds');
+              for (const [cat, val] of Object.entries(data.sounds || {})) {
+                check(val.description, cat + ': missing description');
+                check(Array.isArray(val.files), cat + ': missing files array');
+                for (const f of val.files || []) {
+                  check(f.src, cat + ': file missing src');
+                  check(f.name, cat + ': file missing name');
+                }
+              }
+              console.log('  OK');
+            }
+            if (failed) process.exit(1);
+          "
+
+      - name: Node syntax check
+        run: node --check bin/cli.js
+
+      - name: Smoke test --help
+        run: node bin/cli.js --help | grep -q "claude-code-sounds"
+
+      - name: Smoke test --list
+        run: |
+          output=$(node bin/cli.js --list)
+          echo "$output" | grep -q "wc3-peon"
+          echo "$output" | grep -q "zelda-oot"
+
+      - name: Package sanity
+        run: |
+          npm pack --dry-run 2>&1 | tee pack-output.txt
+          grep -q "bin/cli.js" pack-output.txt
+          grep -q "hooks/play-sound.sh" pack-output.txt
+          grep -q "themes/" pack-output.txt
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          severity: warning

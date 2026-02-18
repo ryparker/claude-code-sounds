@@ -5,6 +5,7 @@
 #
 set -e
 
+# shellcheck disable=SC2034  # passed by install.sh, reserved for theme use
 SOUNDS_DIR="$1"
 TMP_DIR="$2"
 OOT_DIR="$TMP_DIR/OOT"

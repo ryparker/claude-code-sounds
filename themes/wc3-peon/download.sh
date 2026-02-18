@@ -5,6 +5,7 @@
 #
 set -e
 
+# shellcheck disable=SC2034  # passed by install.sh, reserved for theme use
 SOUNDS_DIR="$1"
 TMP_DIR="$2"
 
@@ -14,7 +15,7 @@ curl -sL -o "$ZIP" "https://sounds.spriters-resource.com/media/assets/422/425494
 
 if ! file "$ZIP" | grep -q "Zip"; then
   echo "  Error: Failed to download WC3 sound pack."
-  return 1
+  exit 1
 fi
 
 unzip -qo "$ZIP" \

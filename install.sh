@@ -99,7 +99,7 @@ mkdir -p "$HOOKS_DIR"
 # ─── Download sounds ─────────────────────────────────────────────────────────
 
 TMP_DIR=$(mktemp -d)
-trap "rm -rf $TMP_DIR" EXIT
+trap 'rm -rf "$TMP_DIR"' EXIT
 
 echo "[2/4] Downloading sounds..."
 if [ -f "$THEME_DIR/download.sh" ]; then

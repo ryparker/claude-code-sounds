@@ -15,7 +15,8 @@ fi
 
 play_category() {
   local dir="$1"
-  local name=$(basename "$dir")
+  local name
+  name=$(basename "$dir")
   local files=()
 
   for f in "$dir"/*.wav "$dir"/*.mp3; do
@@ -26,7 +27,7 @@ play_category() {
 
   echo ""
   echo "  $name (${#files[@]} sounds)"
-  echo "  $(printf '─%.0s' $(seq 1 40))"
+  echo "  $(printf '─%.0s' {1..40})"
 
   for f in "${files[@]}"; do
     label=$(basename "$f" | sed 's/\.\(wav\|mp3\)$//')
