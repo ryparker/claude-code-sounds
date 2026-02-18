@@ -1,9 +1,9 @@
 {
   "name": "claude-code-sounds",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sound themes for Claude Code lifecycle hooks",
   "bin": {
-    "claude-code-sounds": "./bin/cli.js"
+    "claude-code-sounds": "bin/cli.js"
   },
   "keywords": [
     "claude",
@@ -18,7 +18,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ryparker/claude-code-sounds.git"
+    "url": "git+https://github.com/ryparker/claude-code-sounds.git"
   },
   "files": [
     "bin/",

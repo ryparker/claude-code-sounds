@@ -20,7 +20,15 @@ Ships with a **WC3 Orc Peon** theme. Bring your own sounds or create new themes.
 npx claude-code-sounds
 ```
 
-That's it. Requires macOS (uses `afplay`) and Node.js 16+.
+The interactive installer checks dependencies, lets you pick a theme, and optionally customize which sounds map to each hook — all in the terminal.
+
+Requires macOS (uses `afplay`) and Node.js 16+.
+
+For scripted or CI usage, skip all prompts with `--yes`:
+
+```bash
+npx claude-code-sounds --yes
+```
 
 <details>
 <summary>Alternative: install from source</summary>
@@ -38,10 +46,11 @@ The bash installer requires `jq` (`brew install jq`).
 ## Usage
 
 ```bash
-npx claude-code-sounds              # Install default theme (wc3-peon)
-npx claude-code-sounds <theme>      # Install a specific theme
+npx claude-code-sounds              # Interactive install
+npx claude-code-sounds --yes        # Install defaults, skip all prompts
 npx claude-code-sounds --list       # List available themes
 npx claude-code-sounds --uninstall  # Remove all sounds and hooks
+npx claude-code-sounds --help       # Show help
 ```
 
 ## WC3 Orc Peon Theme
