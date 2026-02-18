@@ -22,7 +22,7 @@ npx claude-code-sounds
 
 The interactive installer checks dependencies, lets you pick a theme, and optionally customize which sounds map to each hook — all in the terminal.
 
-Requires macOS (uses `afplay`) and Node.js 18+.
+Requires macOS (uses `afplay`) and Node.js 20+.
 
 For scripted or CI usage, skip all prompts with `--yes`:
 
