@@ -187,3 +187,31 @@ describe("detectExistingInstall", () => {
     assert.equal(lib.detectExistingInstall(paths), null);
   });
 });
+
+describe("isMuted / setMuted", () => {
+  it("returns false when not muted", (t) => {
+    const { paths } = makeTempPaths(t);
+    assert.equal(lib.isMuted(paths), false);
+  });
+
+  it("mutes and unmutes", (t) => {
+    const { paths } = makeTempPaths(t);
+    lib.setMuted(true, paths);
+    assert.equal(lib.isMuted(paths), true);
+    lib.setMuted(false, paths);
+    assert.equal(lib.isMuted(paths), false);
+  });
+
+  it("creates sounds dir when muting", (t) => {
+    const { paths } = makeTempPaths(t);
+    assert.ok(!fs.existsSync(paths.SOUNDS_DIR));
+    lib.setMuted(true, paths);
+    assert.ok(fs.existsSync(paths.SOUNDS_DIR));
+  });
+
+  it("unmute is safe when not muted", (t) => {
+    const { paths } = makeTempPaths(t);
+    lib.setMuted(false, paths); // should not throw
+    assert.equal(lib.isMuted(paths), false);
+  });
+});

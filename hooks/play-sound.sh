@@ -5,6 +5,7 @@ CATEGORY="${1:-}"
 # Drain stdin so the hook system doesn't get a broken pipe
 cat > /dev/null 2>&1
 
+[[ -f "$SOUNDS_DIR/.muted" ]] && exit 0
 [[ -z "$CATEGORY" ]] && exit 0
 DIR="$SOUNDS_DIR/$CATEGORY"
 [[ ! -d "$DIR" ]] && exit 0

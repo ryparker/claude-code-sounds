@@ -378,6 +378,8 @@ function showHelp() {
     npx claude-code-sounds --mix        Jump straight to the sound grid
     npx claude-code-sounds --yes        Install defaults, skip prompts
     npx claude-code-sounds --list       List available themes
+    npx claude-code-sounds --mute       Mute all sounds
+    npx claude-code-sounds --unmute     Unmute all sounds
     npx claude-code-sounds --uninstall  Remove all sounds and hooks
     npx claude-code-sounds --help       Show this help
 
@@ -386,6 +388,8 @@ function showHelp() {
     -m, --mix           Jump to sound assignment grid
     -y, --yes           Skip all prompts, use defaults
     -l, --list          List available themes
+        --mute          Mute all sounds
+        --unmute        Unmute all sounds
     -h, --help          Show this help
 `);
 }
@@ -809,6 +813,12 @@ if (flags.has("--help") || flags.has("-h")) {
     p.cancel(err.message);
     process.exit(1);
   });
+} else if (flags.has("--mute")) {
+  lib.setMuted(true, paths);
+  console.log("  Sounds muted. Run --unmute to re-enable.");
+} else if (flags.has("--unmute")) {
+  lib.setMuted(false, paths);
+  console.log("  Sounds unmuted.");
 } else if (flags.has("--uninstall") || flags.has("--remove")) {
   p.intro(color.bold("claude-code-sounds"));
   uninstallAll();

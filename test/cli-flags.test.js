@@ -38,7 +38,7 @@ describe("--help", () => {
 
   it("lists all flags", () => {
     const { stdout } = run("--help");
-    for (const flag of ["--theme", "--mix", "--yes", "--list", "--help", "--uninstall"]) {
+    for (const flag of ["--theme", "--mix", "--yes", "--list", "--help", "--mute", "--unmute", "--uninstall"]) {
       assert.ok(stdout.includes(flag), `missing flag: ${flag}`);
     }
   });

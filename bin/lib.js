@@ -118,6 +118,20 @@ function writeInstalled(data, paths) {
   fs.writeFileSync(paths.INSTALLED_PATH, JSON.stringify(data, null, 2) + "\n");
 }
 
+function isMuted(paths) {
+  return fs.existsSync(path.join(paths.SOUNDS_DIR, ".muted"));
+}
+
+function setMuted(muted, paths) {
+  const mutePath = path.join(paths.SOUNDS_DIR, ".muted");
+  if (muted) {
+    mkdirp(paths.SOUNDS_DIR);
+    fs.writeFileSync(mutePath, "");
+  } else if (fs.existsSync(mutePath)) {
+    fs.unlinkSync(mutePath);
+  }
+}
+
 // ─── Detect Existing Install ─────────────────────────────────────────────────
 
 function detectExistingInstall(paths) {
@@ -264,6 +278,8 @@ module.exports = {
   writeSettings,
   readInstalled,
   writeInstalled,
+  isMuted,
+  setMuted,
   detectExistingInstall,
   installSounds,
   installHooksConfig,
