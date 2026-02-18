@@ -17,20 +17,31 @@ Ships with a **WC3 Orc Peon** theme. Bring your own sounds or create new themes.
 ## Quick Start
 
 ```bash
+npx claude-code-sounds
+```
+
+That's it. Requires macOS (uses `afplay`) and Node.js 16+.
+
+<details>
+<summary>Alternative: install from source</summary>
+
+```bash
 git clone https://github.com/ryparker/claude-code-sounds.git
 cd claude-code-sounds
 ./install.sh
 ```
 
-Requires macOS (uses `afplay`) and `jq` (`brew install jq`).
+The bash installer requires `jq` (`brew install jq`).
+
+</details>
 
 ## Usage
 
 ```bash
-./install.sh              # Install default theme (wc3-peon)
-./install.sh <theme>      # Install a specific theme
-./install.sh --list       # List available themes
-./install.sh --uninstall  # Remove all sounds and hooks
+npx claude-code-sounds              # Install default theme (wc3-peon)
+npx claude-code-sounds <theme>      # Install a specific theme
+npx claude-code-sounds --list       # List available themes
+npx claude-code-sounds --uninstall  # Remove all sounds and hooks
 ```
 
 ## WC3 Orc Peon Theme
@@ -252,7 +263,7 @@ The script picks randomly from whatever files are in each directory.
 ## Uninstalling
 
 ```bash
-./install.sh --uninstall
+npx claude-code-sounds --uninstall
 ```
 
 This removes all sound files, the hook script, and the hooks config from `settings.json`.

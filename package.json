@@ -1,0 +1,32 @@
+{
+  "name": "claude-code-sounds",
+  "version": "1.0.0",
+  "description": "Sound themes for Claude Code lifecycle hooks",
+  "bin": {
+    "claude-code-sounds": "./bin/cli.js"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "sounds",
+    "hooks",
+    "warcraft",
+    "peon",
+    "soundboard"
+  ],
+  "author": "ryparker",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryparker/claude-code-sounds.git"
+  },
+  "files": [
+    "bin/",
+    "hooks/",
+    "themes/",
+    "images/"
+  ],
+  "engines": {
+    "node": ">=16"
+  }
+}
