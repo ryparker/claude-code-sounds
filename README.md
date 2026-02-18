@@ -53,22 +53,22 @@ npx claude-code-sounds --help             # Show help
 
 | Theme | Sounds | Vibe |
 |---|---|---|
-| **WC3 Orc Peon** (`wc3-peon`) | 57 | *"Something need doing?"* — Peons, Grunts, Shamans, and Grom Hellscream |
-| **Zelda: Ocarina of Time** (`zelda-oot`) | 47 | *"Hey! Listen!"* — Navi, Link, and iconic OOT jingles |
-| **Super Mario Bros** (`mario`) | 47 | *"Let's-a go!"* — Coins, power-ups, and Mario's voice from NES to N64 |
-| **Star Wars** (`star-wars`) | 36 | *"May the Force be with you"* — Lightsabers, R2-D2, and the dark side |
+| **Age of Empires 2** (`aoe2`) | 48 | *"Wololo!"* — Villager taunts, monks, and age advance fanfares |
+| **Call of Duty** (`cod`) | 38 | *"Enemy AC-130 above!"* — Killstreaks, hitmarkers, and Captain Price |
+| **Command & Conquer** (`cnc`) | 52 | *"Construction complete"* — EVA announcements, unit voices, and Red Alert |
+| **Diablo 2** (`diablo2`) | 46 | *"Stay awhile and listen"* — Deckard Cain, item drops, and the Prime Evils |
+| **Halo** (`halo`) | 52 | *"Wake me when you need me"* — Master Chief, Cortana, and the multiplayer announcer |
 | **Metal Gear Solid** (`mgs`) | 40 | *"Kept you waiting, huh?"* — Codec calls, alert sounds, and Snake |
 | **Pokemon Gen 1** (`pokemon-gen1`) | 49 | *"Wild PIKACHU appeared!"* — Cries, battle sounds, and Kanto menus |
-| **Portal** (`portal`) | 42 | *"Are you still there?"* — Turrets, portal guns, and Aperture Science |
-| **Command & Conquer** (`cnc`) | 52 | *"Construction complete"* — EVA announcements, unit voices, and Red Alert |
-| **Age of Empires 2** (`aoe2`) | 48 | *"Wololo!"* — Villager taunts, monks, and age advance fanfares |
-| **Diablo 2** (`diablo2`) | 46 | *"Stay awhile and listen"* — Deckard Cain, item drops, and the Prime Evils |
-| **Warhammer 40k** (`wh40k`) | 50 | *"For the Emperor!"* — Space Marines, Chaos war cries, and Ork shouts |
-| **StarCraft** (`starcraft`) | 50 | *"Not enough minerals"* — Terran, Protoss, and Zerg voice lines |
-| **Halo** (`halo`) | 52 | *"Wake me when you need me"* — Master Chief, Cortana, and the multiplayer announcer |
 | **Pokemon Gen 3** (`pokemon-gen3`) | 51 | *"A wild TREECKO appeared!"* — GBA battle cries, Hoenn fanfares, and RSE bleeps |
-| **Call of Duty** (`cod`) | 38 | *"Enemy AC-130 above!"* — Killstreaks, hitmarkers, and Captain Price |
+| **Portal** (`portal`) | 42 | *"Are you still there?"* — Turrets, portal guns, and Aperture Science |
 | **Short Circuit** (`short-circuit`) | 41 | *"Number 5 is alive!"* — The lovable sentient robot from the 1986 classic |
+| **Star Wars** (`star-wars`) | 36 | *"May the Force be with you"* — Lightsabers, R2-D2, and the dark side |
+| **StarCraft** (`starcraft`) | 50 | *"Not enough minerals"* — Terran, Protoss, and Zerg voice lines |
+| **Super Mario Bros** (`mario`) | 47 | *"Let's-a go!"* — Coins, power-ups, and Mario's voice from NES to N64 |
+| **Warhammer 40k** (`wh40k`) | 50 | *"For the Emperor!"* — Space Marines, Chaos war cries, and Ork shouts |
+| **WC3 Orc Peon** (`wc3-peon`) | 57 | *"Something need doing?"* — Peons, Grunts, Shamans, and Grom Hellscream |
+| **Zelda: Ocarina of Time** (`zelda-oot`) | 47 | *"Hey! Listen!"* — Navi, Link, and iconic OOT jingles |
 
 Each theme maps sounds across all 11 Claude Code lifecycle events.
 
