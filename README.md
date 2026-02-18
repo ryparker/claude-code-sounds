@@ -47,8 +47,9 @@ The bash installer requires `jq` (`brew install jq`).
 
 ```bash
 npx claude-code-sounds                    # Interactive install
-npx claude-code-sounds --yes              # Install defaults, skip all prompts
 npx claude-code-sounds --theme portal     # Install a specific theme directly
+npx claude-code-sounds --mix              # Jump to sound assignment grid
+npx claude-code-sounds --yes              # Install defaults, skip all prompts
 npx claude-code-sounds --list             # List available themes
 npx claude-code-sounds --uninstall        # Remove all sounds and hooks
 npx claude-code-sounds --help             # Show help
@@ -124,7 +125,15 @@ Hooks are configured in `~/.claude/settings.json` — each Claude Code lifecycle
 
 ## Customizing
 
-Drop any `.wav` or `.mp3` into the sound directories to add your own clips:
+Re-run with `--mix` to open the sound assignment grid, where you can reassign sounds to hooks, add themes, or preview clips:
+
+```bash
+npx claude-code-sounds --mix
+```
+
+![Sound assignment grid](images/sound-grid.png)
+
+You can also drop any `.wav` or `.mp3` into the sound directories manually:
 
 ```
 ~/.claude/sounds/

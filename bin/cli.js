@@ -502,6 +502,7 @@ function showHelp() {
   Usage:
     npx claude-code-sounds              Interactive install
     npx claude-code-sounds --theme mgs  Install a specific theme directly
+    npx claude-code-sounds --mix        Jump straight to the sound grid
     npx claude-code-sounds --yes        Install defaults, skip prompts
     npx claude-code-sounds --list       List available themes
     npx claude-code-sounds --uninstall  Remove all sounds and hooks
@@ -509,6 +510,7 @@ function showHelp() {
 
   Flags:
     -t, --theme <name>  Install a specific theme by name
+    -m, --mix           Jump to sound assignment grid
     -y, --yes           Skip all prompts, use defaults
     -l, --list          List available themes
     -h, --help          Show this help
@@ -982,6 +984,42 @@ if (flags.has("--help") || flags.has("-h")) {
 
     await quickInstall(theme);
     p.log.info(`To customize which sounds play on each hook, run:\n${color.gray(p.S_BAR)}\n${color.gray(p.S_BAR)}  ${color.cyan("npx claude-code-sounds")}\n${color.gray(p.S_BAR)}\n${color.gray(p.S_BAR)}  and choose ${color.bold("Modify install")}.`);
+    p.outro("Start a new Claude Code session to hear it.");
+  })().catch((err) => {
+    killPreview();
+    p.cancel(err.message);
+    process.exit(1);
+  });
+} else if (flags.has("--mix") || flags.has("-m")) {
+  (async () => {
+    p.intro(color.bold("claude-code-sounds"));
+    checkDependencies();
+
+    const existing = detectExistingInstall();
+    if (existing) {
+      await reconfigure(existing);
+    } else {
+      const themes = listThemes();
+      if (themes.length === 0) {
+        p.cancel("No themes found in themes/ directory.");
+        process.exit(1);
+      }
+      const themeValues = await p.multiselect({
+        message: "Select themes to include:",
+        options: themes.map((t) => ({
+          value: t.name,
+          label: t.display,
+          hint: `${t.soundCount} sounds — from ${t.sources.join(", ") || "local"}`,
+        })),
+        required: true,
+      });
+      if (p.isCancel(themeValues)) {
+        p.cancel("Cancelled.");
+        process.exit(0);
+      }
+      await customInstall(themes.filter((t) => themeValues.includes(t.name)));
+    }
+
     p.outro("Start a new Claude Code session to hear it.");
   })().catch((err) => {
     killPreview();
