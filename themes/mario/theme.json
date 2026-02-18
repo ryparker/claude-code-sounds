@@ -1,0 +1,110 @@
+{
+  "name": "Super Mario Bros",
+  "description": "Iconic Super Mario sound effects from NES, SNES, and N64 — coins, power-ups, and Mario's voice",
+  "author": "ryparker",
+  "srcBase": "Mario",
+  "sounds": {
+    "start": {
+      "description": "Session starting — here we go!",
+      "files": [
+        { "src": "sm64/sm64_mario_lets_go.wav", "name": "lets-a-go.wav" },
+        { "src": "sm64/sm64_mario_here_we_go.wav", "name": "here-we-go.wav" },
+        { "src": "sm64/sm64_mario_its_me.wav", "name": "its-a-me-mario.wav" },
+        { "src": "sm64/sm64_mario_hello.wav", "name": "hello.wav" },
+        { "src": "smb/smb_1-up.wav", "name": "1-up.wav" }
+      ]
+    },
+    "end": {
+      "description": "Session over — course clear",
+      "files": [
+        { "src": "smb/smb_stage_clear.wav", "name": "stage-clear.wav" },
+        { "src": "smb/smb_world_clear.wav", "name": "world-clear.wav" },
+        { "src": "smb/smb_flagpole.wav", "name": "flagpole.wav" },
+        { "src": "sm64/sm64_mario_okey-dokey.wav", "name": "okey-dokey.wav" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — coin collected",
+      "files": [
+        { "src": "smb/smb_coin.wav", "name": "coin.wav" },
+        { "src": "smb/smb_bump.wav", "name": "block-bump.wav" },
+        { "src": "smb/smb_fireball.wav", "name": "fireball.wav" },
+        { "src": "sm64/sm64_mario_haha.wav", "name": "haha.wav" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — power-up complete",
+      "files": [
+        { "src": "smb/smb_powerup.wav", "name": "power-up.wav" },
+        { "src": "smw/smw_power-up.wav", "name": "smw-power-up.wav" },
+        { "src": "smb3/smb3_power-up.wav", "name": "smb3-power-up.wav" },
+        { "src": "smb/smb_stomp.wav", "name": "stomp.wav" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — question block",
+      "files": [
+        { "src": "smb/smb_pause.wav", "name": "pause.wav" },
+        { "src": "smb/smb_powerup_appears.wav", "name": "question-block.wav" },
+        { "src": "smw/smw_message_block.wav", "name": "message-block.wav" },
+        { "src": "smb3/smb3_whistle.wav", "name": "warp-whistle.wav" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — Mario is bored",
+      "files": [
+        { "src": "sm64/sm64_mario_snore_part1.wav", "name": "snore.wav" },
+        { "src": "sm64/sm64_mario_yawn.wav", "name": "yawn.wav" },
+        { "src": "sm64/sm64_mario_tired.wav", "name": "tired.wav" },
+        { "src": "sm64/sm64_mario_mamma-mia.wav", "name": "mamma-mia.wav" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — summoning helper",
+      "files": [
+        { "src": "smb/smb_powerup_appears.wav", "name": "mushroom-appears.wav" },
+        { "src": "smb/smb_vine.wav", "name": "vine-grow.wav" },
+        { "src": "smb3/smb3_raccoon_transform.wav", "name": "raccoon-transform.wav" },
+        { "src": "sm64/sm64_mario_yahoo.wav", "name": "yahoo.wav" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — took damage",
+      "files": [
+        { "src": "smb/smb_mariodie.wav", "name": "death.wav" },
+        { "src": "sm64/sm64_mario_hurt.wav", "name": "hurt.wav" },
+        { "src": "sm64/sm64_mario_burned.wav", "name": "burned.wav" },
+        { "src": "sm64/sm64_mario_doh.wav", "name": "doh.wav" },
+        { "src": "sm64/sm64_mario_oof.wav", "name": "oof.wav" },
+        { "src": "smb/smb_gameover.wav", "name": "game-over.wav" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — star collected",
+      "files": [
+        { "src": "sm64/sm64_star_appears.wav", "name": "star-appears.wav" },
+        { "src": "smb3/smb3_level_clear.wav", "name": "level-clear.wav" },
+        { "src": "sm64/sm64_happy_message.wav", "name": "happy-message.wav" },
+        { "src": "sm64/sm64_mario_yippee.wav", "name": "yippee.wav" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — pipe warp",
+      "files": [
+        { "src": "smb/smb_pipe.wav", "name": "pipe-warp.wav" },
+        { "src": "smw/smw_pipe.wav", "name": "smw-pipe.wav" },
+        { "src": "sm64/sm64_warp.wav", "name": "warp.wav" },
+        { "src": "smb3/smb3_lost_suit.wav", "name": "shrink.wav" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — notification",
+      "files": [
+        { "src": "smw/smw_1-up.wav", "name": "smw-1-up.wav" },
+        { "src": "smb/smb_breakblock.wav", "name": "break-block.wav" },
+        { "src": "sm64/sm64_mario_whoa.wav", "name": "whoa.wav" },
+        { "src": "sm64/sm64_mario_waha.wav", "name": "waha.wav" }
+      ]
+    }
+  }
+}

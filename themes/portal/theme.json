@@ -1,0 +1,105 @@
+{
+  "name": "Portal",
+  "description": "Portal 2 sound effects — turrets, portal guns, GLaDOS alerts, and Aperture Science ambiance",
+  "author": "ryparker",
+  "srcBase": "Portal2",
+  "sounds": {
+    "start": {
+      "description": "Session starting — test chamber initiated",
+      "files": [
+        { "src": "weapons/portalgun/portalgun_powerup1.wav", "name": "portalgun-powerup.wav" },
+        { "src": "npc/turret_floor/active.wav", "name": "turret-activated.wav" },
+        { "src": "weapons/portalgun/portal_open1.wav", "name": "portal-open.wav" },
+        { "src": "buttons/og_test_chamber_pos_01.wav", "name": "test-chamber-start.wav" }
+      ]
+    },
+    "end": {
+      "description": "Session over — test complete",
+      "files": [
+        { "src": "weapons/portalgun/portal_close1.wav", "name": "portal-close.wav" },
+        { "src": "weapons/portalgun/portal_close2.wav", "name": "portal-close-alt.wav" },
+        { "src": "npc/turret_floor/turret_retire_1.wav", "name": "turret-goodbye.wav" },
+        { "src": "vfx/fizzler_shutdown_01.wav", "name": "fizzler-shutdown.wav" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — input received",
+      "files": [
+        { "src": "buttons/button_synth_positive_01.wav", "name": "button-positive.wav" },
+        { "src": "buttons/portal_button_down_01.wav", "name": "button-press.wav" },
+        { "src": "ui/buttonclick.wav", "name": "ui-click.wav" },
+        { "src": "weapons/portalgun/portal_enter_01.wav", "name": "portal-enter.wav" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — task acknowledged",
+      "files": [
+        { "src": "buttons/button_synth_positive_01.wav", "name": "synth-positive.wav" },
+        { "src": "buttons/portal_button_up_01.wav", "name": "button-release.wav" },
+        { "src": "weapons/portalgun/portal_exit_01.wav", "name": "portal-exit.wav" },
+        { "src": "npc/turret_floor/turret_retire_2.wav", "name": "turret-done.wav" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — turret alert",
+      "files": [
+        { "src": "npc/turret_floor/turret_search_1.wav", "name": "turret-whos-there.wav" },
+        { "src": "npc/turret_floor/alert.wav", "name": "turret-alert.wav" },
+        { "src": "alarms/klaxon1.wav", "name": "klaxon-alarm.wav" },
+        { "src": "npc/turret_floor/turret_active_1.wav", "name": "turret-i-see-you.wav" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — are you still there?",
+      "files": [
+        { "src": "npc/turret_floor/turret_autosearch_1.wav", "name": "turret-are-you-still-there.wav" },
+        { "src": "npc/turret_floor/turret_autosearch_2.wav", "name": "turret-searching.wav" },
+        { "src": "npc/turret_floor/turret_search_2.wav", "name": "turret-hello.wav" },
+        { "src": "npc/turret_floor/ping.wav", "name": "turret-ping.wav" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — deploying through portal",
+      "files": [
+        { "src": "weapons/portalgun/portalgun_shoot_blue1.wav", "name": "shoot-blue-portal.wav" },
+        { "src": "weapons/portalgun/portalgun_shoot_red1.wav", "name": "shoot-orange-portal.wav" },
+        { "src": "npc/turret_floor/turret_deploy_1.wav", "name": "turret-deploy.wav" },
+        { "src": "npc/sphere/corrupt_core_attach_01.wav", "name": "core-attach.wav" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — fizzled",
+      "files": [
+        { "src": "npc/turret_floor/turret_shotat_1.wav", "name": "turret-ow.wav" },
+        { "src": "weapons/portalgun/portal_fizzle_01.wav", "name": "portal-fizzle.wav" },
+        { "src": "props/material_emancipation_01.wav", "name": "emancipation-grill.wav" },
+        { "src": "buttons/button_synth_negative_01.wav", "name": "synth-negative.wav" },
+        { "src": "weapons/portalgun/portal_invalid_surface_01.wav", "name": "invalid-surface.wav" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — test chamber complete",
+      "files": [
+        { "src": "buttons/og_test_chamber_pos_01.wav", "name": "test-chamber-complete.wav" },
+        { "src": "npc/sphere/sphere_attach.wav", "name": "core-complete.wav" },
+        { "src": "props/post_message_announcer_01.wav", "name": "announcer-post.wav" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — memory fizzling",
+      "files": [
+        { "src": "vfx/fizzler_start_01.wav", "name": "fizzler-start.wav" },
+        { "src": "npc/turret_floor/retract.wav", "name": "turret-retract.wav" },
+        { "src": "weapons/portalgun/portal_close1.wav", "name": "portal-whoosh-close.wav" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — turret lost target",
+      "files": [
+        { "src": "npc/turret_floor/turret_search_1.wav", "name": "turret-target-lost.wav" },
+        { "src": "npc/turret_floor/turret_autosearch_1.wav", "name": "turret-hellooo.wav" },
+        { "src": "npc/turret_floor/turret_disabled_1.wav", "name": "turret-no-hard-feelings.wav" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "name": "Metal Gear Solid",
+  "description": "Iconic Metal Gear Solid sound effects — codec calls, alert sounds, and Snake voice lines",
+  "author": "ryparker",
+  "srcBase": "MGS",
+  "sounds": {
+    "start": {
+      "description": "Session starting — codec call incoming",
+      "files": [
+        { "src": "@myinstants/codec.mp3", "name": "codec-call.mp3" },
+        { "src": "@myinstants/metalgearcodec.mp3", "name": "codec-ring.mp3" },
+        { "src": "@myinstants/mgs2-snake-kept-you-waiting-huh.mp3", "name": "kept-you-waiting-huh.mp3" },
+        { "src": "@myinstants/codec-send.mp3", "name": "this-is-snake.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over — mission complete",
+      "files": [
+        { "src": "@myinstants/metal_gear_solid_exit_sound_effect.mp3", "name": "codec-exit.mp3" },
+        { "src": "@myinstants/metal_gear_solid_exit_sound_effect_EQbXTbY.mp3", "name": "codec-close.mp3" },
+        { "src": "@myinstants/mgs2-snake-sweet-dreams-boyscout.mp3", "name": "sweet-dreams.mp3" },
+        { "src": "@myinstants/sfx_s_mission_qualify.mp3", "name": "mission-complete.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — acknowledging orders",
+      "files": [
+        { "src": "@myinstants/mgs2-snake-roger-that-sir.mp3", "name": "roger-that.mp3" },
+        { "src": "@myinstants/mgs2-snake-sounds-like-a-plan.mp3", "name": "sounds-like-a-plan.mp3" },
+        { "src": "@myinstants/mgs2-snake-ill-do-my-best.mp3", "name": "ill-do-my-best.mp3" },
+        { "src": "@myinstants/mgs2-snake-if-you-say-so.mp3", "name": "if-you-say-so.mp3" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — codec transmission end",
+      "files": [
+        { "src": "@myinstants/metal_gear_solid_exit_sound_effect.mp3", "name": "codec-hangup.mp3" },
+        { "src": "@myinstants/mgs2-snake-roger-that-sir.mp3", "name": "roger-that.mp3" },
+        { "src": "@myinstants/mgs2-snake-good-shooting.mp3", "name": "good-shooting.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — alert detected",
+      "files": [
+        { "src": "@myinstants/tindeck_1.mp3", "name": "alert.mp3" },
+        { "src": "@myinstants/metal-gear-alert-sound-effect_XKoHReZ.mp3", "name": "alert-sfx.mp3" },
+        { "src": "@myinstants/what-was-that-noise.mp3", "name": "what-was-that-noise.mp3" },
+        { "src": "@myinstants/untitled_1150.mp3", "name": "alert-mode.mp3" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — standing by",
+      "files": [
+        { "src": "@myinstants/mgs2-snake-kept-you-waiting-huh.mp3", "name": "kept-you-waiting.mp3" },
+        { "src": "@myinstants/why_are_we_still_here_just_to_suffer_2.mp3", "name": "just-to-suffer.mp3" },
+        { "src": "@myinstants/cigar.mp3", "name": "cigar.mp3" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — calling for backup",
+      "files": [
+        { "src": "@myinstants/codec.mp3", "name": "codec-call-out.mp3" },
+        { "src": "@myinstants/metalgearcodec.mp3", "name": "codec-dial.mp3" },
+        { "src": "@myinstants/mgs2-snake-sounds-like-a-plan.mp3", "name": "sounds-like-a-plan.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — game over",
+      "files": [
+        { "src": "@myinstants/metalgeargameov5235.mp3", "name": "game-over.mp3" },
+        { "src": "@myinstants/metal-gear-solid-solid-snake-scream.mp3", "name": "snake-scream.mp3" },
+        { "src": "@myinstants/snake-dies-game-over.mp3", "name": "snake-dies.mp3" },
+        { "src": "@myinstants/metal_gear_solid_game_over_screen_clean_background-1.mp3", "name": "game-over-screen.mp3" },
+        { "src": "@myinstants/mgs2-snake-what-the-hell-is-going-on-here.mp3", "name": "what-the-hell.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — mission accomplished",
+      "files": [
+        { "src": "@myinstants/youre-pretty-good_I5kzLtx.mp3", "name": "youre-pretty-good.mp3" },
+        { "src": "@myinstants/sfx_s_mission_qualify.mp3", "name": "mission-qualify.mp3" },
+        { "src": "@myinstants/mgs2-snake-good-shooting.mp3", "name": "good-shooting.mp3" },
+        { "src": "@myinstants/metal-gear-item-drop.mp3", "name": "item-drop.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — stealth camo engaged",
+      "files": [
+        { "src": "@myinstants/metalgearsolid.swf.mp3", "name": "game-over-fade.mp3" },
+        { "src": "@myinstants/original-metal-gear-solid-game-over-screen.mp3", "name": "original-game-over.mp3" },
+        { "src": "@myinstants/ocelot-meowing.mp3", "name": "ocelot-meow.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — waiting on comms",
+      "files": [
+        { "src": "@myinstants/codec.mp3", "name": "codec-beep.mp3" },
+        { "src": "@myinstants/mgs2-snake-friendly-fire.mp3", "name": "friendly-fire.mp3" },
+        { "src": "@myinstants/what-was-that-noise.mp3", "name": "what-was-that.mp3" }
+      ]
+    }
+  }
+}

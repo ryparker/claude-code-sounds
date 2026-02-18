@@ -1,0 +1,112 @@
+{
+  "name": "Pokemon Gen 1",
+  "description": "Pokemon Red/Blue/Yellow sound effects — cries, battle sounds, and menu bleeps from Kanto",
+  "author": "ryparker",
+  "srcBase": "PokemonGen1",
+  "sounds": {
+    "start": {
+      "description": "Session starting — a wild Claude appeared!",
+      "files": [
+        { "src": "SFX/SFX_INTRO_LUNGE.wav", "name": "intro-lunge.wav" },
+        { "src": "SFX/SFX_BALL_TOSS.wav", "name": "ball-toss.wav" },
+        { "src": "SFX/SFX_BALL_POOF.wav", "name": "ball-poof.wav" },
+        { "src": "Cries/025.wav", "name": "pikachu-cry.wav" },
+        { "src": "SFX/SFX_INTRO_WHOOSH.wav", "name": "intro-whoosh.wav" }
+      ]
+    },
+    "end": {
+      "description": "Session over — Pokemon Center healed up",
+      "files": [
+        { "src": "SFX/SFX_HEAL_UP.wav", "name": "heal-up.wav" },
+        { "src": "SFX/SFX_SAVE.wav", "name": "save-game.wav" },
+        { "src": "SFX/SFX_GO_OUTSIDE.wav", "name": "go-outside.wav" },
+        { "src": "SFX/SFX_TURN_OFF_PC.wav", "name": "turn-off-pc.wav" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — menu select acknowledgment",
+      "files": [
+        { "src": "SFX/SFX_PRESS_AB.wav", "name": "press-ab.wav" },
+        { "src": "SFX/SFX_START_MENU.wav", "name": "start-menu.wav" },
+        { "src": "SFX/SFX_TINK.wav", "name": "tink.wav" },
+        { "src": "SFX/SFX_SWAP.wav", "name": "swap.wav" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — move learned, task complete",
+      "files": [
+        { "src": "SFX/SFX_GET_ITEM_1.wav", "name": "get-item.wav" },
+        { "src": "SFX/SFX_DEX_PAGE_ADDED.wav", "name": "dex-page-added.wav" },
+        { "src": "SFX/SFX_PURCHASE.wav", "name": "purchase.wav" },
+        { "src": "SFX/SFX_HEAL_AILMENT.wav", "name": "heal-ailment.wav" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — wild encounter alert!",
+      "files": [
+        { "src": "SFX/SFX_COLLISION.wav", "name": "collision.wav" },
+        { "src": "SFX/SFX_SILPH_SCOPE.wav", "name": "silph-scope.wav" },
+        { "src": "SFX/SFX_DENIED.wav", "name": "denied.wav" },
+        { "src": "Attacks/Screech.wav", "name": "screech.wav" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — idle Pokemon waiting",
+      "files": [
+        { "src": "SFX/SFX_SLOTS_STOP_WHEEL.wav", "name": "slots-stop.wav" },
+        { "src": "SFX/SFX_POISONED.wav", "name": "poisoned.wav" },
+        { "src": "Cries/054.wav", "name": "psyduck-cry.wav" },
+        { "src": "Attacks/Rest.wav", "name": "rest.wav" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — I choose you!",
+      "files": [
+        { "src": "SFX/SFX_BALL_TOSS.wav", "name": "pokeball-throw.wav" },
+        { "src": "SFX/SFX_BALL_POOF.wav", "name": "pokeball-open.wav" },
+        { "src": "SFX/SFX_SWITCH.wav", "name": "pokemon-switch.wav" },
+        { "src": "Cries/006.wav", "name": "charizard-cry.wav" },
+        { "src": "Attacks/Teleport.wav", "name": "teleport.wav" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — it's not very effective...",
+      "files": [
+        { "src": "SFX/SFX_FAINT_FALL.wav", "name": "faint-fall.wav" },
+        { "src": "SFX/SFX_FAINT_THUD.wav", "name": "faint-thud.wav" },
+        { "src": "Attacks/Confused.wav", "name": "confused.wav" },
+        { "src": "Attacks/SelfDestruct.wav", "name": "self-destruct.wav" },
+        { "src": "Attacks/Splash.wav", "name": "splash.wav" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — badge earned, level up!",
+      "files": [
+        { "src": "SFX/SFX_LEVEL_UP.wav", "name": "level-up.wav" },
+        { "src": "SFX/SFX_GET_KEY_ITEM.wav", "name": "get-key-item.wav" },
+        { "src": "SFX/SFX_GET_ITEM_2.wav", "name": "get-item-fanfare.wav" },
+        { "src": "SFX/SFX_CAUGHT_MON.wav", "name": "caught-mon.wav" },
+        { "src": "SFX/SFX_POKEDEX_RATING.wav", "name": "pokedex-rating.wav" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — PC storage and transformation",
+      "files": [
+        { "src": "SFX/SFX_ENTER_PC.wav", "name": "enter-pc.wav" },
+        { "src": "SFX/SFX_WITHDRAW_DEPOSIT.wav", "name": "withdraw-deposit.wav" },
+        { "src": "SFX/SFX_SHRINK.wav", "name": "shrink.wav" },
+        { "src": "Attacks/Substitute.wav", "name": "substitute.wav" },
+        { "src": "SFX/SFX_TRADE_MACHINE.wav", "name": "trade-machine.wav" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — a Pokemon is waiting",
+      "files": [
+        { "src": "Cries/025.wav", "name": "pikachu-cry.wav" },
+        { "src": "Cries/039.wav", "name": "jigglypuff-cry.wav" },
+        { "src": "SFX/SFX_SLOTS_NEW_SPIN.wav", "name": "slots-new-spin.wav" },
+        { "src": "SFX/SFX_LEDGE.wav", "name": "ledge.wav" }
+      ]
+    }
+  }
+}
