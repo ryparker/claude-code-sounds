@@ -4,6 +4,8 @@
 
 # claude-code-sounds
 
+[![npm version](https://img.shields.io/npm/v/claude-code-sounds)](https://www.npmjs.com/package/claude-code-sounds)
+
 **Sound themes for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) lifecycle hooks.**
 
 Plays sound effects when sessions start, prompts are submitted, responses finish, errors occur, and more.
