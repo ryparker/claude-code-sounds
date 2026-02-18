@@ -491,12 +491,21 @@ function buildCategoryItems(theme, category) {
   const items = [];
   const seen = new Set();
 
+  // Build a map of filename -> list of hooks it appears in
+  const hookMap = {};
+  for (const cat of categories) {
+    for (const f of theme.sounds[cat].files) {
+      if (!hookMap[f.name]) hookMap[f.name] = [];
+      if (!hookMap[f.name].includes(cat)) hookMap[f.name].push(cat);
+    }
+  }
+
   // Native sounds first
   for (const f of config.files) {
     seen.add(f.name);
     items.push({
       label: f.name.replace(/\.(wav|mp3)$/, ""),
-      description: f.description || "",
+      description: hookMap[f.name].join(", "),
       file: f.name,
       src: f.src,
       native: true,
@@ -512,7 +521,7 @@ function buildCategoryItems(theme, category) {
       seen.add(f.name);
       items.push({
         label: f.name.replace(/\.(wav|mp3)$/, ""),
-        description: `from ${otherCat}`,
+        description: hookMap[f.name].join(", "),
         file: f.name,
         src: f.src,
         native: false,
