@@ -1,0 +1,115 @@
+{
+  "name": "Age of Empires 2",
+  "description": "Iconic Age of Empires 2 taunts, villager sounds, and game effects — Wololo!",
+  "author": "ryparker",
+  "sources": [
+    "myinstants.com"
+  ],
+  "sounds": {
+    "start": {
+      "description": "Session starting — game horn and fanfare",
+      "files": [
+        { "name": "horn.mp3" },
+        { "name": "viking-horn.mp3" },
+        { "name": "start-the-game-already.mp3" },
+        { "name": "taunt-all-hail.mp3" },
+        { "name": "drum-roll.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over — victory and farewell",
+      "files": [
+        { "name": "it-is-good.mp3" },
+        { "name": "nice-town-ill-take-it.mp3" },
+        { "name": "taunt-herb-laugh.mp3" },
+        { "name": "taunt-oooh.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — villager acknowledgment",
+      "files": [
+        { "name": "taunt-yes.mp3" },
+        { "name": "roggan.mp3" },
+        { "name": "villager-prrrroh.mp3" },
+        { "name": "villager-sssh-ho.mp3" },
+        { "name": "confirm.mp3" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — task acknowledged",
+      "files": [
+        { "name": "taunt-yes.mp3" },
+        { "name": "confirm.mp3" },
+        { "name": "unit-created.mp3" },
+        { "name": "villager-spawn.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — monk conversion warning",
+      "files": [
+        { "name": "wololo.mp3" },
+        { "name": "conversion-warning.mp3" },
+        { "name": "i-need-a-monk.mp3" },
+        { "name": "taunt-food-please.mp3" },
+        { "name": "taunt-gold-please.mp3" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — impatient taunts",
+      "files": [
+        { "name": "taunt-quit-touchin-me.mp3" },
+        { "name": "dont-point-that-thing.mp3" },
+        { "name": "taunt-ahh.mp3" },
+        { "name": "schwarzenegger.mp3" },
+        { "name": "start-the-game-already.mp3" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — dispatching villagers",
+      "files": [
+        { "name": "villager-spawn.mp3" },
+        { "name": "unit-created.mp3" },
+        { "name": "attack-enemy-now.mp3" },
+        { "name": "taunt-wood-please.mp3" },
+        { "name": "taunt-stone-please.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — villager death and warnings",
+      "files": [
+        { "name": "death.mp3" },
+        { "name": "villager-killed.mp3" },
+        { "name": "taunt-no.mp3" },
+        { "name": "housed.mp3" },
+        { "name": "farm-exhausted.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — victory fanfare",
+      "files": [
+        { "name": "taunt-all-hail.mp3" },
+        { "name": "wololo-long.mp3" },
+        { "name": "it-is-good.mp3" },
+        { "name": "nice-town-ill-take-it.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — being rushed",
+      "files": [
+        { "name": "being-rushed.mp3" },
+        { "name": "taunt-back-to-age-1.mp3" },
+        { "name": "farm-exhausted.mp3" },
+        { "name": "housed.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — calling for help",
+      "files": [
+        { "name": "enemy-sighted.mp3" },
+        { "name": "smite-me.mp3" },
+        { "name": "taunt-wood-please.mp3" },
+        { "name": "taunt-food-please.mp3" }
+      ]
+    }
+  }
+}

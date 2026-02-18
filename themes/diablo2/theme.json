@@ -1,0 +1,114 @@
+{
+  "name": "Diablo 2",
+  "description": "Deckard Cain, item drops, and the Prime Evils — Stay awhile and listen.",
+  "author": "ryparker",
+  "sources": [
+    "myinstants.com",
+    "soundfxcenter.com"
+  ],
+  "sounds": {
+    "start": {
+      "description": "Session starting — Deckard Cain greets you",
+      "files": [
+        { "name": "stay-awhile-and-listen.mp3" },
+        { "name": "hello-my-friend.mp3" },
+        { "name": "stay-awhile-and-listen-2.mp3" },
+        { "name": "town-portal.mp3" },
+        { "name": "barb-select.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over — quest complete",
+      "files": [
+        { "name": "level-up.mp3" },
+        { "name": "gold-pickup.mp3" },
+        { "name": "barb-gift-for-you.mp3" },
+        { "name": "gem-drop.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — new quest accepted",
+      "files": [
+        { "name": "scroll.mp3" },
+        { "name": "charm-drop.mp3" },
+        { "name": "key-drop.mp3" },
+        { "name": "ring-drop.mp3" },
+        { "name": "potion.mp3" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — loot collected",
+      "files": [
+        { "name": "item-drop.mp3" },
+        { "name": "gold-drop.mp3" },
+        { "name": "amulet-drop.mp3" },
+        { "name": "helm-drop.mp3" },
+        { "name": "chain-armor.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — caution adventurer",
+      "files": [
+        { "name": "not-in-town.mp3" },
+        { "name": "not-enough-mana.mp3" },
+        { "name": "barb-soon-perhaps.mp3" },
+        { "name": "sorceress-monster.mp3" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — the Rogue Encampment grows quiet",
+      "files": [
+        { "name": "drink-potion.mp3" },
+        { "name": "skull-drop.mp3" },
+        { "name": "javelin.mp3" },
+        { "name": "scroll.mp3" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — hero enters battle",
+      "files": [
+        { "name": "bow-shot.mp3" },
+        { "name": "barb-shout.mp3" },
+        { "name": "barb-leap.mp3" },
+        { "name": "barb-time-to-die.mp3" },
+        { "name": "sorceress-time-to-die.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — you have died",
+      "files": [
+        { "name": "sorceress-dead.mp3" },
+        { "name": "prime-evils-laugh.mp3" },
+        { "name": "not-even-death.mp3" },
+        { "name": "poison-trap.mp3" },
+        { "name": "countess-bloodbath.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — unique item identified",
+      "files": [
+        { "name": "level-up.mp3" },
+        { "name": "gem-drop.mp3" },
+        { "name": "gold-pickup.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — inventory full",
+      "files": [
+        { "name": "not-enough-mana.mp3" },
+        { "name": "not-in-town.mp3" },
+        { "name": "necro-help-me.mp3" },
+        { "name": "arrow-block.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — mercenary is standing around",
+      "files": [
+        { "name": "blade-block.mp3" },
+        { "name": "bloodraven.mp3" },
+        { "name": "andariel.mp3" },
+        { "name": "prime-evils-scream.mp3" }
+      ]
+    }
+  }
+}

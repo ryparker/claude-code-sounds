@@ -1,0 +1,116 @@
+{
+  "name": "StarCraft",
+  "description": "Iconic StarCraft and Brood War unit voice lines — Terran, Protoss, and Zerg quotes from the battlefield",
+  "author": "ryparker",
+  "sources": [
+    "soundfxcenter.com",
+    "myinstants.com"
+  ],
+  "sounds": {
+    "start": {
+      "description": "Session starting — reporting for duty",
+      "files": [
+        { "name": "scv-good-to-go-sir.mp3" },
+        { "name": "battlecruiser-operational.mp3" },
+        { "name": "scv-reportin-for-duty.mp3" },
+        { "name": "carrier-has-arrived.mp3" },
+        { "name": "ghost-reporting.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over — mission accomplished",
+      "files": [
+        { "name": "corsair-excellent.mp3" },
+        { "name": "duke-alright-then.mp3" },
+        { "name": "archon-power-overwhelming.mp3" },
+        { "name": "marine-ah-thats-the-stuff.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — acknowledging orders",
+      "files": [
+        { "name": "scv-affirmative.mp3" },
+        { "name": "scv-orders-received.mp3" },
+        { "name": "scv-roger-that.mp3" },
+        { "name": "starcraft-confirm.mp3" },
+        { "name": "bug-guy-gladly.mp3" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — task acknowledged",
+      "files": [
+        { "name": "marine-go-go-go.mp3" },
+        { "name": "marine-lets-move.mp3" },
+        { "name": "battlecruiser-make-it-happen.mp3" },
+        { "name": "templar-it-shall-be-done.mp3" },
+        { "name": "kerrigan-alright.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — awaiting orders",
+      "files": [
+        { "name": "battlecruiser-receiving-transmission.mp3" },
+        { "name": "kerrigan-im-listening.mp3" },
+        { "name": "dropship-can-i-take-your-order.mp3" },
+        { "name": "duran-how-can-i-be-of-service.mp3" },
+        { "name": "firebat-you-got-my-attention.mp3" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — standing by",
+      "files": [
+        { "name": "protoss-waiting.mp3" },
+        { "name": "kerrigan-what-now.mp3" },
+        { "name": "not-enough-minerals.mp3" },
+        { "name": "insufficient-vespene-gas.mp3" },
+        { "name": "additional-pylons.mp3" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — deploying units",
+      "files": [
+        { "name": "dropship-in-the-pipe-five-by-five.mp3" },
+        { "name": "bug-guy-live-for-the-swarm.mp3" },
+        { "name": "marine-jacked-up-and-good-to-go.mp3" },
+        { "name": "ready-to-roll-out.mp3" },
+        { "name": "wraith-standing-by.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — under attack",
+      "files": [
+        { "name": "base-under-attack.mp3" },
+        { "name": "nuclear-launch-detected.mp3" },
+        { "name": "bug-guy-sacrifice-me.mp3" },
+        { "name": "corsair-it-is-a-good-day-to-die.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — victory achieved",
+      "files": [
+        { "name": "protoss-upgrade.mp3" },
+        { "name": "archon-the-merging-is-complete.mp3" },
+        { "name": "fenix-zealot-for-aiur.mp3" },
+        { "name": "dragoon-i-have-returned.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — regrouping forces",
+      "files": [
+        { "name": "protoss-electric.mp3" },
+        { "name": "fenix-dragoon-nach-nagalas.mp3" },
+        { "name": "mutalisk.mp3" },
+        { "name": "protoss-fighting.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — requesting status",
+      "files": [
+        { "name": "scv-i-read-you.mp3" },
+        { "name": "wraith-reporting-in.mp3" },
+        { "name": "battlecruiser-all-crews-reporting.mp3" },
+        { "name": "dragoon-commencing.mp3" }
+      ]
+    }
+  }
+}

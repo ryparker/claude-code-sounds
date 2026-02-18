@@ -1,0 +1,115 @@
+{
+  "name": "Warhammer 40k",
+  "description": "In the grim darkness of the far future, there is only coding -- Space Marine commands, Chaos war cries, and Ork battle shouts from Dawn of War",
+  "author": "ryparker",
+  "sources": [
+    "101soundboards.com"
+  ],
+  "sounds": {
+    "start": {
+      "description": "Session starting -- the Emperor calls",
+      "files": [
+        { "name": "for-the-emperor.mp3" },
+        { "name": "for-the-emperor-2.mp3" },
+        { "name": "marine-squad-deployed.mp3" },
+        { "name": "awaiting-orders.mp3" },
+        { "name": "ever-vigilant.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over -- mission complete",
+      "files": [
+        { "name": "mission-accomplished.mp3" },
+        { "name": "area-secured.mp3" },
+        { "name": "it-is-done.mp3" },
+        { "name": "defending-objective.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt -- orders received",
+      "files": [
+        { "name": "at-your-command.mp3" },
+        { "name": "as-ordered.mp3" },
+        { "name": "direct-us-to-the-enemy.mp3" },
+        { "name": "fear-our-wrath.mp3" },
+        { "name": "commencing-attack.mp3" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding -- duty fulfilled",
+      "files": [
+        { "name": "cleanse-purge-kill.mp3" },
+        { "name": "as-you-wish.mp3" },
+        { "name": "as-you-command.mp3" },
+        { "name": "faith-is-our-shield.mp3" },
+        { "name": "engaging-the-enemy.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt -- the Inquisition demands an answer",
+      "files": [
+        { "name": "fear-denies-faith.mp3" },
+        { "name": "abhor-the-daemon.mp3" },
+        { "name": "by-the-emperor-a-daemon.mp3" },
+        { "name": "purge-the-witches.mp3" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input -- heresy festers",
+      "files": [
+        { "name": "heresy-grows-from-idleness.mp3" },
+        { "name": "quit-hidin-like-a-grot.mp3" },
+        { "name": "you-boyz-is-no-good.mp3" },
+        { "name": "death-to-the-alien.mp3" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent -- dispatching reinforcements",
+      "files": [
+        { "name": "waaagh-warboss.mp3" },
+        { "name": "waaagh-boyz.mp3" },
+        { "name": "for-the-dark-gods.mp3" },
+        { "name": "crush-them.mp3" },
+        { "name": "send-me-to-da-fight.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure -- casualties sustained",
+      "files": [
+        { "name": "chaos-death-1.mp3" },
+        { "name": "chaos-death-2.mp3" },
+        { "name": "marine-death.mp3" },
+        { "name": "damnation.mp3" },
+        { "name": "fall-back.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished -- victory for the Imperium",
+      "files": [
+        { "name": "claim-it-in-the-name-of-the-emperor.mp3" },
+        { "name": "faith-holds-us.mp3" },
+        { "name": "fear-not-brothers.mp3" },
+        { "name": "nuffink-can-stand-in-my-way.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction -- the warp distorts memory",
+      "files": [
+        { "name": "fall-back-and-regroup.mp3" },
+        { "name": "chaos-sighted.mp3" },
+        { "name": "curse-the-monster.mp3" },
+        { "name": "despair-for-your-end-is-near.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle -- discipline required",
+      "files": [
+        { "name": "death-to-the-false-emperor.mp3" },
+        { "name": "maim-kill-burn.mp3" },
+        { "name": "orks-iz-da-biggest.mp3" },
+        { "name": "orks-meant-fa-fightin.mp3" },
+        { "name": "ready-fa-stompin.mp3" }
+      ]
+    }
+  }
+}

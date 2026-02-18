@@ -8,7 +8,7 @@
 
 Plays sound effects when sessions start, prompts are submitted, responses finish, errors occur, and more.
 
-Ships with 7 themes. Bring your own sounds or create new ones.
+Ships with 12 themes. Bring your own sounds or create new ones.
 
 *"Something need doing?"*
 
@@ -64,6 +64,11 @@ npx claude-code-sounds --help       # Show help
 | **Metal Gear Solid** (`mgs`) | 40 | *"Kept you waiting, huh?"* — Codec calls, alert sounds, and Snake |
 | **Pokemon Gen 1** (`pokemon-gen1`) | 49 | *"Wild PIKACHU appeared!"* — Cries, battle sounds, and Kanto menus |
 | **Portal** (`portal`) | 42 | *"Are you still there?"* — Turrets, portal guns, and Aperture Science |
+| **Command & Conquer** (`cnc`) | 72 | *"Construction complete"* — EVA announcements, unit voices, and Red Alert |
+| **Age of Empires 2** (`aoe2`) | 39 | *"Wololo!"* — Villager taunts, monks, and age advance fanfares |
+| **Diablo 2** (`diablo2`) | 43 | *"Stay awhile and listen"* — Deckard Cain, item drops, and the Prime Evils |
+| **Warhammer 40k** (`wh40k`) | 51 | *"For the Emperor!"* — Space Marines, Chaos war cries, and Ork shouts |
+| **StarCraft** (`starcraft`) | 67 | *"Not enough minerals"* — Terran, Protoss, and Zerg voice lines |
 
 Each theme maps sounds across all 11 Claude Code lifecycle events. Preview installed sounds with `./preview.sh`.
 
@@ -140,4 +145,4 @@ This removes all sound files, the hook script, and the hooks config from `settin
 
 ## Disclaimer
 
-All game audio is property of its respective owners: Blizzard Entertainment (Warcraft), Nintendo (Zelda, Mario, Pokemon), Lucasfilm/Disney (Star Wars), Konami (Metal Gear Solid), and Valve (Portal).
+All game audio is property of its respective owners: Blizzard Entertainment (Warcraft, StarCraft, Diablo), Nintendo (Zelda, Mario, Pokemon), Lucasfilm/Disney (Star Wars), Konami (Metal Gear Solid), Valve (Portal), Electronic Arts/Westwood Studios (Command & Conquer), Xbox Game Studios/Ensemble Studios (Age of Empires), and Games Workshop/Relic Entertainment (Warhammer 40,000).
