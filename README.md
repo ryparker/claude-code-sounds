@@ -85,38 +85,30 @@ Each theme maps sounds across all 11 Claude Code lifecycle events. Preview insta
 
 ## Creating a Theme
 
-Themes live in `themes/<name>/` with two files:
+Themes live in `themes/<name>/` with two items:
 
 ### `theme.json`
 
-Defines metadata and maps source files to hook categories:
+Defines metadata and maps sound files to hook categories:
 
 ```json
 {
   "name": "My Theme",
   "description": "A short description",
-  "srcBase": "MyTheme",
   "sounds": {
     "start": {
       "description": "Session starting",
       "files": [
-        { "src": "path/to/file.wav", "name": "descriptive-name.wav" }
+        { "name": "descriptive-name.wav" }
       ]
     }
   }
 }
 ```
 
-- **`srcBase`** — subdirectory under the temp dir where downloaded files live (e.g., `"Orc"`, `"OOT"`)
-- **`src`** — path relative to `$2/<srcBase>/` where the file is found after download
+### `sounds/`
 
-### `download.sh`
-
-Downloads the sound files. Receives two arguments:
-- `$1` — target sounds directory (`~/.claude/sounds`)
-- `$2` — temp directory for downloads
-
-The script should download and extract files so they're accessible at `$2/<srcBase>/<src path>` (matching the `srcBase` and `src` values in `theme.json`).
+Place audio files (`.wav` or `.mp3`) in `themes/<name>/sounds/` with filenames matching the `name` field in `theme.json`.
 
 ## How It Works
 
@@ -148,4 +140,4 @@ This removes all sound files, the hook script, and the hooks config from `settin
 
 ## Disclaimer
 
-Sound files are downloaded from third-party sources at install time and are not included in this repository. All game audio is property of its respective owners: Blizzard Entertainment (Warcraft), Nintendo (Zelda, Mario, Pokemon), Lucasfilm/Disney (Star Wars), Konami (Metal Gear Solid), and Valve (Portal).
+All game audio is property of its respective owners: Blizzard Entertainment (Warcraft), Nintendo (Zelda, Mario, Pokemon), Lucasfilm/Disney (Star Wars), Konami (Metal Gear Solid), and Valve (Portal).
