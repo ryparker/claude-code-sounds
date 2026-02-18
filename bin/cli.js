@@ -2,27 +2,28 @@
 
 const fs = require("fs");
 const path = require("path");
-const os = require("os");
 const { execSync, spawn } = require("child_process");
 const p = require("@clack/prompts");
 const { Prompt } = require("@clack/core");
 const color = require("picocolors");
 
-// ─── Paths ───────────────────────────────────────────────────────────────────
+// ─── Library ─────────────────────────────────────────────────────────────────
 
-const PKG_DIR = path.resolve(__dirname, "..");
-const CLAUDE_DIR = path.join(os.homedir(), ".claude");
-const SOUNDS_DIR = path.join(CLAUDE_DIR, "sounds");
-const HOOKS_DIR = path.join(CLAUDE_DIR, "hooks");
-const SETTINGS_PATH = path.join(CLAUDE_DIR, "settings.json");
-const THEMES_DIR = path.join(PKG_DIR, "themes");
-const INSTALLED_PATH = path.join(SOUNDS_DIR, ".installed.json");
+const lib = require("./lib");
+const paths = lib.defaultPaths();
+const { HOOKS, mkdirp } = lib;
+const { SOUNDS_DIR } = paths;
+
+// Path-bound wrappers
+const listThemes = () => lib.listThemes(paths);
+const readThemeJson = (name) => lib.readThemeJson(name, paths);
+const resolveThemeSoundPath = (name, file) => lib.resolveThemeSoundPath(name, file, paths);
+const writeInstalled = (data) => lib.writeInstalled(data, paths);
+const detectExistingInstall = () => lib.detectExistingInstall(paths);
+const installSounds = (sel) => lib.installSounds(sel, paths);
+const installHooksConfig = () => lib.installHooksConfig(paths);
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function mkdirp(dir) {
-  fs.mkdirSync(dir, { recursive: true });
-}
 
 function exec(cmd, opts = {}) {
   return execSync(cmd, { encoding: "utf-8", stdio: "pipe", ...opts });
@@ -35,63 +36,6 @@ function hasCommand(name) {
   } catch {
     return false;
   }
-}
-
-function listThemes() {
-  const themes = [];
-  for (const name of fs.readdirSync(THEMES_DIR)) {
-    const themeJson = path.join(THEMES_DIR, name, "theme.json");
-    if (!fs.existsSync(themeJson)) continue;
-    const meta = JSON.parse(fs.readFileSync(themeJson, "utf-8"));
-    let soundCount = 0;
-    if (meta.sounds) {
-      for (const cat of Object.values(meta.sounds)) {
-        soundCount += cat.files.length;
-      }
-    }
-    themes.push({
-      name,
-      description: meta.description || "",
-      display: meta.name || name,
-      soundCount,
-      sources: meta.sources || [],
-    });
-  }
-  return themes;
-}
-
-function readSettings() {
-  if (fs.existsSync(SETTINGS_PATH)) {
-    return JSON.parse(fs.readFileSync(SETTINGS_PATH, "utf-8"));
-  }
-  return {};
-}
-
-function writeSettings(settings) {
-  mkdirp(CLAUDE_DIR);
-  fs.writeFileSync(SETTINGS_PATH, JSON.stringify(settings, null, 2) + "\n");
-}
-
-function readInstalled() {
-  if (fs.existsSync(INSTALLED_PATH)) {
-    return JSON.parse(fs.readFileSync(INSTALLED_PATH, "utf-8"));
-  }
-  return null;
-}
-
-function writeInstalled(data) {
-  mkdirp(SOUNDS_DIR);
-  fs.writeFileSync(INSTALLED_PATH, JSON.stringify(data, null, 2) + "\n");
-}
-
-function readThemeJson(themeName) {
-  return JSON.parse(
-    fs.readFileSync(path.join(THEMES_DIR, themeName, "theme.json"), "utf-8")
-  );
-}
-
-function resolveThemeSoundPath(themeName, fileName) {
-  return path.join(THEMES_DIR, themeName, "sounds", fileName);
 }
 
 // ─── Preview ─────────────────────────────────────────────────────────────────
@@ -116,39 +60,7 @@ function playPreview(filePath) {
   }
 }
 
-// ─── Hooks Config ────────────────────────────────────────────────────────────
-
-const HOOKS_CONFIG = {
-  SessionStart: [{ matcher: "startup", hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" start', timeout: 5 }] }],
-  SessionEnd: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" end', timeout: 5 }] }],
-  Notification: [
-    { matcher: "permission_prompt", hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" permission', timeout: 5 }] },
-    { matcher: "idle_prompt", hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" idle', timeout: 5 }] },
-  ],
-  Stop: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" stop', timeout: 5 }] }],
-  SubagentStart: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" subagent', timeout: 5 }] }],
-  PostToolUseFailure: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" error', timeout: 5 }] }],
-  UserPromptSubmit: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" prompt', timeout: 5 }] }],
-  TaskCompleted: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" task-completed', timeout: 5 }] }],
-  PreCompact: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" compact', timeout: 5 }] }],
-  TeammateIdle: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" teammate-idle', timeout: 5 }] }],
-};
-
 // ─── Sound Grid Prompt ───────────────────────────────────────────────────────
-
-const HOOKS = [
-  { key: "start", abbr: "str", description: "Session starting" },
-  { key: "prompt", abbr: "pmt", description: "User submitted prompt" },
-  { key: "permission", abbr: "prm", description: "Permission prompt" },
-  { key: "stop", abbr: "stp", description: "Done responding" },
-  { key: "subagent", abbr: "sub", description: "Spawning subagent" },
-  { key: "task-completed", abbr: "tsk", description: "Task finished" },
-  { key: "error", abbr: "err", description: "Tool failure" },
-  { key: "compact", abbr: "cmp", description: "Context compaction" },
-  { key: "idle", abbr: "idl", description: "Waiting for input" },
-  { key: "teammate-idle", abbr: "tmt", description: "Teammate went idle" },
-  { key: "end", abbr: "end", description: "Session over" },
-];
 
 /**
  * A 2D grid prompt for assigning sounds to hooks.
@@ -424,59 +336,18 @@ class SoundGrid extends Prompt {
   }
 }
 
-// ─── Install Sounds ──────────────────────────────────────────────────────────
+// ─── Install / Uninstall ─────────────────────────────────────────────────────
 
-/**
- * Copy selected sound files from package to SOUNDS_DIR.
- *
- * @param {Object<string, Array<{themeName: string, fileName: string}>>} selections
- * @returns {number} Total files installed
- */
-function installSounds(selections) {
-  let total = 0;
-
-  for (const [cat, items] of Object.entries(selections)) {
-    const catDir = path.join(SOUNDS_DIR, cat);
-    mkdirp(catDir);
-
-    // Clear existing sounds in this category
-    try {
-      for (const f of fs.readdirSync(catDir)) {
-        if (f.endsWith(".wav") || f.endsWith(".mp3")) {
-          fs.unlinkSync(path.join(catDir, f));
-        }
-      }
-    } catch {}
-
-    // Copy selected sounds
-    for (const item of items) {
-      const srcPath = resolveThemeSoundPath(item.themeName, item.fileName);
-      const destPath = path.join(catDir, item.fileName);
-
-      if (fs.existsSync(srcPath)) {
-        fs.copyFileSync(srcPath, destPath);
-        total++;
-      }
-    }
-  }
-
-  return total;
+async function quickInstall(theme) {
+  const { total, categories } = lib.quickInstall(theme, paths);
+  p.log.success(`Installed ${color.bold(theme.display)} — ${total} sounds across ${categories} hooks.`);
 }
 
-/**
- * Write hooks config and copy play-sound.sh script.
- */
-function installHooksConfig() {
-  mkdirp(HOOKS_DIR);
-
-  const hookSrc = path.join(PKG_DIR, "hooks", "play-sound.sh");
-  const hookDest = path.join(HOOKS_DIR, "play-sound.sh");
-  fs.copyFileSync(hookSrc, hookDest);
-  fs.chmodSync(hookDest, 0o755);
-
-  const settings = readSettings();
-  settings.hooks = HOOKS_CONFIG;
-  writeSettings(settings);
+function uninstallAll() {
+  const removed = lib.uninstallAll(paths);
+  if (removed.sounds) p.log.step("Removed ~/.claude/sounds/");
+  if (removed.hookScript) p.log.step("Removed ~/.claude/hooks/play-sound.sh");
+  if (removed.hooksConfig) p.log.step("Removed hooks from settings.json");
 }
 
 // ─── Print Summary ───────────────────────────────────────────────────────────
@@ -529,26 +400,6 @@ function showList() {
   console.log();
 }
 
-function uninstallAll() {
-  if (fs.existsSync(SOUNDS_DIR)) {
-    fs.rmSync(SOUNDS_DIR, { recursive: true });
-    p.log.step("Removed ~/.claude/sounds/");
-  }
-
-  const hookScript = path.join(HOOKS_DIR, "play-sound.sh");
-  if (fs.existsSync(hookScript)) {
-    fs.unlinkSync(hookScript);
-    p.log.step("Removed ~/.claude/hooks/play-sound.sh");
-  }
-
-  if (fs.existsSync(SETTINGS_PATH)) {
-    const settings = readSettings();
-    delete settings.hooks;
-    writeSettings(settings);
-    p.log.step("Removed hooks from settings.json");
-  }
-}
-
 // ─── Check Dependencies ─────────────────────────────────────────────────────
 
 function checkDependencies() {
@@ -556,76 +407,6 @@ function checkDependencies() {
     p.cancel("afplay is not available. claude-code-sounds requires macOS.");
     process.exit(1);
   }
-}
-
-// ─── Detect Existing Install ─────────────────────────────────────────────────
-
-function detectExistingInstall() {
-  const installed = readInstalled();
-  if (!installed) return null;
-
-  // Support both old format { theme: "name" } and new { themes: [...], mode }
-  const themeNames = installed.themes || (installed.theme ? [installed.theme] : []);
-  if (themeNames.length === 0) return null;
-
-  // Count enabled sounds across all categories
-  let totalEnabled = 0;
-  const allCategories = new Set();
-
-  for (const themeName of themeNames) {
-    try {
-      const theme = readThemeJson(themeName);
-      for (const cat of Object.keys(theme.sounds)) {
-        allCategories.add(cat);
-      }
-    } catch {}
-  }
-
-  for (const cat of allCategories) {
-    const catDir = path.join(SOUNDS_DIR, cat);
-    try {
-      for (const f of fs.readdirSync(catDir)) {
-        if (f.endsWith(".wav") || f.endsWith(".mp3")) totalEnabled++;
-      }
-    } catch {}
-  }
-
-  if (totalEnabled === 0) return null;
-
-  const displays = themeNames.map((n) => {
-    try { return readThemeJson(n).name; } catch { return n; }
-  });
-
-  return {
-    themes: themeNames,
-    themeDisplays: displays,
-    totalEnabled,
-    mode: installed.mode || "quick",
-  };
-}
-
-// ─── Quick Install ───────────────────────────────────────────────────────────
-
-async function quickInstall(theme) {
-  const themeJson = readThemeJson(theme.name);
-  const categories = Object.keys(themeJson.sounds);
-
-  for (const cat of categories) mkdirp(path.join(SOUNDS_DIR, cat));
-
-  // Build selections: all native sounds per category
-  const selections = {};
-  for (const cat of categories) {
-    selections[cat] = themeJson.sounds[cat].files.map((f) => ({
-      themeName: theme.name,
-      fileName: f.name,
-    }));
-  }
-
-  const total = installSounds(selections);
-  writeInstalled({ themes: [theme.name], mode: "quick" });
-  installHooksConfig();
-
-  p.log.success(`Installed ${color.bold(theme.display)} — ${total} sounds across ${categories.length} hooks.`);
 }
 
 // ─── Custom Install ──────────────────────────────────────────────────────────

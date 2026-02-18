@@ -1,0 +1,19 @@
+{
+  "name": "Test Theme",
+  "description": "Minimal valid theme for testing",
+  "author": "test",
+  "sources": ["test"],
+  "sounds": {
+    "start": { "description": "Session starting", "files": [{ "name": "test-sound.wav" }] },
+    "end": { "description": "Session over", "files": [{ "name": "test-sound.wav" }] },
+    "prompt": { "description": "User submitted prompt", "files": [{ "name": "test-sound.wav" }] },
+    "stop": { "description": "Done responding", "files": [{ "name": "test-sound.wav" }] },
+    "permission": { "description": "Permission prompt", "files": [{ "name": "test-sound.wav" }] },
+    "idle": { "description": "Waiting for input", "files": [{ "name": "test-sound.wav" }] },
+    "subagent": { "description": "Spawning subagent", "files": [{ "name": "test-sound.wav" }] },
+    "error": { "description": "Tool failure", "files": [{ "name": "test-sound.wav" }] },
+    "task-completed": { "description": "Task finished", "files": [{ "name": "test-sound.wav" }] },
+    "compact": { "description": "Context compaction", "files": [{ "name": "test-sound.wav" }] },
+    "teammate-idle": { "description": "Teammate went idle", "files": [{ "name": "test-sound.wav" }] }
+  }
+}
