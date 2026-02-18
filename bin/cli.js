@@ -501,15 +501,17 @@ function showHelp() {
 
   Usage:
     npx claude-code-sounds              Interactive install
+    npx claude-code-sounds --theme mgs  Install a specific theme directly
     npx claude-code-sounds --yes        Install defaults, skip prompts
     npx claude-code-sounds --list       List available themes
     npx claude-code-sounds --uninstall  Remove all sounds and hooks
     npx claude-code-sounds --help       Show this help
 
   Flags:
-    -y, --yes       Skip all prompts, use defaults
-    -l, --list      List available themes
-    -h, --help      Show this help
+    -t, --theme <name>  Install a specific theme by name
+    -y, --yes           Skip all prompts, use defaults
+    -l, --list          List available themes
+    -h, --help          Show this help
 `);
 }
 
@@ -934,10 +936,50 @@ const args = process.argv.slice(2);
 const flags = new Set(args);
 const autoYes = flags.has("--yes") || flags.has("-y");
 
+// Parse --theme <name> or --theme=<name> or -t <name>
+let themeArg = null;
+for (let i = 0; i < args.length; i++) {
+  if ((args[i] === "--theme" || args[i] === "-t") && args[i + 1]) {
+    themeArg = args[i + 1];
+    break;
+  }
+  if (args[i].startsWith("--theme=")) {
+    themeArg = args[i].slice("--theme=".length);
+    break;
+  }
+}
+
 if (flags.has("--help") || flags.has("-h")) {
   showHelp();
 } else if (flags.has("--list") || flags.has("-l")) {
   showList();
+} else if (themeArg) {
+  (async () => {
+    p.intro(color.bold("claude-code-sounds"));
+    checkDependencies();
+
+    const themes = listThemes();
+    // Try exact match first, then case-insensitive
+    let theme = themes.find((t) => t.name === themeArg);
+    if (!theme) {
+      const lower = themeArg.toLowerCase();
+      theme = themes.find((t) => t.name.toLowerCase() === lower);
+    }
+
+    if (!theme) {
+      p.cancel(
+        `Theme "${themeArg}" not found.\n${color.gray(p.S_BAR)}\n${color.gray(p.S_BAR)}  Available: ${themes.map((t) => t.name).join(", ")}`
+      );
+      process.exit(1);
+    }
+
+    await quickInstall(theme);
+    p.outro("Start a new Claude Code session to hear it.");
+  })().catch((err) => {
+    killPreview();
+    p.cancel(err.message);
+    process.exit(1);
+  });
 } else if (flags.has("--uninstall") || flags.has("--remove")) {
   p.intro(color.bold("claude-code-sounds"));
   uninstallAll();
