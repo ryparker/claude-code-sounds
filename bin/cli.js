@@ -621,7 +621,7 @@ async function quickInstall(theme) {
   writeInstalled({ themes: [theme.name], mode: "quick" });
   installHooksConfig();
 
-  p.log.success(`Installed ${total} sounds across ${categories.length} hooks.`);
+  p.log.success(`Installed ${color.bold(theme.display)} — ${total} sounds across ${categories.length} hooks.`);
 }
 
 // ─── Custom Install ──────────────────────────────────────────────────────────
@@ -974,6 +974,7 @@ if (flags.has("--help") || flags.has("-h")) {
     }
 
     await quickInstall(theme);
+    p.log.info(`To customize which sounds play on each hook, run:\n${color.gray(p.S_BAR)}\n${color.gray(p.S_BAR)}  ${color.cyan("npx claude-code-sounds")}\n${color.gray(p.S_BAR)}\n${color.gray(p.S_BAR)}  and choose ${color.bold("Modify install")}.`);
     p.outro("Start a new Claude Code session to hear it.");
   })().catch((err) => {
     killPreview();
