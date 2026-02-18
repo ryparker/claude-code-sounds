@@ -27,7 +27,7 @@
     "images/"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "dependencies": {
     "@clack/core": "^1.0.1",
