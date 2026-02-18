@@ -146,4 +146,8 @@ This removes all sound files, the hook script, and the hooks config from `settin
 
 ## Disclaimer
 
-All game audio is property of its respective owners: Blizzard Entertainment (Warcraft, StarCraft, Diablo), Nintendo (Zelda, Mario, Pokemon), Lucasfilm/Disney (Star Wars), Konami (Metal Gear Solid), Valve (Portal), Electronic Arts/Westwood Studios (Command & Conquer), Xbox Game Studios/Ensemble Studios (Age of Empires), and Games Workshop/Relic Entertainment (Warhammer 40,000).
+This project is an unofficial fan project provided free of charge for personal, non-commercial use. It is not affiliated with, endorsed by, or sponsored by any game publisher or rights holder.
+
+All game audio is the property of its respective owners: Blizzard Entertainment (Warcraft, StarCraft, Diablo), Nintendo (Zelda, Mario, Pokemon), Lucasfilm/Disney (Star Wars), Konami (Metal Gear Solid), Valve (Portal), Electronic Arts/Westwood Studios (Command & Conquer), Xbox Game Studios/Ensemble Studios (Age of Empires), and Games Workshop/Relic Entertainment (Warhammer 40,000). All trademarks and registered trademarks are the property of their respective owners.
+
+If you are a rights holder and would like content removed, please [open an issue](https://github.com/ryparker/claude-code-sounds/issues) and it will be taken down promptly.
