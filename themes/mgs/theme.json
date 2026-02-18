@@ -2,6 +2,7 @@
   "name": "Metal Gear Solid",
   "description": "Iconic Metal Gear Solid sound effects — codec calls, alert sounds, and Snake voice lines",
   "author": "ryparker",
+  "sources": ["myinstants.com"],
   "srcBase": "MGS",
   "sounds": {
     "start": {

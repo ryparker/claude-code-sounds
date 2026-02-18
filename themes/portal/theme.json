@@ -2,6 +2,7 @@
   "name": "Portal",
   "description": "Portal 2 sound effects — turrets, portal guns, GLaDOS alerts, and Aperture Science ambiance",
   "author": "ryparker",
+  "sources": ["github.com/sourcesounds/portal2"],
   "srcBase": "Portal2",
   "sounds": {
     "start": {

@@ -2,6 +2,7 @@
   "name": "Super Mario Bros",
   "description": "Iconic Super Mario sound effects from NES, SNES, and N64 — coins, power-ups, and Mario's voice",
   "author": "ryparker",
+  "sources": ["themushroomkingdom.net"],
   "srcBase": "Mario",
   "sounds": {
     "start": {

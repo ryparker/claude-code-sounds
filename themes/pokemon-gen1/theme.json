@@ -2,6 +2,7 @@
   "name": "Pokemon Gen 1",
   "description": "Pokemon Red/Blue/Yellow sound effects — cries, battle sounds, and menu bleeps from Kanto",
   "author": "ryparker",
+  "sources": ["spriters-resource.com"],
   "srcBase": "PokemonGen1",
   "sounds": {
     "start": {

@@ -3,8 +3,10 @@
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
-const readline = require("readline");
 const { execSync, spawn } = require("child_process");
+const p = require("@clack/prompts");
+const { Prompt } = require("@clack/core");
+const color = require("picocolors");
 
 // ─── Paths ───────────────────────────────────────────────────────────────────
 
@@ -18,15 +20,6 @@ const INSTALLED_PATH = path.join(SOUNDS_DIR, ".installed.json");
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function print(msg = "") {
-  process.stdout.write(msg + "\n");
-}
-
-function die(msg) {
-  console.error(`\n  Error: ${msg}\n`);
-  process.exit(1);
-}
-
 function mkdirp(dir) {
   fs.mkdirSync(dir, { recursive: true });
 }
@@ -35,13 +28,35 @@ function exec(cmd, opts = {}) {
   return execSync(cmd, { encoding: "utf-8", stdio: "pipe", ...opts });
 }
 
+function hasCommand(name) {
+  try {
+    exec(`which ${name}`);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function listThemes() {
   const themes = [];
   for (const name of fs.readdirSync(THEMES_DIR)) {
     const themeJson = path.join(THEMES_DIR, name, "theme.json");
     if (!fs.existsSync(themeJson)) continue;
     const meta = JSON.parse(fs.readFileSync(themeJson, "utf-8"));
-    themes.push({ name, description: meta.description || "", display: meta.name || name });
+    let soundCount = 0;
+    if (meta.sounds) {
+      for (const cat of Object.values(meta.sounds)) {
+        soundCount += cat.files.length;
+      }
+    }
+    themes.push({
+      name,
+      description: meta.description || "",
+      display: meta.name || name,
+      soundCount,
+      srcBase: meta.srcBase || name,
+      sources: meta.sources || [],
+    });
   }
   return themes;
 }
@@ -58,15 +73,6 @@ function writeSettings(settings) {
   fs.writeFileSync(SETTINGS_PATH, JSON.stringify(settings, null, 2) + "\n");
 }
 
-function hasCommand(name) {
-  try {
-    exec(`which ${name}`);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 function readInstalled() {
   if (fs.existsSync(INSTALLED_PATH)) {
     return JSON.parse(fs.readFileSync(INSTALLED_PATH, "utf-8"));
@@ -74,72 +80,25 @@ function readInstalled() {
   return null;
 }
 
-function writeInstalled(themeName) {
+function writeInstalled(data) {
   mkdirp(SOUNDS_DIR);
-  fs.writeFileSync(INSTALLED_PATH, JSON.stringify({ theme: themeName }, null, 2) + "\n");
+  fs.writeFileSync(INSTALLED_PATH, JSON.stringify(data, null, 2) + "\n");
 }
 
-/**
- * Check if sounds are already installed.
- * Returns { theme, themeDisplay, totalEnabled, totalAvailable, categories } or null.
- */
-function getExistingInstall() {
-  const installed = readInstalled();
-  if (!installed) return null;
+function readThemeJson(themeName) {
+  return JSON.parse(
+    fs.readFileSync(path.join(THEMES_DIR, themeName, "theme.json"), "utf-8")
+  );
+}
 
-  const themeJsonPath = path.join(THEMES_DIR, installed.theme, "theme.json");
-  if (!fs.existsSync(themeJsonPath)) return null;
-
-  const theme = JSON.parse(fs.readFileSync(themeJsonPath, "utf-8"));
-  let totalEnabled = 0;
-  const totalAvailable = Object.values(theme.sounds).reduce((sum, c) => sum + c.files.length, 0);
-
-  for (const cat of Object.keys(theme.sounds)) {
-    const catDir = path.join(SOUNDS_DIR, cat);
-    try {
-      for (const f of fs.readdirSync(catDir)) {
-        if (f.endsWith(".wav") || f.endsWith(".mp3")) totalEnabled++;
-      }
-    } catch {}
+function resolveDownloadSrc(tmpDir, srcBase, src) {
+  if (src.startsWith("@")) {
+    return path.join(tmpDir, srcBase, path.basename(src));
   }
-
-  if (totalEnabled === 0) return null;
-
-  return {
-    theme: installed.theme,
-    themeDisplay: theme.name,
-    themeDescription: theme.description,
-    totalEnabled,
-    totalAvailable,
-  };
+  return path.join(tmpDir, srcBase, src);
 }
 
-// ─── ANSI helpers ────────────────────────────────────────────────────────────
-
-const CSI = "\x1b[";
-const CLEAR_LINE = `${CSI}2K`;
-const HIDE_CURSOR = `${CSI}?25l`;
-const SHOW_CURSOR = `${CSI}?25h`;
-const BOLD = `${CSI}1m`;
-const DIM = `${CSI}2m`;
-const RESET = `${CSI}0m`;
-const GREEN = `${CSI}32m`;
-const RED = `${CSI}31m`;
-const CYAN = `${CSI}36m`;
-const YELLOW = `${CSI}33m`;
-
-function moveCursorUp(n) {
-  if (n > 0) process.stdout.write(`${CSI}${n}A`);
-}
-
-function clearLines(n) {
-  for (let i = 0; i < n; i++) {
-    process.stdout.write(`${CLEAR_LINE}\n`);
-  }
-  moveCursorUp(n);
-}
-
-// ─── Interactive UI ──────────────────────────────────────────────────────────
+// ─── Preview ─────────────────────────────────────────────────────────────────
 
 let previewProcess = null;
 
@@ -157,249 +116,6 @@ function playPreview(filePath) {
     previewProcess.unref();
     previewProcess.on("exit", () => { previewProcess = null; });
   }
-}
-
-function cleanupAndExit() {
-  killPreview();
-  process.stdout.write(SHOW_CURSOR);
-  print("\n");
-  process.exit(0);
-}
-
-/**
- * Single-select menu with arrow keys.
- * Returns the index of the chosen option.
- */
-function select(title, options) {
-  return new Promise((resolve) => {
-    let cursor = 0;
-    const lineCount = options.length + 3; // title + blank + options + hint
-
-    function render(initial) {
-      if (!initial) moveCursorUp(lineCount);
-      print(`  ${title}\n`);
-      for (let i = 0; i < options.length; i++) {
-        const prefix = i === cursor ? `${CYAN}  ❯ ` : "    ";
-        const label = options[i].label;
-        const desc = options[i].description ? ` ${DIM}— ${options[i].description}${RESET}` : "";
-        print(`${prefix}${RESET}${i === cursor ? BOLD : ""}${label}${RESET}${desc}`);
-      }
-      print(`${DIM}  ↑↓ navigate · enter select${RESET}`);
-    }
-
-    process.stdout.write(HIDE_CURSOR);
-    render(true);
-
-    process.stdin.setRawMode(true);
-    process.stdin.resume();
-    process.stdin.setEncoding("utf-8");
-
-    function onKey(key) {
-      // Ctrl+C or q
-      if (key === "\x03" || key === "q") {
-        process.stdin.setRawMode(false);
-        process.stdin.pause();
-        process.stdin.removeListener("data", onKey);
-        cleanupAndExit();
-        return;
-      }
-
-      // Arrow up
-      if (key === "\x1b[A" || key === "k") {
-        cursor = (cursor - 1 + options.length) % options.length;
-        render(false);
-        return;
-      }
-
-      // Arrow down
-      if (key === "\x1b[B" || key === "j") {
-        cursor = (cursor + 1) % options.length;
-        render(false);
-        return;
-      }
-
-      // Enter
-      if (key === "\r" || key === "\n") {
-        process.stdin.setRawMode(false);
-        process.stdin.pause();
-        process.stdin.removeListener("data", onKey);
-        // Redraw final state
-        moveCursorUp(lineCount);
-        clearLines(lineCount);
-        print(`  ${title} ${GREEN}${options[cursor].label}${RESET}\n`);
-        process.stdout.write(SHOW_CURSOR);
-        resolve(cursor);
-        return;
-      }
-    }
-
-    process.stdin.on("data", onKey);
-  });
-}
-
-/**
- * Multi-select checklist with toggle, preview, and confirm.
- * Returns array of selected indices, or null if back was pressed.
- */
-function multiSelect(title, items, defaults, previewDir, { allowBack = false } = {}) {
-  return new Promise((resolve) => {
-    let cursor = 0;
-    let scrollTop = 0;
-    const checked = items.map((_, i) => defaults.includes(i));
-
-    // Calculate scrolling dimensions
-    const termRows = process.stdout.rows || 24;
-    const maxItemRows = Math.max(5, termRows - 5); // 5 = title + blank + hint + 2 buffer
-    const needsScroll = items.length > maxItemRows;
-    // When scrolling, reserve 2 rows for ▲/▼ indicators (always present for stable line count)
-    const visibleCount = needsScroll ? maxItemRows - 2 : items.length;
-    const lineCount = needsScroll ? maxItemRows + 3 : items.length + 3;
-
-    function adjustScroll() {
-      if (!needsScroll) return;
-      if (cursor < scrollTop) scrollTop = cursor;
-      if (cursor >= scrollTop + visibleCount) scrollTop = cursor - visibleCount + 1;
-    }
-
-    function render(initial) {
-      if (!initial) moveCursorUp(lineCount);
-      print(`  ${title}\n`);
-
-      if (needsScroll) {
-        const above = scrollTop;
-        const below = items.length - scrollTop - visibleCount;
-        print(above > 0 ? `${DIM}    ▲ ${above} more${RESET}` : "");
-        for (let i = scrollTop; i < scrollTop + visibleCount; i++) {
-          const pointer = i === cursor ? `${CYAN}  ❯ ` : "    ";
-          const box = checked[i] ? `${GREEN}[✓]${RESET}` : `${DIM}[ ]${RESET}`;
-          const label = items[i].label;
-          const desc = items[i].description ? `  ${DIM}${items[i].description}${RESET}` : "";
-          print(`${pointer}${RESET}${box} ${label}${desc}`);
-        }
-        print(below > 0 ? `${DIM}    ▼ ${below} more${RESET}` : "");
-      } else {
-        for (let i = 0; i < items.length; i++) {
-          const pointer = i === cursor ? `${CYAN}  ❯ ` : "    ";
-          const box = checked[i] ? `${GREEN}[✓]${RESET}` : `${DIM}[ ]${RESET}`;
-          const label = items[i].label;
-          const desc = items[i].description ? `  ${DIM}${items[i].description}${RESET}` : "";
-          print(`${pointer}${RESET}${box} ${label}${desc}`);
-        }
-      }
-
-      const previewHint = previewDir ? " · p preview" : "";
-      const backHint = allowBack ? "← back · " : "";
-      print(`${DIM}  ${backHint}↑↓ navigate · space toggle · a all${previewHint} · →/enter confirm${RESET}`);
-    }
-
-    process.stdout.write(HIDE_CURSOR);
-    adjustScroll();
-    render(true);
-
-    process.stdin.setRawMode(true);
-    process.stdin.resume();
-    process.stdin.setEncoding("utf-8");
-
-    function onKey(key) {
-      if (key === "\x03" || key === "q") {
-        process.stdin.setRawMode(false);
-        process.stdin.pause();
-        process.stdin.removeListener("data", onKey);
-        killPreview();
-        cleanupAndExit();
-        return;
-      }
-
-      // Left arrow — go back
-      if (allowBack && key === "\x1b[D") {
-        process.stdin.setRawMode(false);
-        process.stdin.pause();
-        process.stdin.removeListener("data", onKey);
-        killPreview();
-        moveCursorUp(lineCount);
-        clearLines(lineCount);
-        process.stdout.write(SHOW_CURSOR);
-        resolve(null);
-        return;
-      }
-
-      if (key === "\x1b[A" || key === "k") {
-        cursor = (cursor - 1 + items.length) % items.length;
-        adjustScroll();
-        render(false);
-        return;
-      }
-
-      if (key === "\x1b[B" || key === "j") {
-        cursor = (cursor + 1) % items.length;
-        adjustScroll();
-        render(false);
-        return;
-      }
-
-      // Space — toggle
-      if (key === " ") {
-        checked[cursor] = !checked[cursor];
-        render(false);
-        return;
-      }
-
-      // a — toggle all
-      if (key === "a") {
-        const allChecked = checked.every(Boolean);
-        checked.fill(!allChecked);
-        render(false);
-        return;
-      }
-
-      // p — preview sound
-      if (key === "p" && previewDir && items[cursor].file) {
-        const soundPath = path.join(previewDir, items[cursor].file);
-        playPreview(soundPath);
-        return;
-      }
-
-      // Enter or right arrow — confirm
-      if (key === "\r" || key === "\n" || key === "\x1b[C") {
-        process.stdin.setRawMode(false);
-        process.stdin.pause();
-        process.stdin.removeListener("data", onKey);
-        killPreview();
-
-        const selected = [];
-        for (let i = 0; i < checked.length; i++) {
-          if (checked[i]) selected.push(i);
-        }
-
-        // Redraw final state
-        moveCursorUp(lineCount);
-        clearLines(lineCount);
-        const count = selected.length;
-        print(`  ${title} ${GREEN}${count}/${items.length} selected${RESET}\n`);
-        process.stdout.write(SHOW_CURSOR);
-        resolve(selected);
-        return;
-      }
-    }
-
-    process.stdin.on("data", onKey);
-  });
-}
-
-/**
- * Y/n confirmation prompt.
- */
-function confirm(message, defaultYes = true) {
-  return new Promise((resolve) => {
-    const hint = defaultYes ? "Y/n" : "y/N";
-    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-    rl.question(`  ${message} (${hint}) `, (answer) => {
-      rl.close();
-      const a = answer.trim().toLowerCase();
-      if (a === "") resolve(defaultYes);
-      else resolve(a === "y" || a === "yes");
-    });
-  });
 }
 
 // ─── Hooks Config ────────────────────────────────────────────────────────────
@@ -420,500 +136,903 @@ const HOOKS_CONFIG = {
   TeammateIdle: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" teammate-idle', timeout: 5 }] }],
 };
 
-// ─── Non-Interactive Commands ───────────────────────────────────────────────
+// ─── Sound Grid Prompt ───────────────────────────────────────────────────────
+
+const HOOKS = [
+  { key: "start", abbr: "str", description: "Session starting" },
+  { key: "end", abbr: "end", description: "Session over" },
+  { key: "permission", abbr: "prm", description: "Permission prompt" },
+  { key: "stop", abbr: "stp", description: "Done responding" },
+  { key: "subagent", abbr: "sub", description: "Spawning subagent" },
+  { key: "idle", abbr: "idl", description: "Waiting for input" },
+  { key: "error", abbr: "err", description: "Tool failure" },
+  { key: "prompt", abbr: "pmt", description: "User submitted prompt" },
+  { key: "task-completed", abbr: "tsk", description: "Task finished" },
+  { key: "compact", abbr: "cmp", description: "Context compaction" },
+  { key: "teammate-idle", abbr: "tmt", description: "Teammate went idle" },
+];
+
+/**
+ * A 2D grid prompt for assigning sounds to hooks.
+ *
+ * Rows are sounds (grouped by theme with visual headers), columns are hooks.
+ * Navigate with arrow keys, toggle with space, preview with 'p', toggle
+ * entire column with 'a'.
+ *
+ * @param {object} opts
+ * @param {string} opts.message - Prompt title
+ * @param {Array<{type: 'header'|'sound', theme: string, label: string, fileName?: string, previewPath?: string}>} opts.rows
+ * @param {Array<{key: string, abbr: string, description: string}>} opts.hooks
+ * @param {boolean[][]} opts.initialGrid - [soundIndex][hookIndex]
+ */
+class SoundGrid extends Prompt {
+  constructor({ message, rows, hooks, initialGrid }) {
+    const soundIndices = [];
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].type === 'sound') soundIndices.push(i);
+    }
+
+    super({
+      render() {
+        const grid = this._grid;
+        const cursorRow = this._cursorRow;
+        const cursorCol = this._cursorCol;
+        let scrollTop = this._scrollTop;
+        const myRows = this._rows;
+        const myHooks = this._hooks;
+        const myMessage = this._message;
+        const mySoundIndices = this._soundIndices;
+
+        const termCols = process.stdout.columns || 80;
+        const termRows = process.stdout.rows || 24;
+        const lines = [];
+
+        if (this.state === 'submit') {
+          lines.push(`${color.gray(p.S_BAR)}`);
+          let totalSel = 0;
+          for (const r of grid) for (const c of r) if (c) totalSel++;
+          lines.push(`${color.green(p.S_STEP_SUBMIT)}  ${myMessage} ${color.dim(`(${totalSel} assigned)`)}`);
+          return lines.join('\n');
+        }
+
+        if (this.state === 'cancel') {
+          lines.push(`${color.gray(p.S_BAR)}`);
+          lines.push(`${color.red(p.S_STEP_ACTIVE)}  ${myMessage}`);
+          return lines.join('\n');
+        }
+
+        // Active state
+        lines.push(`${color.gray(p.S_BAR)}`);
+        lines.push(`${color.cyan(p.S_STEP_ACTIVE)}  ${myMessage}`);
+
+        // ── Layout calculation ──
+        // Line structure: "│  " (3) + cursor+space (2) + label (labelWidth-2) + [◂] + columns + [▸]
+        // Header uses:    "│  " (3) + spaces (labelWidth) + [◂] + columns + [▸]
+        // Both total: 3 + labelWidth + margins + visibleCols*4
+        const totalHooks = myHooks.length;
+        const maxLabelWidth = 25;
+        const colWidth = 4;
+        const linePrefix = 3; // "│  "
+
+        // First try: all columns without scroll margins
+        let labelWidth = maxLabelWidth;
+        const noMarginCols = Math.floor((termCols - linePrefix - labelWidth) / colWidth);
+        let needsHScroll, visibleCols;
+
+        if (noMarginCols >= totalHooks) {
+          needsHScroll = false;
+          visibleCols = totalHooks;
+        } else {
+          // Need horizontal scroll — reserve 2 chars for ◂/▸ indicators
+          needsHScroll = true;
+          const withMarginCols = Math.floor((termCols - linePrefix - labelWidth - 2) / colWidth);
+          if (withMarginCols >= 1) {
+            visibleCols = withMarginCols;
+          } else {
+            // Very narrow — shrink label to fit at least 1 column
+            labelWidth = Math.max(8, termCols - linePrefix - 2 - colWidth);
+            visibleCols = 1;
+          }
+        }
+
+        const maxLabel = labelWidth - 2; // label text area after cursor+space
+
+        // ── Horizontal scroll ──
+        let colStart = this._colStart || 0;
+        if (needsHScroll) {
+          if (cursorCol < colStart) colStart = cursorCol;
+          if (cursorCol >= colStart + visibleCols) colStart = cursorCol - visibleCols + 1;
+          colStart = Math.max(0, Math.min(colStart, totalHooks - visibleCols));
+        } else {
+          colStart = 0;
+        }
+        this._colStart = colStart;
+
+        const showLeftArrow = needsHScroll && colStart > 0;
+        const showRightArrow = needsHScroll && colStart + visibleCols < totalHooks;
+        const leftMargin = needsHScroll ? (showLeftArrow ? color.dim('\u25C2') : ' ') : '';
+        const rightMargin = needsHScroll ? (showRightArrow ? color.dim('\u25B8') : ' ') : '';
+
+        // ── Column header line ──
+        let headerLine = `${color.gray(p.S_BAR)}  ${''.padEnd(labelWidth)}${leftMargin}`;
+        for (let c = colStart; c < colStart + visibleCols; c++) {
+          const abbr = myHooks[c].abbr.padStart(colWidth);
+          headerLine += c === cursorCol ? color.cyan(color.bold(abbr)) : color.dim(abbr);
+        }
+        headerLine += rightMargin;
+        lines.push(headerLine);
+
+        // ── Vertical scrolling ──
+        const reservedLines = 4;
+        const maxVisible = Math.max(5, termRows - lines.length - reservedLines - 2);
+        const currentRowIdx = mySoundIndices[cursorRow];
+
+        if (currentRowIdx < scrollTop) {
+          scrollTop = Math.max(0, currentRowIdx - 1);
+        } else if (currentRowIdx >= scrollTop + maxVisible) {
+          scrollTop = currentRowIdx - maxVisible + 1;
+        }
+        if (scrollTop > 0 && myRows[scrollTop]?.type === 'sound') {
+          for (let i = scrollTop - 1; i >= Math.max(0, scrollTop - 2); i--) {
+            if (myRows[i].type === 'header') {
+              scrollTop = i;
+              break;
+            }
+          }
+        }
+
+        const showScrollUp = scrollTop > 0;
+        const showScrollDown = scrollTop + maxVisible < myRows.length;
+
+        if (showScrollUp) {
+          lines.push(`${color.gray(p.S_BAR)}  ${color.dim('  \u25B2')}`);
+        }
+
+        // ── Render rows ──
+        const contentWidth = needsHScroll
+          ? labelWidth + 2 + visibleCols * colWidth
+          : labelWidth + visibleCols * colWidth;
+
+        let visibleCount = 0;
+        for (let i = scrollTop; i < myRows.length && visibleCount < maxVisible; i++) {
+          const row = myRows[i];
+          if (row.type === 'header') {
+            const hdr = `\u2500\u2500 ${row.label} `;
+            const dashLen = Math.max(2, contentWidth - hdr.length);
+            lines.push(`${color.gray(p.S_BAR)}  ${color.gray(hdr + '\u2500'.repeat(dashLen))}`);
+          } else {
+            const soundIdx = mySoundIndices.indexOf(i);
+            const isActiveRow = soundIdx === cursorRow;
+            const pointer = isActiveRow ? color.cyan('\u203A') : ' ';
+            const rawLabel = row.label.length > maxLabel
+              ? row.label.substring(0, maxLabel - 1) + '\u2026'
+              : row.label;
+            const paddedLabel = rawLabel.padEnd(maxLabel);
+            const styledLabel = isActiveRow
+              ? color.white(paddedLabel)
+              : color.dim(paddedLabel);
+
+            let cellsStr = leftMargin;
+            for (let c = colStart; c < colStart + visibleCols; c++) {
+              const isActive = isActiveRow && c === cursorCol;
+              const isChecked = grid[soundIdx][c];
+              const cell = isChecked ? ' [x]' : ' [ ]';
+
+              if (isActive) {
+                cellsStr += color.cyan(color.bold(cell));
+              } else if (isChecked) {
+                cellsStr += color.green(cell);
+              } else {
+                cellsStr += color.dim(cell);
+              }
+            }
+            cellsStr += rightMargin;
+
+            lines.push(`${color.gray(p.S_BAR)}  ${pointer} ${styledLabel}${cellsStr}`);
+          }
+          visibleCount++;
+        }
+
+        if (showScrollDown) {
+          lines.push(`${color.gray(p.S_BAR)}  ${color.dim('  \u25BC')}`);
+        }
+
+        // ── Footer ──
+        lines.push(`${color.gray(p.S_BAR)}`);
+        const helpFull = '\u2191\u2193 sounds \u00B7 \u2190\u2192 hooks \u00B7 space toggle \u00B7 p preview \u00B7 a column all \u00B7 enter done';
+        const helpShort = '\u2191\u2193/\u2190\u2192 move \u00B7 space \u00B7 p play \u00B7 a all \u00B7 enter';
+        const helpText = (helpFull.length + 5 <= termCols) ? helpFull : helpShort;
+        lines.push(`${color.gray(p.S_BAR)}  ${color.dim(helpText)}`);
+
+        const hook = myHooks[cursorCol];
+        const hookLine = needsHScroll
+          ? `${color.dim('Hook:')} ${color.cyan(hook.key)} ${color.dim('\u2014')} ${color.dim(hook.description)} ${color.dim(`(${colStart + 1}\u2013${colStart + visibleCols} of ${totalHooks})`)}`
+          : `${color.dim('Hook:')} ${color.cyan(hook.key)} ${color.dim('\u2014')} ${color.dim(hook.description)}`;
+        lines.push(`${color.gray(p.S_BAR)}  ${hookLine}`);
+
+        this._scrollTop = scrollTop;
+        return lines.join('\n');
+      },
+    }, false);
+
+    this._rows = rows;
+    this._hooks = hooks;
+    this._soundIndices = soundIndices;
+    this._message = message;
+    this._cursorRow = 0;
+    this._cursorCol = 0;
+    this._grid = initialGrid.map(r => [...r]);
+    this._scrollTop = 0;
+    this._colStart = 0;
+
+    this.on('cursor', (action) => {
+      if (action === 'up') {
+        if (this._soundIndices.length > 0) {
+          this._cursorRow = (this._cursorRow - 1 + this._soundIndices.length) % this._soundIndices.length;
+          const rowIdx = this._soundIndices[this._cursorRow];
+          const row = this._rows[rowIdx];
+          if (row?.previewPath) playPreview(row.previewPath);
+        }
+      } else if (action === 'down') {
+        if (this._soundIndices.length > 0) {
+          this._cursorRow = (this._cursorRow + 1) % this._soundIndices.length;
+          const rowIdx = this._soundIndices[this._cursorRow];
+          const row = this._rows[rowIdx];
+          if (row?.previewPath) playPreview(row.previewPath);
+        }
+      } else if (action === 'left') {
+        this._cursorCol = (this._cursorCol - 1 + this._hooks.length) % this._hooks.length;
+      } else if (action === 'right') {
+        this._cursorCol = (this._cursorCol + 1) % this._hooks.length;
+      } else if (action === 'space') {
+        this._grid[this._cursorRow][this._cursorCol] = !this._grid[this._cursorRow][this._cursorCol];
+      }
+    });
+
+    this.on('key', (char) => {
+      if (char === 'p') {
+        const rowIdx = this._soundIndices[this._cursorRow];
+        const row = this._rows[rowIdx];
+        if (row && row.previewPath) {
+          playPreview(row.previewPath);
+        }
+      }
+      if (char === 'a') {
+        const col = this._cursorCol;
+        const allChecked = this._grid.every(r => r[col]);
+        for (let i = 0; i < this._grid.length; i++) {
+          this._grid[i][col] = !allChecked;
+        }
+      }
+    });
+
+    this.on('finalize', () => {
+      if (this.state === 'submit') {
+        const result = {};
+        for (let c = 0; c < this._hooks.length; c++) {
+          const hookKey = this._hooks[c].key;
+          result[hookKey] = [];
+          for (let r = 0; r < this._soundIndices.length; r++) {
+            if (this._grid[r][c]) {
+              const rowIdx = this._soundIndices[r];
+              const row = this._rows[rowIdx];
+              result[hookKey].push({ theme: row.theme, fileName: row.fileName });
+            }
+          }
+        }
+        this.value = result;
+      }
+    });
+  }
+}
+
+// ─── Download Themes ─────────────────────────────────────────────────────────
+
+function downloadThemes(themeNames, tmpDir) {
+  for (const themeName of themeNames) {
+    const downloadScript = path.join(THEMES_DIR, themeName, "download.sh");
+    if (fs.existsSync(downloadScript)) {
+      exec(`bash "${downloadScript}" "${SOUNDS_DIR}" "${tmpDir}"`, {
+        stdio: "inherit",
+        timeout: 120000,
+      });
+    }
+  }
+}
+
+// ─── Install Sounds ──────────────────────────────────────────────────────────
+
+/**
+ * Copy selected sound files from tmpDir to SOUNDS_DIR.
+ *
+ * @param {Object<string, Array<{themeName: string, fileName: string, src: string}>>} selections
+ * @param {Object<string, object>} themeData - theme name -> parsed theme.json
+ * @param {string} tmpDir
+ * @returns {number} Total files installed
+ */
+function installSounds(selections, themeData, tmpDir) {
+  let total = 0;
+
+  for (const [cat, items] of Object.entries(selections)) {
+    const catDir = path.join(SOUNDS_DIR, cat);
+    mkdirp(catDir);
+
+    // Clear existing sounds in this category
+    try {
+      for (const f of fs.readdirSync(catDir)) {
+        if (f.endsWith(".wav") || f.endsWith(".mp3")) {
+          fs.unlinkSync(path.join(catDir, f));
+        }
+      }
+    } catch {}
+
+    // Copy selected sounds
+    for (const item of items) {
+      const theme = themeData[item.themeName];
+      const srcBase = theme.srcBase || item.themeName;
+      const srcPath = resolveDownloadSrc(tmpDir, srcBase, item.src);
+      const destPath = path.join(catDir, item.fileName);
+
+      if (fs.existsSync(srcPath)) {
+        fs.copyFileSync(srcPath, destPath);
+        total++;
+      }
+    }
+  }
+
+  return total;
+}
+
+/**
+ * Write hooks config and copy play-sound.sh script.
+ */
+function installHooksConfig() {
+  mkdirp(HOOKS_DIR);
+
+  const hookSrc = path.join(PKG_DIR, "hooks", "play-sound.sh");
+  const hookDest = path.join(HOOKS_DIR, "play-sound.sh");
+  fs.copyFileSync(hookSrc, hookDest);
+  fs.chmodSync(hookDest, 0o755);
+
+  const settings = readSettings();
+  settings.hooks = HOOKS_CONFIG;
+  writeSettings(settings);
+}
+
+// ─── Print Summary ───────────────────────────────────────────────────────────
+
+function printSummary(selections) {
+  const cats = Object.keys(selections);
+  let total = 0;
+
+  for (const cat of cats) {
+    const count = selections[cat].length;
+    total += count;
+    p.log.step(`${cat} (${count})`);
+  }
+
+  p.log.success(`Installed ${total} sounds across ${cats.length} hooks.`);
+}
+
+// ─── Non-Interactive Commands ────────────────────────────────────────────────
 
 function showHelp() {
-  print("");
-  print("  claude-code-sounds");
-  print("  ──────────────────────────────");
-  print("");
-  print("  Usage:");
-  print("    npx claude-code-sounds              Interactive install");
-  print("    npx claude-code-sounds --yes         Install defaults, skip prompts");
-  print("    npx claude-code-sounds --list        List available themes");
-  print("    npx claude-code-sounds --uninstall   Remove all sounds and hooks");
-  print("    npx claude-code-sounds --help        Show this help");
-  print("");
-  print("  Flags:");
-  print("    -y, --yes       Skip all prompts, use defaults");
-  print("    -l, --list      List available themes");
-  print("    -h, --help      Show this help");
-  print("");
+  console.log(`
+  claude-code-sounds
+  ──────────────────────────────
+
+  Usage:
+    npx claude-code-sounds              Interactive install
+    npx claude-code-sounds --yes        Install defaults, skip prompts
+    npx claude-code-sounds --list       List available themes
+    npx claude-code-sounds --uninstall  Remove all sounds and hooks
+    npx claude-code-sounds --help       Show this help
+
+  Flags:
+    -y, --yes       Skip all prompts, use defaults
+    -l, --list      List available themes
+    -h, --help      Show this help
+`);
 }
 
 function showList() {
-  print("");
-  print("  Available themes:");
-  print("");
-  for (const t of listThemes()) {
-    print(`    ${t.name} — ${t.description}`);
+  const themes = listThemes();
+  console.log("\n  Available themes:\n");
+  for (const t of themes) {
+    const src = t.sources.length > 0 ? ` [${t.sources.join(", ")}]` : "";
+    console.log(`    ${t.name} — ${t.description} (${t.soundCount} sounds)${src}`);
   }
-  print("");
+  console.log();
 }
 
-function uninstall() {
-  print("");
-  print("  Uninstalling claude-code-sounds...");
-
+function uninstallAll() {
   if (fs.existsSync(SOUNDS_DIR)) {
     fs.rmSync(SOUNDS_DIR, { recursive: true });
-    print("    Removed ~/.claude/sounds/");
+    p.log.step("Removed ~/.claude/sounds/");
   }
 
   const hookScript = path.join(HOOKS_DIR, "play-sound.sh");
   if (fs.existsSync(hookScript)) {
     fs.unlinkSync(hookScript);
-    print("    Removed ~/.claude/hooks/play-sound.sh");
+    p.log.step("Removed ~/.claude/hooks/play-sound.sh");
   }
 
   if (fs.existsSync(SETTINGS_PATH)) {
     const settings = readSettings();
     delete settings.hooks;
     writeSettings(settings);
-    print("    Removed hooks from settings.json");
+    p.log.step("Removed hooks from settings.json");
   }
-
-  print("");
-  print("  Done. All sounds removed.");
-  print("");
 }
 
-// ─── Sound Item Builder ─────────────────────────────────────────────────────
+// ─── Check Dependencies ─────────────────────────────────────────────────────
 
-/**
- * Build the full list of sound items for a category.
- * Native sounds (from this category's theme.json entry) come first,
- * then borrowed sounds from all other categories, deduplicated by filename.
- */
-function buildCategoryItems(theme, category) {
-  const config = theme.sounds[category];
-  const categories = Object.keys(theme.sounds);
-  const items = [];
-  const seen = new Set();
-
-  // Build a map of filename -> list of hooks it appears in
-  const hookMap = {};
-  for (const cat of categories) {
-    for (const f of theme.sounds[cat].files) {
-      if (!hookMap[f.name]) hookMap[f.name] = [];
-      if (!hookMap[f.name].includes(cat)) hookMap[f.name].push(cat);
-    }
-  }
-
-  // Native sounds first
-  for (const f of config.files) {
-    seen.add(f.name);
-    items.push({
-      label: f.name.replace(/\.(wav|mp3)$/, ""),
-      description: hookMap[f.name].join(", "),
-      file: f.name,
-      src: f.src,
-      native: true,
-      originCat: category,
-    });
-  }
-
-  // Borrowed sounds from other categories
-  for (const otherCat of categories) {
-    if (otherCat === category) continue;
-    for (const f of theme.sounds[otherCat].files) {
-      if (seen.has(f.name)) continue;
-      seen.add(f.name);
-      items.push({
-        label: f.name.replace(/\.(wav|mp3)$/, ""),
-        description: hookMap[f.name].join(", "),
-        file: f.name,
-        src: f.src,
-        native: false,
-        originCat: otherCat,
-      });
-    }
-  }
-
-  return items;
-}
-
-/**
- * Resolve a sound file's source from download (tmpDir/<srcBase>/...).
- */
-function resolveDownloadSrc(srcBase, src) {
-  if (src.startsWith("@soundfxcenter/")) {
-    return path.join(srcBase, path.basename(src));
-  }
-  return path.join(srcBase, src);
-}
-
-// ─── Reconfigure Flow ───────────────────────────────────────────────────────
-
-async function reconfigure(existingInstall) {
-  const themeDir = path.join(THEMES_DIR, existingInstall.theme);
-  const theme = JSON.parse(fs.readFileSync(path.join(themeDir, "theme.json"), "utf-8"));
-  const categories = Object.keys(theme.sounds);
-  const tmpDirs = [];
-
-  try {
-    let catIdx = 0;
-    while (catIdx < categories.length) {
-      const cat = categories[catIdx];
-      const config = theme.sounds[cat];
-      const catDir = path.join(SOUNDS_DIR, cat);
-      const disabledDir = path.join(catDir, ".disabled");
-      const items = buildCategoryItems(theme, cat);
-
-      // Determine current state: checked if file exists in category dir
-      const defaults = [];
-      for (let i = 0; i < items.length; i++) {
-        if (fs.existsSync(path.join(catDir, items[i].file))) {
-          defaults.push(i);
-        }
-      }
-
-      // Build preview dir with all sounds from all possible locations
-      const previewDir = fs.mkdtempSync(path.join(os.tmpdir(), `claude-preview-`));
-      tmpDirs.push(previewDir);
-      for (const item of items) {
-        const originCatDir = path.join(SOUNDS_DIR, item.originCat);
-        const originDisabledDir = path.join(originCatDir, ".disabled");
-        const searchDirs = [catDir, disabledDir, originCatDir, originDisabledDir];
-        for (const dir of searchDirs) {
-          const p = path.join(dir, item.file);
-          if (fs.existsSync(p)) {
-            fs.copyFileSync(p, path.join(previewDir, item.file));
-            break;
-          }
-        }
-      }
-
-      const selected = await multiSelect(
-        `${BOLD}${cat}${RESET} ${DIM}— ${config.description}${RESET}`,
-        items,
-        defaults,
-        previewDir,
-        { allowBack: catIdx > 0 }
-      );
-
-      // Back was pressed — go to previous category
-      if (selected === null) {
-        catIdx--;
-        continue;
-      }
-
-      // Apply changes
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const isSelected = selected.includes(i);
-        const enabledPath = path.join(catDir, item.file);
-
-        if (item.native) {
-          const disabledPath = path.join(disabledDir, item.file);
-          if (isSelected && !fs.existsSync(enabledPath) && fs.existsSync(disabledPath)) {
-            fs.renameSync(disabledPath, enabledPath);
-          } else if (!isSelected && fs.existsSync(enabledPath)) {
-            mkdirp(disabledDir);
-            fs.renameSync(enabledPath, disabledPath);
-          }
-        } else {
-          // Borrowed sound: copy in or delete
-          if (isSelected && !fs.existsSync(enabledPath)) {
-            const previewFile = path.join(previewDir, item.file);
-            if (fs.existsSync(previewFile)) {
-              fs.copyFileSync(previewFile, enabledPath);
-            }
-          } else if (!isSelected && fs.existsSync(enabledPath)) {
-            fs.unlinkSync(enabledPath);
-          }
-        }
-      }
-
-      catIdx++;
-    }
-  } finally {
-    for (const dir of tmpDirs) {
-      fs.rmSync(dir, { recursive: true, force: true });
-    }
-  }
-
-  // Summary
-  let total = 0;
-  print(`  ${GREEN}✓${RESET} Configuration updated!`);
-  print("  ─────────────────────────────────────");
-
-  for (const cat of categories) {
-    const catDir = path.join(SOUNDS_DIR, cat);
-    let count = 0;
-    try {
-      for (const f of fs.readdirSync(catDir)) {
-        if (f.endsWith(".wav") || f.endsWith(".mp3")) count++;
-      }
-    } catch {}
-    total += count;
-    print(`    ${cat} (${count}) — ${theme.sounds[cat].description}`);
-  }
-
-  print("");
-  print(`  ${total} sound files across ${categories.length} events.`);
-  print("");
-}
-
-// ─── Install Flow ───────────────────────────────────────────────────────────
-
-async function interactiveInstall(autoYes) {
-  print("");
-  print(`  ${BOLD}claude-code-sounds${RESET}`);
-  print("  ──────────────────────────────");
-  print("");
-
-  // ── Detect existing install ───────────────────────────────────────────────
-
-  const existingInstall = getExistingInstall();
-
-  if (existingInstall && !autoYes) {
-    print(`  ${GREEN}✓${RESET} Already installed — ${BOLD}${existingInstall.themeDisplay}${RESET}`);
-    print(`    ${existingInstall.totalEnabled}/${existingInstall.totalAvailable} sounds enabled\n`);
-
-    const actionIdx = await select("What would you like to do?", [
-      { label: "Reconfigure", description: "Choose which sounds are enabled" },
-      { label: "Reinstall", description: "Re-download and start fresh" },
-      { label: "Uninstall", description: "Remove all sounds and hooks" },
-    ]);
-
-    if (actionIdx === 0) {
-      await reconfigure(existingInstall);
-      return;
-    }
-    if (actionIdx === 2) {
-      uninstall();
-      return;
-    }
-    // actionIdx === 1 falls through to full install
-  }
-
-  // ── Step 1: Dependency Check ──────────────────────────────────────────────
-
+function checkDependencies() {
   const deps = ["afplay", "curl", "unzip"];
   const missing = [];
 
-  print("  Checking dependencies...");
   for (const dep of deps) {
-    const ok = hasCommand(dep);
-    if (ok) {
-      print(`    ${GREEN}✓${RESET} ${dep}`);
-    } else {
-      print(`    ${RED}✗${RESET} ${dep} — required${dep === "afplay" ? " (macOS only)" : ""}`);
-      missing.push(dep);
-    }
+    if (!hasCommand(dep)) missing.push(dep);
   }
-  print("");
 
   if (missing.includes("afplay")) {
-    die("afplay is not available. claude-code-sounds requires macOS.");
+    p.cancel("afplay is not available. claude-code-sounds requires macOS.");
+    process.exit(1);
   }
 
   if (missing.length > 0) {
-    if (autoYes) {
-      die(`Missing dependencies: ${missing.join(", ")}. Install them and try again.`);
-    }
+    p.cancel(`Missing dependencies: ${missing.join(", ")}. Install them and try again.`);
+    process.exit(1);
+  }
+}
 
-    const installDeps = await confirm(`Install missing dependencies with Homebrew?`, true);
-    if (installDeps) {
-      try {
-        exec("which brew");
-      } catch {
-        die("Homebrew not found. Install missing dependencies manually:\n    brew install " + missing.join(" "));
+// ─── Detect Existing Install ─────────────────────────────────────────────────
+
+function detectExistingInstall() {
+  const installed = readInstalled();
+  if (!installed) return null;
+
+  // Support both old format { theme: "name" } and new { themes: [...], mode }
+  const themeNames = installed.themes || (installed.theme ? [installed.theme] : []);
+  if (themeNames.length === 0) return null;
+
+  // Count enabled sounds across all categories
+  let totalEnabled = 0;
+  const allCategories = new Set();
+
+  for (const themeName of themeNames) {
+    try {
+      const theme = readThemeJson(themeName);
+      for (const cat of Object.keys(theme.sounds)) {
+        allCategories.add(cat);
       }
-      print(`  Installing ${missing.join(", ")}...`);
-      try {
-        exec(`brew install ${missing.join(" ")}`, { stdio: "inherit" });
-        print(`  ${GREEN}✓${RESET} Dependencies installed.\n`);
-      } catch {
-        die("Failed to install dependencies. Run manually:\n    brew install " + missing.join(" "));
+    } catch {}
+  }
+
+  for (const cat of allCategories) {
+    const catDir = path.join(SOUNDS_DIR, cat);
+    try {
+      for (const f of fs.readdirSync(catDir)) {
+        if (f.endsWith(".wav") || f.endsWith(".mp3")) totalEnabled++;
       }
-    } else {
-      die("Missing dependencies. Install them manually:\n    brew install " + missing.join(" "));
-    }
+    } catch {}
   }
 
-  // ── Step 2: Theme Selection ───────────────────────────────────────────────
+  if (totalEnabled === 0) return null;
 
-  const themes = listThemes();
-  let selectedTheme;
+  const displays = themeNames.map((n) => {
+    try { return readThemeJson(n).name; } catch { return n; }
+  });
 
-  if (themes.length === 0) {
-    die("No themes found in themes/ directory.");
-  } else if (themes.length === 1 || autoYes) {
-    selectedTheme = themes[0];
-    print(`  Theme: ${BOLD}${selectedTheme.display}${RESET} — ${selectedTheme.description}\n`);
-  } else {
-    const options = themes.map((t) => ({ label: t.display, description: t.description }));
-    const idx = await select("Select a theme:", options);
-    selectedTheme = themes[idx];
-  }
+  return {
+    themes: themeNames,
+    themeDisplays: displays,
+    totalEnabled,
+    mode: installed.mode || "quick",
+  };
+}
 
-  // ── Step 3: Download ──────────────────────────────────────────────────────
+// ─── Quick Install ───────────────────────────────────────────────────────────
 
-  const themeDir = path.join(THEMES_DIR, selectedTheme.name);
-  const themeJsonPath = path.join(themeDir, "theme.json");
-  const theme = JSON.parse(fs.readFileSync(themeJsonPath, "utf-8"));
-  const categories = Object.keys(theme.sounds);
-
-  // Create directories
-  for (const cat of categories) {
-    mkdirp(path.join(SOUNDS_DIR, cat));
-  }
-  mkdirp(HOOKS_DIR);
-
-  print("  Downloading sounds...");
+async function quickInstall(theme) {
+  const themeJson = readThemeJson(theme.name);
+  const categories = Object.keys(themeJson.sounds);
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "claude-sounds-"));
 
   try {
-    const downloadScript = path.join(themeDir, "download.sh");
-    if (fs.existsSync(downloadScript)) {
-      exec(`bash "${downloadScript}" "${SOUNDS_DIR}" "${tmpDir}"`, { stdio: "inherit" });
-    }
-    print(`  ${GREEN}✓${RESET} Download complete.\n`);
+    for (const cat of categories) mkdirp(path.join(SOUNDS_DIR, cat));
 
-    // ── Step 4: Customize or Accept Defaults ──────────────────────────────
+    const s = p.spinner();
+    s.start(`Downloading ${theme.display}...`);
+    downloadThemes([theme.name], tmpDir);
+    s.stop(`Downloaded ${theme.display}.`);
 
-    // Build items and selections for each category (includes all theme sounds)
-    const categoryItems = {};
+    // Build selections: all native sounds per category
     const selections = {};
     for (const cat of categories) {
-      const items = buildCategoryItems(theme, cat);
-      categoryItems[cat] = items;
-      // Default: select only native sounds
-      selections[cat] = items.map((item, i) => item.native ? i : -1).filter(i => i >= 0);
+      selections[cat] = themeJson.sounds[cat].files.map((f) => ({
+        themeName: theme.name,
+        fileName: f.name,
+        src: f.src,
+      }));
     }
 
-    if (!autoYes) {
-      const customizeOptions = [
-        { label: "No, use defaults", description: "Recommended" },
-        { label: "Yes, let me pick", description: "Choose sounds per hook" },
-      ];
-      const customizeIdx = await select("Customize sounds for each hook?", customizeOptions);
+    const total = installSounds(selections, { [theme.name]: themeJson }, tmpDir);
+    writeInstalled({ themes: [theme.name], mode: "quick" });
+    installHooksConfig();
 
-      if (customizeIdx === 1) {
-        const srcBase = path.join(tmpDir, theme.srcBase || "Orc");
-        let catIdx = 0;
+    p.log.success(`Installed ${total} sounds across ${categories.length} hooks.`);
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+}
 
-        while (catIdx < categories.length) {
-          const cat = categories[catIdx];
-          const config = theme.sounds[cat];
-          const items = categoryItems[cat];
-          const defaults = selections[cat];
+// ─── Custom Install ──────────────────────────────────────────────────────────
 
-          // Build preview dir with ALL theme sounds
-          const previewDir = path.join(tmpDir, "_preview", cat);
-          mkdirp(previewDir);
-          for (const item of items) {
-            const srcFile = resolveDownloadSrc(srcBase, item.src);
-            const destFile = path.join(previewDir, item.file);
-            if (fs.existsSync(srcFile)) {
-              fs.copyFileSync(srcFile, destFile);
-            }
-          }
+async function customInstall(selectedThemes) {
+  const themeData = {};
+  for (const theme of selectedThemes) {
+    themeData[theme.name] = readThemeJson(theme.name);
+  }
 
-          const selected = await multiSelect(
-            `${BOLD}${cat}${RESET} ${DIM}— ${config.description}${RESET}`,
-            items,
-            defaults,
-            previewDir,
-            { allowBack: catIdx > 0 }
-          );
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "claude-sounds-"));
 
-          if (selected === null) {
-            catIdx--;
-            continue;
-          }
+  try {
+    const s = p.spinner();
+    s.start(`Downloading ${selectedThemes.length} theme${selectedThemes.length > 1 ? "s" : ""}...`);
+    downloadThemes(selectedThemes.map((t) => t.name), tmpDir);
+    s.stop(`Downloaded ${selectedThemes.length} theme${selectedThemes.length > 1 ? "s" : ""}.`);
 
-          selections[cat] = selected;
-          catIdx++;
+    // Build rows (sound items + group headers)
+    const rows = [];
+    for (const theme of selectedThemes) {
+      const themeJson = themeData[theme.name];
+      rows.push({ type: 'header', theme: theme.name, label: theme.display });
+
+      const seenFiles = new Set();
+      for (const cat of Object.keys(themeJson.sounds)) {
+        for (const file of themeJson.sounds[cat].files) {
+          const key = `${theme.name}:${file.name}`;
+          if (seenFiles.has(key)) continue;
+          seenFiles.add(key);
+
+          const srcPath = resolveDownloadSrc(tmpDir, themeJson.srcBase || theme.name, file.src);
+          rows.push({
+            type: 'sound',
+            theme: theme.name,
+            label: file.name.replace(/\.(wav|mp3)$/, ''),
+            fileName: file.name,
+            src: file.src,
+            previewPath: fs.existsSync(srcPath) ? srcPath : undefined,
+          });
         }
       }
     }
 
-    // ── Step 5: Install & Summary ─────────────────────────────────────────
+    // Build initial grid: pre-check each sound for its native hook(s)
+    const soundOnlyRows = rows.filter(r => r.type === 'sound');
+    const initialGrid = soundOnlyRows.map(soundRow => {
+      return HOOKS.map(hook => {
+        const themeJson = themeData[soundRow.theme];
+        const catSounds = themeJson.sounds[hook.key];
+        if (!catSounds) return false;
+        return catSounds.files.some(f => f.name === soundRow.fileName);
+      });
+    });
 
-    print("  Installing sounds...");
+    const gridResult = await new SoundGrid({
+      message: 'Assign sounds to hooks',
+      rows,
+      hooks: HOOKS,
+      initialGrid,
+    }).prompt();
 
-    // Clear existing sounds and .disabled dirs
-    for (const cat of categories) {
-      const catDir = path.join(SOUNDS_DIR, cat);
-      for (const f of fs.readdirSync(catDir)) {
-        const fp = path.join(catDir, f);
-        if (f === ".disabled") {
-          fs.rmSync(fp, { recursive: true, force: true });
-        } else if (f.endsWith(".wav") || f.endsWith(".mp3")) {
-          fs.unlinkSync(fp);
-        }
-      }
+    killPreview();
+
+    if (p.isCancel(gridResult)) {
+      p.cancel("Cancelled.");
+      process.exit(0);
     }
 
-    // Copy files from download based on selections
-    const srcBase = path.join(tmpDir, theme.srcBase || "Orc");
-    let total = 0;
-    for (const cat of categories) {
-      const items = categoryItems[cat];
-      const selectedIndices = selections[cat];
-      const catDir = path.join(SOUNDS_DIR, cat);
-      const disabledDir = path.join(catDir, ".disabled");
-
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const srcFile = resolveDownloadSrc(srcBase, item.src);
-
-        if (!fs.existsSync(srcFile)) {
-          if (item.native) {
-            print(`    ${YELLOW}⚠${RESET} ${item.src} not found, skipping`);
+    // Convert grid result to selections format for installSounds()
+    const selections = {};
+    for (const hook of HOOKS) {
+      const items = gridResult[hook.key];
+      if (items && items.length > 0) {
+        selections[hook.key] = items.map(item => {
+          const themeJson = themeData[item.theme];
+          let src = '';
+          for (const cat of Object.keys(themeJson.sounds)) {
+            const file = themeJson.sounds[cat].files.find(f => f.name === item.fileName);
+            if (file) { src = file.src; break; }
           }
-          continue;
-        }
-
-        if (selectedIndices.includes(i)) {
-          fs.copyFileSync(srcFile, path.join(catDir, item.file));
-          total++;
-        } else if (item.native) {
-          // Save unselected native sounds to .disabled for future reconfigure
-          mkdirp(disabledDir);
-          fs.copyFileSync(srcFile, path.join(disabledDir, item.file));
-        }
-        // Unselected borrowed sounds: skip (no need to store)
+          return { themeName: item.theme, fileName: item.fileName, src };
+        });
       }
     }
 
-    // Write install marker
-    writeInstalled(selectedTheme.name);
-
-    // Copy play-sound.sh hook
-    const hookSrc = path.join(PKG_DIR, "hooks", "play-sound.sh");
-    const hookDest = path.join(HOOKS_DIR, "play-sound.sh");
-    fs.copyFileSync(hookSrc, hookDest);
-    fs.chmodSync(hookDest, 0o755);
-
-    // Merge hooks into settings.json
-    const settings = readSettings();
-    settings.hooks = HOOKS_CONFIG;
-    writeSettings(settings);
-
-    // Summary
-    print("");
-    print(`  ${GREEN}✓${RESET} Installed! Here's what you'll hear:`);
-    print("  ─────────────────────────────────────");
-
-    for (const cat of categories) {
-      const count = selections[cat].length;
-      print(`    ${cat} (${count}) — ${theme.sounds[cat].description}`);
+    for (const cat of Object.keys(selections)) {
+      mkdirp(path.join(SOUNDS_DIR, cat));
     }
 
-    print("");
-    print(`  ${total} sound files across ${categories.length} events.`);
-    print("  Start a new Claude Code session to hear it!");
-    print("");
-    print("  Zug zug.");
-    print("");
+    const total = installSounds(selections, themeData, tmpDir);
+    writeInstalled({ themes: selectedThemes.map((t) => t.name), mode: "custom" });
+    installHooksConfig();
+
+    printSummary(selections);
   } finally {
     killPreview();
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
+}
+
+// ─── Reconfigure ─────────────────────────────────────────────────────────────
+
+async function reconfigure(existingInstall) {
+  const allThemes = listThemes();
+
+  // Theme selection with current themes pre-checked
+  const themeValues = await p.multiselect({
+    message: "Select themes to include:",
+    options: allThemes.map((t) => ({
+      value: t.name,
+      label: t.display,
+      hint: `${t.soundCount} sounds — from ${t.sources.join(", ") || "local"}`,
+    })),
+    initialValues: existingInstall.themes,
+    required: true,
+  });
+
+  if (p.isCancel(themeValues)) {
+    p.cancel("Cancelled.");
+    process.exit(0);
+  }
+
+  const selectedThemes = allThemes.filter((t) => themeValues.includes(t.name));
+  const themeData = {};
+  for (const theme of selectedThemes) {
+    themeData[theme.name] = readThemeJson(theme.name);
+  }
+
+  // Get currently installed files per category
+  const currentFiles = {};
+  for (const hook of HOOKS) {
+    currentFiles[hook.key] = new Set();
+    const catDir = path.join(SOUNDS_DIR, hook.key);
+    try {
+      for (const f of fs.readdirSync(catDir)) {
+        if (f.endsWith(".wav") || f.endsWith(".mp3")) {
+          currentFiles[hook.key].add(f);
+        }
+      }
+    } catch {}
+  }
+
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "claude-sounds-"));
+
+  try {
+    // Split into already-installed vs new themes
+    const installedSet = new Set(existingInstall.themes);
+    const existingThemeNames = selectedThemes.filter(t => installedSet.has(t.name));
+    const newThemeNames = selectedThemes.filter(t => !installedSet.has(t.name));
+
+    // For already-installed themes, copy sounds from SOUNDS_DIR into tmpDir
+    // so installSounds() can use them as source (it clears SOUNDS_DIR first)
+    for (const theme of existingThemeNames) {
+      const themeJson = themeData[theme.name];
+      const srcBase = themeJson.srcBase || theme.name;
+      for (const [cat, catData] of Object.entries(themeJson.sounds)) {
+        for (const file of catData.files) {
+          const installed = path.join(SOUNDS_DIR, cat, file.name);
+          if (fs.existsSync(installed)) {
+            const dest = resolveDownloadSrc(tmpDir, srcBase, file.src);
+            mkdirp(path.dirname(dest));
+            fs.copyFileSync(installed, dest);
+          }
+        }
+      }
+    }
+
+    // Only download themes that aren't already installed
+    if (newThemeNames.length > 0) {
+      const s = p.spinner();
+      const label = newThemeNames.length === 1
+        ? newThemeNames[0].display
+        : `${newThemeNames.length} new themes`;
+      s.start(`Downloading ${label}...`);
+      downloadThemes(newThemeNames.map((t) => t.name), tmpDir);
+      s.stop(`Downloaded ${label}.`);
+    }
+
+    // Build rows
+    const rows = [];
+    for (const theme of selectedThemes) {
+      const themeJson = themeData[theme.name];
+      rows.push({ type: 'header', theme: theme.name, label: theme.display });
+
+      const seenFiles = new Set();
+      for (const cat of Object.keys(themeJson.sounds)) {
+        for (const file of themeJson.sounds[cat].files) {
+          const key = `${theme.name}:${file.name}`;
+          if (seenFiles.has(key)) continue;
+          seenFiles.add(key);
+
+          const srcPath = resolveDownloadSrc(tmpDir, themeJson.srcBase || theme.name, file.src);
+          rows.push({
+            type: 'sound',
+            theme: theme.name,
+            label: file.name.replace(/\.(wav|mp3)$/, ''),
+            fileName: file.name,
+            src: file.src,
+            previewPath: fs.existsSync(srcPath) ? srcPath : undefined,
+          });
+        }
+      }
+    }
+
+    // Build initial grid from currently installed files
+    const soundOnlyRows = rows.filter(r => r.type === 'sound');
+    const initialGrid = soundOnlyRows.map(soundRow => {
+      return HOOKS.map(hook => {
+        return currentFiles[hook.key]?.has(soundRow.fileName) || false;
+      });
+    });
+
+    const gridResult = await new SoundGrid({
+      message: 'Assign sounds to hooks',
+      rows,
+      hooks: HOOKS,
+      initialGrid,
+    }).prompt();
+
+    killPreview();
+
+    if (p.isCancel(gridResult)) {
+      p.cancel("Cancelled.");
+      process.exit(0);
+    }
+
+    // Convert grid result to selections
+    const selections = {};
+    for (const hook of HOOKS) {
+      const items = gridResult[hook.key];
+      if (items && items.length > 0) {
+        selections[hook.key] = items.map(item => {
+          const themeJson = themeData[item.theme];
+          let src = '';
+          for (const cat of Object.keys(themeJson.sounds)) {
+            const file = themeJson.sounds[cat].files.find(f => f.name === item.fileName);
+            if (file) { src = file.src; break; }
+          }
+          return { themeName: item.theme, fileName: item.fileName, src };
+        });
+      }
+    }
+
+    for (const cat of Object.keys(selections)) {
+      mkdirp(path.join(SOUNDS_DIR, cat));
+    }
+
+    const total = installSounds(selections, themeData, tmpDir);
+    writeInstalled({ themes: selectedThemes.map((t) => t.name), mode: "custom" });
+    installHooksConfig();
+
+    printSummary(selections);
+  } finally {
+    killPreview();
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+
+  return true;
+}
+
+// ─── Interactive Install ─────────────────────────────────────────────────────
+
+async function interactiveInstall(autoYes) {
+  p.intro(color.bold("claude-code-sounds"));
+
+  checkDependencies();
+
+  const existing = detectExistingInstall();
+
+  if (existing && !autoYes) {
+    p.log.info(
+      `Already installed — ${color.bold(existing.themeDisplays.join(", "))} (${existing.totalEnabled} sounds enabled)`
+    );
+
+    const action = await p.select({
+      message: "What would you like to do?",
+      options: [
+        { value: "modify", label: "Modify install", hint: "Add themes, change sounds" },
+        { value: "fresh", label: "Fresh install", hint: "Start over from scratch" },
+        { value: "uninstall", label: "Uninstall", hint: "Remove all sounds and hooks" },
+      ],
+    });
+
+    if (p.isCancel(action)) {
+      p.cancel("Cancelled.");
+      process.exit(0);
+    }
+
+    if (action === "uninstall") {
+      uninstallAll();
+      p.outro("All sounds removed.");
+      return;
+    }
+
+    if (action === "modify") {
+      const ok = await reconfigure(existing);
+      if (ok) {
+        p.outro("Start a new Claude Code session to hear it.");
+        return;
+      }
+      // Fall through to fresh install if reconfigure failed
+    }
+    // "fresh" falls through
+  }
+
+  const themes = listThemes();
+  if (themes.length === 0) {
+    p.cancel("No themes found in themes/ directory.");
+    process.exit(1);
+  }
+
+  // --yes: quick install first theme
+  if (autoYes) {
+    await quickInstall(themes[0]);
+    p.outro("Start a new Claude Code session to hear it.");
+    return;
+  }
+
+  const mode = await p.select({
+    message: "How do you want to install?",
+    options: [
+      { value: "quick", label: "Quick install", hint: "One theme, all defaults" },
+      { value: "custom", label: "Custom mix", hint: "Pick sounds from multiple themes" },
+    ],
+  });
+
+  if (p.isCancel(mode)) {
+    p.cancel("Cancelled.");
+    process.exit(0);
+  }
+
+  if (mode === "quick") {
+    const themeValue = await p.select({
+      message: "Select a theme:",
+      options: themes.map((t) => ({
+        value: t.name,
+        label: t.display,
+        hint: `${t.soundCount} sounds — ${t.description} [${t.sources.join(", ") || "local"}]`,
+      })),
+    });
+
+    if (p.isCancel(themeValue)) {
+      p.cancel("Cancelled.");
+      process.exit(0);
+    }
+
+    await quickInstall(themes.find((t) => t.name === themeValue));
+  } else {
+    const themeValues = await p.multiselect({
+      message: "Select themes to include:",
+      options: themes.map((t) => ({
+        value: t.name,
+        label: t.display,
+        hint: `${t.soundCount} sounds — from ${t.sources.join(", ") || "local"}`,
+      })),
+      required: true,
+    });
+
+    if (p.isCancel(themeValues)) {
+      p.cancel("Cancelled.");
+      process.exit(0);
+    }
+
+    await customInstall(themes.filter((t) => themeValues.includes(t.name)));
+  }
+
+  p.outro("Start a new Claude Code session to hear it.");
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────
@@ -922,17 +1041,18 @@ const args = process.argv.slice(2);
 const flags = new Set(args);
 const autoYes = flags.has("--yes") || flags.has("-y");
 
-// Handle non-interactive commands first
 if (flags.has("--help") || flags.has("-h")) {
   showHelp();
 } else if (flags.has("--list") || flags.has("-l")) {
   showList();
 } else if (flags.has("--uninstall") || flags.has("--remove")) {
-  uninstall();
+  p.intro(color.bold("claude-code-sounds"));
+  uninstallAll();
+  p.outro("All sounds removed.");
 } else {
   interactiveInstall(autoYes).catch((err) => {
     killPreview();
-    process.stdout.write(SHOW_CURSOR);
-    die(err.message);
+    p.cancel(err.message);
+    process.exit(1);
   });
 }

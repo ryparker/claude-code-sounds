@@ -2,6 +2,7 @@
   "name": "Zelda: Ocarina of Time",
   "description": "Navi, Link, and iconic OOT jingles — Hey! Listen!",
   "author": "ryparker",
+  "sources": ["noproblo.dayjo.org"],
   "srcBase": "OOT",
   "sounds": {
     "start": {

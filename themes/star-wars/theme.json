@@ -2,6 +2,7 @@
   "name": "Star Wars",
   "description": "Iconic Star Wars sound effects — lightsabers, droids, and the Force",
   "author": "ryparker",
+  "sources": ["thesoundarchive.com", "wavsource.com"],
   "srcBase": "StarWars",
   "sounds": {
     "start": {
