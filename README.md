@@ -23,6 +23,155 @@ Requires macOS (uses `afplay`) and `jq` (`brew install jq`).
 ./install.sh --uninstall  # Remove all sounds and hooks
 ```
 
+## WC3 Orc Peon Theme
+
+55 sounds from Warcraft 3 Orc units mapped across 11 Claude Code lifecycle events.
+
+> After installing, preview all sounds with `./preview.sh` or a specific category with `./preview.sh start`
+
+<details open>
+<summary><b>start</b> — Session starting, being summoned (5 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `ready-to-work.wav` | *"Ready to work!"* | Peon |
+| `something-need-doing.wav` | *"Something need doing?"* | Peon |
+| `more-work.mp3` | *"More work?"* | Peon (WC2) |
+| `how-can-i-help.wav` | *"How can I help?"* | Shaman |
+| `someone-call-for-the-doctor.wav` | *"Someone call for the doctor?"* | Witch Doctor |
+
+</details>
+
+<details>
+<summary><b>prompt</b> — User submitted a prompt, acknowledging order (7 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `yes.wav` | *"Yes"* | Peon |
+| `dabu.wav` | *"Dabu"* | Grunt |
+| `zug-zug.wav` | *"Zug zug"* | Grunt |
+| `right-away.wav` | *"Right away"* | Shaman |
+| `immediately.wav` | *"Immediately!"* | Tauren |
+| `anything-you-want.wav` | *"Anything you want"* | Headhunter |
+| `more-work.mp3` | *"More work?"* | Peon (WC2) |
+
+</details>
+
+<details>
+<summary><b>stop</b> — Claude finished responding (8 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `zug-zug.wav` | *"Zug zug"* | Peon |
+| `ok.wav` | *"OK"* | Peon |
+| `i-can-do-that.wav` | *"I can do that"* | Peon |
+| `be-happy-to.wav` | *"Be happy to"* | Peon |
+| `understood.wav` | *"Understood"* | Shaman |
+| `of-course.wav` | *"Of course"* | Far Seer |
+| `it-is-certain.wav` | *"It is certain"* | Far Seer |
+| `whatever-you-say.wav` | *"Whatever you say"* | Grom Hellscream |
+
+</details>
+
+<details>
+<summary><b>permission</b> — Permission prompt, waiting for approval (5 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `hmmm.wav` | *"Hmmm?"* | Peon |
+| `what-you-want.wav` | *"What you want?"* | Peon |
+| `what-you-want-me-to-do.wav` | *"What you want me to do?"* | Headhunter |
+| `who-you-want-me-kill.wav` | *"Who you want me kill?"* | Headhunter |
+| `you-seek-me-help.wav` | *"You seek me help?"* | Witch Doctor |
+
+</details>
+
+<details>
+<summary><b>subagent</b> — Spawning a subagent (6 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `work-work.wav` | *"Work, work"* | Peon |
+| `zug-zug.wav` | *"Zug zug"* | Peon |
+| `ill-try.wav` | *"I'll try"* | Peon |
+| `why-not.wav` | *"Why not?"* | Peon |
+| `for-the-horde.wav` | *"For the Horde!"* | Grunt |
+| `taste-the-fury.wav` | *"Taste the fury of the Warsong!"* | Grom Hellscream |
+
+</details>
+
+<details>
+<summary><b>idle</b> — Waiting for user input (7 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `me-busy-leave-me-alone.wav` | *"Me busy, leave me alone!"* | Peon |
+| `no-time-for-play.wav` | *"No time for play!"* | Peon |
+| `me-not-that-kind-of-orc.wav` | *"Me not that kind of orc!"* | Peon |
+| `why-you-poking-me.wav` | *"Why are you poking me again?"* | Grunt |
+| `not-easy-being-green.wav` | *"It's not easy being green"* | Grunt |
+| `i-can-wait-no-longer.wav` | *"I can wait no longer!"* | Grom Hellscream |
+| `outlook-not-so-good.wav` | *"Outlook... not so good"* | Far Seer |
+
+</details>
+
+<details>
+<summary><b>error</b> — Tool call failed (4 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `peon-death.wav` | *(death sound)* | Peon |
+| `grunt-death.wav` | *(death sound)* | Grunt |
+| `headhunter-death.wav` | *(death sound)* | Headhunter |
+| `reply-hazy-try-again.wav` | *"Reply hazy, try again"* | Far Seer |
+
+</details>
+
+<details>
+<summary><b>end</b> — Session ending (3 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `well-done.wav` | *"Well done!"* | Tauren |
+| `finally.wav` | *"Finally!"* | Grom Hellscream |
+| `okie-dokie.wav` | *"Okie dokie"* | Peon |
+
+</details>
+
+<details>
+<summary><b>task-completed</b> — Task marked done (2 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `well-done.wav` | *"Well done!"* | Tauren |
+| `finally.wav` | *"Finally!"* | Grom Hellscream |
+
+</details>
+
+<details>
+<summary><b>compact</b> — Context compaction, memory fading (4 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `concentrate-and-ask-again.wav` | *"Concentrate... and ask again"* | Far Seer |
+| `reply-hazy-try-again.wav` | *"Reply hazy, try again"* | Far Seer |
+| `i-can-wait-no-longer.wav` | *"I can wait no longer!"* | Grom Hellscream |
+| `death.wav` | *(death sound)* | Peon |
+
+</details>
+
+<details>
+<summary><b>teammate-idle</b> — Teammate went idle (4 sounds)</summary>
+
+| Sound | Quote | Unit |
+|---|---|---|
+| `what.wav` | *"What?!"* | Peon |
+| `me-busy-leave-me-alone.wav` | *"Me busy, leave me alone!"* | Peon |
+| `no-time-for-play.wav` | *"No time for play!"* | Peon |
+| `i-can-wait-no-longer.wav` | *"I can wait no longer!"* | Grom Hellscream |
+
+</details>
+
 ## Hook Events
 
 | Event | Hook | When |
