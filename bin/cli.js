@@ -100,7 +100,7 @@ let previewProcess = null;
 
 function killPreview() {
   if (previewProcess) {
-    try { previewProcess.kill(); } catch {}
+    try { previewProcess.kill("SIGKILL"); } catch {}
     previewProcess = null;
   }
 }
@@ -108,9 +108,11 @@ function killPreview() {
 function playPreview(filePath) {
   killPreview();
   if (fs.existsSync(filePath)) {
-    previewProcess = spawn("afplay", [filePath], { stdio: "ignore", detached: true });
-    previewProcess.unref();
-    previewProcess.on("exit", () => { previewProcess = null; });
+    const proc = spawn("afplay", [filePath], { stdio: "ignore" });
+    previewProcess = proc;
+    proc.on("exit", () => {
+      if (previewProcess === proc) previewProcess = null;
+    });
   }
 }
 

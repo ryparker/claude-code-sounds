@@ -8,7 +8,7 @@
 
 Plays sound effects when sessions start, prompts are submitted, responses finish, errors occur, and more.
 
-Ships with 17 themes. Bring your own sounds or create new ones.
+Ships with 16 themes. Bring your own sounds or create new ones.
 
 *"Something need doing?"*
 
@@ -68,8 +68,7 @@ npx claude-code-sounds --help             # Show help
 | **Halo** (`halo`) | 52 | *"Wake me when you need me"* — Master Chief, Cortana, and the multiplayer announcer |
 | **Pokemon Gen 3** (`pokemon-gen3`) | 51 | *"A wild TREECKO appeared!"* — GBA battle cries, Hoenn fanfares, and RSE bleeps |
 | **Call of Duty** (`cod`) | 38 | *"Enemy AC-130 above!"* — Killstreaks, hitmarkers, and Captain Price |
-| **Short Circuit** (`short-circuit`) | 50 | *"Johnny 5 is alive!"* — The lovable sentient robot from the 1986 classic |
-| **Star Trek** (`star-trek`) | 50 | *"Make it so"* — Picard, Spock, phasers, transporters, and the Borg |
+| **Short Circuit** (`short-circuit`) | 41 | *"Number 5 is alive!"* — The lovable sentient robot from the 1986 classic |
 
 Each theme maps sounds across all 11 Claude Code lifecycle events.
 
@@ -156,6 +155,6 @@ This removes all sound files, the hook script, and the hooks config from `settin
 
 This project is an unofficial fan project provided free of charge for personal, non-commercial use. It is not affiliated with, endorsed by, or sponsored by any game publisher or rights holder.
 
-All game audio is the property of its respective owners: Blizzard Entertainment (Warcraft, StarCraft, Diablo), Nintendo/Game Freak (Zelda, Mario, Pokemon), Lucasfilm/Disney (Star Wars), Konami (Metal Gear Solid), Valve (Portal), Electronic Arts/Westwood Studios (Command & Conquer), Xbox Game Studios/Ensemble Studios (Age of Empires), Games Workshop/Relic Entertainment (Warhammer 40,000), Xbox Game Studios/Bungie/343 Industries (Halo), Activision/Infinity Ward (Call of Duty), TriStar Pictures (Short Circuit), and Paramount/CBS Studios (Star Trek). All trademarks and registered trademarks are the property of their respective owners.
+All game audio is the property of its respective owners: Blizzard Entertainment (Warcraft, StarCraft, Diablo), Nintendo/Game Freak (Zelda, Mario, Pokemon), Lucasfilm/Disney (Star Wars), Konami (Metal Gear Solid), Valve (Portal), Electronic Arts/Westwood Studios (Command & Conquer), Xbox Game Studios/Ensemble Studios (Age of Empires), Games Workshop/Relic Entertainment (Warhammer 40,000), Xbox Game Studios/Bungie/343 Industries (Halo), Activision/Infinity Ward (Call of Duty), TriStar Pictures (Short Circuit). All trademarks and registered trademarks are the property of their respective owners.
 
 If you are a rights holder and would like content removed, please [open an issue](https://github.com/ryparker/claude-code-sounds/issues) and it will be taken down promptly.
