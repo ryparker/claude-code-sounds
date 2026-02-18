@@ -1,0 +1,117 @@
+{
+  "name": "WC3 Orc Peon",
+  "description": "Warcraft 3 Orc unit soundbites — Peons, Grunts, Shamans, and more",
+  "author": "ryparker",
+  "sounds": {
+    "start": {
+      "description": "Session starting — being summoned",
+      "files": [
+        { "src": "Peon/PeonReady1.wav", "name": "ready-to-work.wav" },
+        { "src": "Peon/PeonWhat4.wav", "name": "something-need-doing.wav" },
+        { "src": "Shaman/ShamanWhat3.wav", "name": "how-can-i-help.wav" },
+        { "src": "WitchDoctor/WitchDoctorReady1.wav", "name": "someone-call-for-the-doctor.wav" },
+        { "src": "@soundfxcenter/more-work.mp3", "name": "more-work.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over — farewell",
+      "files": [
+        { "src": "Tauren/TaurenYes3.wav", "name": "well-done.wav" },
+        { "src": "Hellscream/GromYes3.wav", "name": "finally.wav" },
+        { "src": "Peon/PeonYes4.wav", "name": "okie-dokie.wav" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — what do you want to approve?",
+      "files": [
+        { "src": "Peon/PeonWhat2.wav", "name": "hmmm.wav" },
+        { "src": "Peon/PeonWhat3.wav", "name": "what-you-want.wav" },
+        { "src": "HeadHunter/HeadHunterWhat3.wav", "name": "what-you-want-me-to-do.wav" },
+        { "src": "HeadHunter/HeadHunterWhat1.wav", "name": "who-you-want-me-kill.wav" },
+        { "src": "WitchDoctor/WitchDoctorWhat3.wav", "name": "you-seek-me-help.wav" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — acknowledgment",
+      "files": [
+        { "src": "Peon/PeonYesAttack2.wav", "name": "zug-zug.wav" },
+        { "src": "Peon/PeonYesAttack1.wav", "name": "ok.wav" },
+        { "src": "Peon/PeonYes1.wav", "name": "i-can-do-that.wav" },
+        { "src": "Peon/PeonYes2.wav", "name": "be-happy-to.wav" },
+        { "src": "Shaman/ShamanYes2.wav", "name": "understood.wav" },
+        { "src": "HeroFarseer/HeroFarseerYes2.wav", "name": "of-course.wav" },
+        { "src": "HeroFarseer/HeroFarseerYes4.wav", "name": "it-is-certain.wav" },
+        { "src": "Hellscream/GromYes2.wav", "name": "whatever-you-say.wav" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — dispatching",
+      "files": [
+        { "src": "Peon/PeonYes3.wav", "name": "work-work.wav" },
+        { "src": "Grunt/GruntWarcry1.wav", "name": "for-the-horde.wav" },
+        { "src": "Hellscream/GromWarcry1.wav", "name": "taste-the-fury.wav" },
+        { "src": "Peon/PeonYesAttack3.wav", "name": "ill-try.wav" },
+        { "src": "Peon/PeonWarcry1.wav", "name": "why-not.wav" },
+        { "src": "Peon/PeonYesAttack2.wav", "name": "zug-zug.wav" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — bored and annoyed",
+      "files": [
+        { "src": "Peon/PeonAngry2.wav", "name": "me-busy-leave-me-alone.wav" },
+        { "src": "Peon/PeonAngry3.wav", "name": "no-time-for-play.wav" },
+        { "src": "Peon/PeonAngry4.wav", "name": "me-not-that-kind-of-orc.wav" },
+        { "src": "Grunt/GruntAngry1.wav", "name": "why-you-poking-me.wav" },
+        { "src": "Grunt/GruntAngry7.wav", "name": "not-easy-being-green.wav" },
+        { "src": "Hellscream/GromWhat3.wav", "name": "i-can-wait-no-longer.wav" },
+        { "src": "HeroFarseer/HeroFarseerAngry4.wav", "name": "outlook-not-so-good.wav" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — something broke",
+      "files": [
+        { "src": "Peon/PeonDeath.wav", "name": "peon-death.wav" },
+        { "src": "Grunt/GruntDeath.wav", "name": "grunt-death.wav" },
+        { "src": "HeadHunter/HeadHunterDeath.wav", "name": "headhunter-death.wav" },
+        { "src": "HeroFarseer/HeroFarseerAngry5.wav", "name": "reply-hazy-try-again.wav" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — acknowledging order",
+      "files": [
+        { "src": "Peon/PeonWhat1.wav", "name": "yes.wav" },
+        { "src": "Grunt/GruntYes1.wav", "name": "dabu.wav" },
+        { "src": "Grunt/GruntYes4.wav", "name": "zug-zug.wav" },
+        { "src": "Shaman/ShamanYes4.wav", "name": "right-away.wav" },
+        { "src": "Tauren/TaurenYes2.wav", "name": "immediately.wav" },
+        { "src": "HeadHunter/HeadHunterYes2.wav", "name": "anything-you-want.wav" },
+        { "src": "@soundfxcenter/more-work.mp3", "name": "more-work.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — victory",
+      "files": [
+        { "src": "Tauren/TaurenYes3.wav", "name": "well-done.wav" },
+        { "src": "Hellscream/GromYes3.wav", "name": "finally.wav" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — memory fading",
+      "files": [
+        { "src": "HeroFarseer/HeroFarseerAngry3.wav", "name": "concentrate-and-ask-again.wav" },
+        { "src": "HeroFarseer/HeroFarseerAngry5.wav", "name": "reply-hazy-try-again.wav" },
+        { "src": "Peon/PeonDeath.wav", "name": "death.wav" },
+        { "src": "Hellscream/GromWhat3.wav", "name": "i-can-wait-no-longer.wav" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — impatient",
+      "files": [
+        { "src": "Peon/PeonAngry1.wav", "name": "what.wav" },
+        { "src": "Peon/PeonAngry2.wav", "name": "me-busy-leave-me-alone.wav" },
+        { "src": "Peon/PeonAngry3.wav", "name": "no-time-for-play.wav" },
+        { "src": "Hellscream/GromWhat3.wav", "name": "i-can-wait-no-longer.wav" }
+      ]
+    }
+  }
+}
