@@ -2,6 +2,7 @@
   "name": "WC3 Orc Peon",
   "description": "Warcraft 3 Orc unit soundbites — Peons, Grunts, Shamans, and more",
   "author": "ryparker",
+  "srcBase": "Orc",
   "sounds": {
     "start": {
       "description": "Session starting — being summoned",

@@ -525,7 +525,7 @@ function buildCategoryItems(theme, category) {
 }
 
 /**
- * Resolve a sound file's source from download (tmpDir/Orc/...).
+ * Resolve a sound file's source from download (tmpDir/<srcBase>/...).
  */
 function resolveDownloadSrc(srcBase, src) {
   if (src.startsWith("@soundfxcenter/")) {
@@ -783,7 +783,7 @@ async function interactiveInstall(autoYes) {
       const customizeIdx = await select("Customize sounds for each hook?", customizeOptions);
 
       if (customizeIdx === 1) {
-        const srcBase = path.join(tmpDir, "Orc");
+        const srcBase = path.join(tmpDir, theme.srcBase || "Orc");
         let catIdx = 0;
 
         while (catIdx < categories.length) {
@@ -840,7 +840,7 @@ async function interactiveInstall(autoYes) {
     }
 
     // Copy files from download based on selections
-    const srcBase = path.join(tmpDir, "Orc");
+    const srcBase = path.join(tmpDir, theme.srcBase || "Orc");
     let total = 0;
     for (const cat of categories) {
       const items = categoryItems[cat];

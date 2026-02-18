@@ -8,7 +8,7 @@
 
 Plays sound effects when sessions start, prompts are submitted, responses finish, errors occur, and more.
 
-Ships with a **WC3 Orc Peon** theme. Bring your own sounds or create new themes.
+Ships with a **WC3 Orc Peon** theme and a **Zelda: Ocarina of Time** theme. Bring your own sounds or create new themes.
 
 *"Something need doing?"*
 
@@ -204,6 +204,147 @@ npx claude-code-sounds --help       # Show help
 
 </details>
 
+## Zelda: Ocarina of Time Theme
+
+47 sounds from Navi, Link, Ganondorf, and iconic OOT jingles mapped across 11 Claude Code lifecycle events.
+
+*"Hey! Listen!"*
+
+<details open>
+<summary><b>start</b> — Session starting, Navi greets you (5 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `hey.wav` | *"Hey!"* | Navi |
+| `hello.wav` | *"Hello!"* | Navi |
+| `listen.wav` | *"Listen!"* | Navi |
+| `great-fairy-laugh.wav` | *(magical laugh)* | Great Fairy |
+| `open-chest.wav` | *(opening big chest)* | SFX |
+
+</details>
+
+<details>
+<summary><b>prompt</b> — User submitted a prompt, adventure continues (5 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `hey.wav` | *"Hey!"* | Navi |
+| `look.wav` | *"Look!"* | Navi |
+| `menu-select.wav` | *(menu select)* | SFX |
+| `dialogue-next.wav` | *(continue dialogue)* | SFX |
+| `get-heart.wav` | *(get heart)* | SFX |
+
+</details>
+
+<details>
+<summary><b>stop</b> — Claude finished responding (5 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `secret-discovered.wav` | *(secret jingle)* | SFX |
+| `get-item.wav` | *(get small item)* | SFX |
+| `get-rupee.wav` | *(get rupee)* | SFX |
+| `open-small-chest.wav` | *(open small chest)* | SFX |
+| `song-correct.wav` | *(song played correctly)* | SFX |
+
+</details>
+
+<details>
+<summary><b>permission</b> — Permission prompt, waiting for approval (5 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `watch-out.wav` | *"Watch out!"* | Navi |
+| `hey.wav` | *"Hey!"* | Navi |
+| `listen.wav` | *"Listen!"* | Navi |
+| `pause-menu.wav` | *(pause menu open)* | SFX |
+| `z-target.wav` | *(Z-target enemy)* | SFX |
+
+</details>
+
+<details>
+<summary><b>subagent</b> — Spawning a subagent (5 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `sword-draw.wav` | *(draw sword)* | SFX |
+| `link-attack.wav` | *(attack shout)* | Adult Link |
+| `link-strong-attack.wav` | *(strong attack)* | Adult Link |
+| `hey.wav` | *"Hey!"* | Navi |
+| `spin-attack.wav` | *(spin attack)* | SFX |
+
+</details>
+
+<details>
+<summary><b>idle</b> — Waiting for user input (5 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `hey.wav` | *"Hey!"* | Navi |
+| `listen.wav` | *"Listen!"* | Navi |
+| `watch-out.wav` | *"Watch out!"* | Navi |
+| `low-health.wav` | *(low health beep)* | SFX |
+| `snore.wav` | *(Talon snoring)* | Talon |
+
+</details>
+
+<details>
+<summary><b>error</b> — Tool call failed (4 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `error.wav` | *(error sound)* | SFX |
+| `song-error.wav` | *(wrong note)* | SFX |
+| `link-hurt.wav` | *(Link hurt)* | Adult Link |
+| `ganondorf-laugh.wav` | *(Ganondorf laughing)* | Ganondorf |
+
+</details>
+
+<details>
+<summary><b>end</b> — Session ending (3 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `item-fanfare.wav` | *(item fanfare)* | SFX |
+| `secret-discovered.wav` | *(secret jingle)* | SFX |
+| `dialogue-done.wav` | *(dialogue finished)* | SFX |
+
+</details>
+
+<details>
+<summary><b>task-completed</b> — Task marked done (2 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `item-fanfare.wav` | *(item fanfare)* | SFX |
+| `secret-discovered.wav` | *(secret jingle)* | SFX |
+
+</details>
+
+<details>
+<summary><b>compact</b> — Context compaction, health running low (4 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `low-health.wav` | *(low health beep)* | SFX |
+| `pause-close.wav` | *(pause menu close)* | SFX |
+| `watch-out.wav` | *"Watch out!"* | Navi |
+| `error.wav` | *(error sound)* | SFX |
+
+</details>
+
+<details>
+<summary><b>teammate-idle</b> — Teammate went idle (4 sounds)</summary>
+
+| Sound | Description | Source |
+|---|---|---|
+| `hey.wav` | *"Hey!"* | Navi |
+| `listen.wav` | *"Listen!"* | Navi |
+| `watch-out.wav` | *"Watch out!"* | Navi |
+| `low-health.wav` | *(low health beep)* | SFX |
+
+</details>
+
 ## Hook Events
 
 | Event | Hook | When |
@@ -232,6 +373,7 @@ Defines metadata and maps source files to hook categories:
 {
   "name": "My Theme",
   "description": "A short description",
+  "srcBase": "MyTheme",
   "sounds": {
     "start": {
       "description": "Session starting",
@@ -243,13 +385,16 @@ Defines metadata and maps source files to hook categories:
 }
 ```
 
+- **`srcBase`** — subdirectory under the temp dir where downloaded files live (e.g., `"Orc"`, `"OOT"`)
+- **`src`** — path relative to `$2/<srcBase>/` where the file is found after download
+
 ### `download.sh`
 
 Downloads the sound files. Receives two arguments:
 - `$1` — target sounds directory (`~/.claude/sounds`)
 - `$2` — temp directory for downloads
 
-The script should download and extract files so they're accessible at `$2/Orc/<src path>` (matching the `src` values in `theme.json`).
+The script should download and extract files so they're accessible at `$2/<srcBase>/<src path>` (matching the `srcBase` and `src` values in `theme.json`).
 
 ## How It Works
 
@@ -281,4 +426,4 @@ This removes all sound files, the hook script, and the hooks config from `settin
 
 ## Disclaimer
 
-Sound files are downloaded from third-party sources at install time and are not included in this repository. All game audio is property of Blizzard Entertainment.
+Sound files are downloaded from third-party sources at install time and are not included in this repository. Warcraft audio is property of Blizzard Entertainment. Zelda audio is property of Nintendo.
