@@ -97,3 +97,7 @@ The script picks randomly from whatever files are in each directory.
 ```
 
 This removes all sound files, the hook script, and the hooks config from `settings.json`.
+
+## Disclaimer
+
+Sound files are downloaded from third-party sources at install time and are not included in this repository. All game audio is property of Blizzard Entertainment.
