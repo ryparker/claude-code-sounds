@@ -1,8 +1,18 @@
+<div align="center">
+
+<img src="images/peon.png" width="280" alt="WC3 Orc Peon" />
+
 # claude-code-sounds
 
-Sound themes for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) lifecycle hooks. Plays sound effects when sessions start, prompts are submitted, responses finish, errors occur, and more.
+**Sound themes for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) lifecycle hooks.**
+
+Plays sound effects when sessions start, prompts are submitted, responses finish, errors occur, and more.
 
 Ships with a **WC3 Orc Peon** theme. Bring your own sounds or create new themes.
+
+*"Something need doing?"*
+
+</div>
 
 ## Quick Start
 
