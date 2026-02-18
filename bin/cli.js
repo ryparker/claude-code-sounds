@@ -772,10 +772,17 @@ async function reconfigure(existingInstall) {
     }
   }
 
-  // Build initial grid from currently installed files
+  // Build initial grid: disk state for existing themes, theme.json defaults for new ones
+  const existingThemeSet = new Set(existingInstall.themes);
   const soundOnlyRows = rows.filter(r => r.type === 'sound');
   const initialGrid = soundOnlyRows.map(soundRow => {
+    const isNewTheme = !existingThemeSet.has(soundRow.theme);
     return HOOKS.map(hook => {
+      if (isNewTheme) {
+        const catSounds = themeData[soundRow.theme].sounds[hook.key];
+        if (!catSounds) return false;
+        return catSounds.files.some(f => f.name === soundRow.fileName);
+      }
       return currentFiles[hook.key]?.has(soundRow.fileName) || false;
     });
   });
