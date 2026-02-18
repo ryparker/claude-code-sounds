@@ -1,0 +1,118 @@
+{
+  "name": "Star Trek",
+  "description": "Iconic Star Trek sounds spanning TOS, TNG, and beyond -- Picard, Spock, phasers, transporters, and the Borg",
+  "author": "ryparker",
+  "sources": [
+    "101soundboards.com",
+    "myinstants.com",
+    "trekcore.com",
+    "archive.org"
+  ],
+  "sounds": {
+    "start": {
+      "description": "Session starting -- reporting to the bridge",
+      "files": [
+        { "name": "picard-engage.mp3" },
+        { "name": "picard-make-it-so.mp3" },
+        { "name": "captain-on-bridge.mp3" },
+        { "name": "armada-engage-engines.mp3" },
+        { "name": "picard-this-is-captain.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over -- mission complete",
+      "files": [
+        { "name": "picard-out.mp3" },
+        { "name": "spock-live-long-prosper.mp3" },
+        { "name": "spock-your-friend.mp3" },
+        { "name": "picard-welcome-24th-century.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt -- acknowledging orders",
+      "files": [
+        { "name": "armada-acknowledged.mp3" },
+        { "name": "picard-number-one.mp3" },
+        { "name": "tng-combadge-chirp.mp3" },
+        { "name": "tng-chirp.mp3" },
+        { "name": "computer-beep1.mp3" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding -- orders carried out",
+      "files": [
+        { "name": "picard-resume.mp3" },
+        { "name": "armada-set-a-course.mp3" },
+        { "name": "spock-logical.mp3" },
+        { "name": "picard-set-course-earth-warp.mp3" },
+        { "name": "picard-enhance.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt -- awaiting authorization",
+      "files": [
+        { "name": "picard-computer-status-report.mp3" },
+        { "name": "hailing-frequencies-open.mp3" },
+        { "name": "tng-doorbell.mp3" },
+        { "name": "ds9-intercom.mp3" },
+        { "name": "armada-all-sections-report.mp3" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input -- standing by in orbit",
+      "files": [
+        { "name": "tng-chime.mp3" },
+        { "name": "borg-computer-beep.mp3" },
+        { "name": "computer-beep4.mp3" },
+        { "name": "spock-fascinating.mp3" },
+        { "name": "picard-fascinating.mp3" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent -- deploying away team",
+      "files": [
+        { "name": "energize.mp3" },
+        { "name": "tng-transporter1.mp3" },
+        { "name": "scotty-beam-me-up.mp3" },
+        { "name": "tos-transporter-energize.mp3" },
+        { "name": "tng-transporter2.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure -- red alert",
+      "files": [
+        { "name": "tng-red-alert1.mp3" },
+        { "name": "tng-red-alert2.mp3" },
+        { "name": "borg-resistance-is-futile.mp3" },
+        { "name": "tng-intruder-alert.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished -- mission accomplished",
+      "files": [
+        { "name": "spock-needs-of-many.mp3" },
+        { "name": "picard-line-must-be-drawn-here.mp3" },
+        { "name": "tng-warp.mp3" },
+        { "name": "armada-fire-all-weapons.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction -- rerouting power",
+      "files": [
+        { "name": "tng-engine.mp3" },
+        { "name": "tng-hum.mp3" },
+        { "name": "tng-warp2.mp3" },
+        { "name": "computer-beep7.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle -- hailing the crew",
+      "files": [
+        { "name": "classic-communicator.mp3" },
+        { "name": "communicator-chirp.mp3" },
+        { "name": "picard-enterprise-captain.mp3" },
+        { "name": "tos-communicator-beep.mp3" }
+      ]
+    }
+  }
+}

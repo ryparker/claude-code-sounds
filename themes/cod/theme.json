@@ -1,0 +1,103 @@
+{
+  "name": "Call of Duty",
+  "description": "Iconic Call of Duty multiplayer announcer callouts, killstreaks, and Zombies sound effects from Modern Warfare, Warzone, and Black Ops",
+  "author": "ryparker",
+  "sources": [
+    "myinstants.com"
+  ],
+  "sounds": {
+    "start": {
+      "description": "Session starting — deploying to the AO",
+      "files": [
+        { "name": "bravo-six-going-dark.mp3" },
+        { "name": "lets-do-this.mp3" },
+        { "name": "welcome-to-the-gulag.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over — mission complete",
+      "files": [
+        { "name": "warzone-victory.mp3" },
+        { "name": "mw2-level-up.mp3" },
+        { "name": "kill-confirmed.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — confirming orders",
+      "files": [
+        { "name": "hitmarker.mp3" },
+        { "name": "tango-down.mp3" },
+        { "name": "enemy-downed.mp3" },
+        { "name": "hitmarker-alt.mp3" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — target eliminated",
+      "files": [
+        { "name": "kill-confirmed.mp3" },
+        { "name": "enemy-downed.mp3" },
+        { "name": "warzone-legendary.mp3" },
+        { "name": "cod-waw-rank-up.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — awaiting confirmation",
+      "files": [
+        { "name": "youre-the-last-one.mp3" },
+        { "name": "bomb-planted.mp3" },
+        { "name": "enemy-uav-overhead.mp3" },
+        { "name": "friendly-predator-missile.mp3" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — standing by for orders",
+      "files": [
+        { "name": "mystery-box.mp3" },
+        { "name": "zombies-quick-revive.mp3" },
+        { "name": "zombies-round-change.mp3" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — calling in killstreak",
+      "files": [
+        { "name": "warzone-airstrike.mp3" },
+        { "name": "enemy-ac130-above.mp3" },
+        { "name": "zombies-insta-kill.mp3" },
+        { "name": "zombies-nuke.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — mission failed",
+      "files": [
+        { "name": "tactical-nuke-incoming.mp3" },
+        { "name": "zombies-evil-laugh.mp3" },
+        { "name": "zombies-bye-bye.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — objective secured",
+      "files": [
+        { "name": "mw2-level-up.mp3" },
+        { "name": "zombies-max-ammo.mp3" },
+        { "name": "warzone-legendary.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — switching rounds",
+      "files": [
+        { "name": "zombies-round-end.mp3" },
+        { "name": "zombies-round-start.mp3" },
+        { "name": "zombies-new-round.mp3" },
+        { "name": "intervention-shot.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — requesting sitrep",
+      "files": [
+        { "name": "teammate-got-arse-kicked.mp3" },
+        { "name": "youre-the-last-one.mp3" },
+        { "name": "enemy-uav-overhead.mp3" }
+      ]
+    }
+  }
+}

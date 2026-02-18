@@ -1,0 +1,117 @@
+{
+  "name": "Pokemon Gen 3",
+  "description": "Pokemon Ruby/Sapphire/Emerald sound effects — GBA battle cries, Hoenn fanfares, and advance-generation bleeps",
+  "author": "ryparker",
+  "sources": [
+    "sounds-resource.com",
+    "myinstants.com"
+  ],
+  "sounds": {
+    "start": {
+      "description": "Session starting — a wild Claude appeared in the tall grass!",
+      "files": [
+        { "name": "wild-encounter.mp3" },
+        { "name": "ball-open.wav" },
+        { "name": "battle-start.mp3" },
+        { "name": "trainer-encounter.mp3" },
+        { "name": "dragon-dance.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over — healed up at the Pokemon Center",
+      "files": [
+        { "name": "pokemon-center-heal.mp3" },
+        { "name": "save-game.mp3" },
+        { "name": "save.wav" },
+        { "name": "pokemon-center-music.mp3" },
+        { "name": "battle-victory.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — menu select in the PokéNav",
+      "files": [
+        { "name": "select.wav" },
+        { "name": "effective.wav" },
+        { "name": "use-item.wav" },
+        { "name": "win-open.wav" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — move learned, ready for next command",
+      "files": [
+        { "name": "success.wav" },
+        { "name": "item-found.mp3" },
+        { "name": "stat-rise.mp3" },
+        { "name": "hit-normal.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — a wild encounter needs your attention!",
+      "files": [
+        { "name": "super-effective-sfx.wav" },
+        { "name": "screech.mp3" },
+        { "name": "wall-hit.wav" },
+        { "name": "roar.mp3" },
+        { "name": "bang.wav" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — resting at the Pokemon Center",
+      "files": [
+        { "name": "slowpoke-cry.mp3" },
+        { "name": "rest.mp3" },
+        { "name": "yawn.mp3" },
+        { "name": "ledge.wav" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — Go, I choose you!",
+      "files": [
+        { "name": "ball-throw.wav" },
+        { "name": "recall-pokeball.mp3" },
+        { "name": "baton-pass.mp3" },
+        { "name": "teleport.mp3" },
+        { "name": "agility.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — it's not very effective...",
+      "files": [
+        { "name": "faint.wav" },
+        { "name": "battle-faint.mp3" },
+        { "name": "explosion.mp3" },
+        { "name": "self-destruct.mp3" },
+        { "name": "not-effective.wav" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — obtained a Gym Badge!",
+      "files": [
+        { "name": "level-up.mp3" },
+        { "name": "gym-badge.mp3" },
+        { "name": "catching-fanfare.mp3" },
+        { "name": "item-received.mp3" },
+        { "name": "pokemon-evolve.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — storing Pokemon in the PC",
+      "files": [
+        { "name": "pc-login.wav" },
+        { "name": "pc-on.wav" },
+        { "name": "pc-off.wav" },
+        { "name": "substitute.mp3" },
+        { "name": "transform.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — a Pokemon is loafing around",
+      "files": [
+        { "name": "gastly-cry.mp3" },
+        { "name": "low-health.mp3" },
+        { "name": "status-confused.mp3" },
+        { "name": "growl.mp3" }
+      ]
+    }
+  }
+}

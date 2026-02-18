@@ -1,0 +1,222 @@
+{
+  "name": "Halo",
+  "description": "Iconic Halo announcer callouts, Cortana voice lines, and Master Chief quotes from the legendary FPS series",
+  "author": "ryparker",
+  "sources": [
+    "myinstants.com",
+    "soundboard.com"
+  ],
+  "sounds": {
+    "start": {
+      "description": "Session starting — Spartan deploying",
+      "files": [
+        {
+          "name": "halo-theme.mp3"
+        },
+        {
+          "name": "gregorian-chant.mp3"
+        },
+        {
+          "name": "i-need-a-weapon.mp3"
+        },
+        {
+          "name": "finish-the-fight.mp3"
+        },
+        {
+          "name": "cortana-master-chief.mp3"
+        }
+      ]
+    },
+    "end": {
+      "description": "Session over — mission complete",
+      "files": [
+        {
+          "name": "game-over.mp3"
+        },
+        {
+          "name": "cortana-we-should-leave.mp3"
+        },
+        {
+          "name": "cortana-good-time.mp3"
+        },
+        {
+          "name": "cortana-yank-me.mp3"
+        }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — acknowledging orders",
+      "files": [
+        {
+          "name": "cortana-affirmative.mp3"
+        },
+        {
+          "name": "slayer.mp3"
+        },
+        {
+          "name": "cortana-do-best.mp3"
+        },
+        {
+          "name": "cortana-need-to-get-going.mp3"
+        },
+        {
+          "name": "cortana-show-them.mp3"
+        }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — multi-kill streak",
+      "files": [
+        {
+          "name": "double-kill.mp3"
+        },
+        {
+          "name": "triple-kill.mp3"
+        },
+        {
+          "name": "killing-spree.mp3"
+        },
+        {
+          "name": "overkill.mp3"
+        },
+        {
+          "name": "killtacular.mp3"
+        }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — Cortana warning",
+      "files": [
+        {
+          "name": "cortana-alert.mp3"
+        },
+        {
+          "name": "cortana-this-is-not-a-drill.mp3"
+        },
+        {
+          "name": "cortana-warning.mp3"
+        },
+        {
+          "name": "cortana-can-you-hear-me.mp3"
+        },
+        {
+          "name": "shield-depleted.mp3"
+        }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — running out of time",
+      "files": [
+        {
+          "name": "cortana-where-are-you-going.mp3"
+        },
+        {
+          "name": "cortana-what-the-hell.mp3"
+        },
+        {
+          "name": "one-minute-remain.mp3"
+        },
+        {
+          "name": "thirty-seconds-remain.mp3"
+        },
+        {
+          "name": "last-man-standing.mp3"
+        }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — deploying reinforcements",
+      "files": [
+        {
+          "name": "get-tactical-marines.mp3"
+        },
+        {
+          "name": "reinforcements.mp3"
+        },
+        {
+          "name": "cortana-here-they-come.mp3"
+        },
+        {
+          "name": "elite-wort.mp3"
+        },
+        {
+          "name": "elite-woboba.mp3"
+        }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — betrayal and defeat",
+      "files": [
+        {
+          "name": "betrayal.mp3"
+        },
+        {
+          "name": "betrayed.mp3"
+        },
+        {
+          "name": "suicide.mp3"
+        },
+        {
+          "name": "killjoy.mp3"
+        },
+        {
+          "name": "infected.mp3"
+        }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — legendary kill streaks",
+      "files": [
+        {
+          "name": "killing-frenzy.mp3"
+        },
+        {
+          "name": "running-riot.mp3"
+        },
+        {
+          "name": "unfrigginbelievable.mp3"
+        },
+        {
+          "name": "invincible.mp3"
+        },
+        {
+          "name": "killionaire.mp3"
+        }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — shields recharging",
+      "files": [
+        {
+          "name": "shield-recharge.mp3"
+        },
+        {
+          "name": "grunt-birthday-party.mp3"
+        },
+        {
+          "name": "when-you-first-saw-halo.mp3"
+        },
+        {
+          "name": "cortana-evacuate.mp3"
+        }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — mocking the enemy",
+      "files": [
+        {
+          "name": "elite-laugh.mp3"
+        },
+        {
+          "name": "yoink.mp3"
+        },
+        {
+          "name": "revenge.mp3"
+        },
+        {
+          "name": "killtrocity.mp3"
+        }
+      ]
+    }
+  }
+}

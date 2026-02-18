@@ -1,0 +1,115 @@
+{
+  "name": "Short Circuit",
+  "description": "Johnny 5 is alive! Sound clips from the 1986 classic Short Circuit featuring the lovable sentient robot",
+  "author": "ryparker",
+  "sources": [
+    "101soundboards.com"
+  ],
+  "sounds": {
+    "start": {
+      "description": "Session starting — Number 5 comes alive",
+      "files": [
+        { "name": "number-5-is-alive.mp3" },
+        { "name": "hello-bozos.mp3" },
+        { "name": "hi.mp3" },
+        { "name": "hi-2.mp3" },
+        { "name": "im-fit-as-a-fiddle.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over — farewell",
+      "files": [
+        { "name": "bye-bye-goofy-woman.mp3" },
+        { "name": "times-up.mp3" },
+        { "name": "pretty-good.mp3" },
+        { "name": "nova.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — acknowledging input",
+      "files": [
+        { "name": "need-input.mp3" },
+        { "name": "more-input.mp3" },
+        { "name": "yes.mp3" },
+        { "name": "you-got-it.mp3" },
+        { "name": "yup.mp3" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — task acknowledgment",
+      "files": [
+        { "name": "excellent.mp3" },
+        { "name": "nice-software.mp3" },
+        { "name": "attractive.mp3" },
+        { "name": "beautiful.mp3" },
+        { "name": "yes-2.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — waiting for approval",
+      "files": [
+        { "name": "i-have-questions.mp3" },
+        { "name": "need-input-in-you-put.mp3" },
+        { "name": "malfunction-need-input.mp3" },
+        { "name": "ooo.mp3" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — Johnny 5 needs stimulation",
+      "files": [
+        { "name": "malfunction-need-input-full.mp3" },
+        { "name": "humming.mp3" },
+        { "name": "hey-laserlips.mp3" },
+        { "name": "stupid-foolish-gullible.mp3" },
+        { "name": "hey-laser-lips-mama-snow-blower.mp3" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — dispatching a helper",
+      "files": [
+        { "name": "lets-give-it-a-whirl.mp3" },
+        { "name": "yes-3.mp3" },
+        { "name": "you-got-it.mp3" },
+        { "name": "nice-software-2.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — malfunction detected",
+      "files": [
+        { "name": "error.mp3" },
+        { "name": "malfunction.mp3" },
+        { "name": "malfunction-2.mp3" },
+        { "name": "uh-oh.mp3" },
+        { "name": "error-grasshopper-disassemble.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — Number 5 celebrates",
+      "files": [
+        { "name": "number-5-is-alive.mp3" },
+        { "name": "excellent.mp3" },
+        { "name": "pretty-good.mp3" },
+        { "name": "right-on-the-sensor.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — memory issues",
+      "files": [
+        { "name": "no-disassemble.mp3" },
+        { "name": "no-disassemble-number-five.mp3" },
+        { "name": "no-no-disassemble.mp3" },
+        { "name": "try-again.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — Johnny 5 notices",
+      "files": [
+        { "name": "no-way-jose.mp3" },
+        { "name": "nah-uh.mp3" },
+        { "name": "nuh-uh.mp3" },
+        { "name": "no.mp3" },
+        { "name": "sorry.mp3" }
+      ]
+    }
+  }
+}
