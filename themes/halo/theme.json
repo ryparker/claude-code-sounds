@@ -97,9 +97,6 @@
           "name": "cortana-warning.mp3"
         },
         {
-          "name": "cortana-can-you-hear-me.mp3"
-        },
-        {
           "name": "shield-depleted.mp3"
         }
       ]
@@ -121,6 +118,9 @@
         },
         {
           "name": "last-man-standing.mp3"
+        },
+        {
+          "name": "cortana-can-you-hear-me.mp3"
         }
       ]
     },
