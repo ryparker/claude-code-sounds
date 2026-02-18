@@ -46,11 +46,12 @@ The bash installer requires `jq` (`brew install jq`).
 ## Usage
 
 ```bash
-npx claude-code-sounds              # Interactive install
-npx claude-code-sounds --yes        # Install defaults, skip all prompts
-npx claude-code-sounds --list       # List available themes
-npx claude-code-sounds --uninstall  # Remove all sounds and hooks
-npx claude-code-sounds --help       # Show help
+npx claude-code-sounds                    # Interactive install
+npx claude-code-sounds --yes              # Install defaults, skip all prompts
+npx claude-code-sounds --theme portal     # Install a specific theme directly
+npx claude-code-sounds --list             # List available themes
+npx claude-code-sounds --uninstall        # Remove all sounds and hooks
+npx claude-code-sounds --help             # Show help
 ```
 
 ## Themes
