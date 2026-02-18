@@ -55,7 +55,7 @@ npx claude-code-sounds --help       # Show help
 
 ## WC3 Orc Peon Theme
 
-55 sounds from Warcraft 3 Orc units mapped across 11 Claude Code lifecycle events.
+57 sounds from Warcraft 3 Orc units mapped across 11 Claude Code lifecycle events.
 
 > After installing, preview all sounds with `./preview.sh` or a specific category with `./preview.sh start`
 
@@ -88,11 +88,12 @@ npx claude-code-sounds --help       # Show help
 </details>
 
 <details>
-<summary><b>stop</b> — Claude finished responding (8 sounds)</summary>
+<summary><b>stop</b> — Claude finished responding (9 sounds)</summary>
 
 | Sound | Quote | Unit |
 |---|---|---|
-| `zug-zug.wav` | *"Zug zug"* | Peon |
+| `zug-zug.wav` | *"Zug zug"* | Grunt |
+| `get-em.wav` | *"Get 'em!"* | Peon |
 | `ok.wav` | *"OK"* | Peon |
 | `i-can-do-that.wav` | *"I can do that"* | Peon |
 | `be-happy-to.wav` | *"Be happy to"* | Peon |
@@ -117,12 +118,13 @@ npx claude-code-sounds --help       # Show help
 </details>
 
 <details>
-<summary><b>subagent</b> — Spawning a subagent (6 sounds)</summary>
+<summary><b>subagent</b> — Spawning a subagent (7 sounds)</summary>
 
 | Sound | Quote | Unit |
 |---|---|---|
 | `work-work.wav` | *"Work, work"* | Peon |
-| `zug-zug.wav` | *"Zug zug"* | Peon |
+| `zug-zug.wav` | *"Zug zug"* | Grunt |
+| `get-em.wav` | *"Get 'em!"* | Peon |
 | `ill-try.wav` | *"I'll try"* | Peon |
 | `why-not.wav` | *"Why not?"* | Peon |
 | `for-the-horde.wav` | *"For the Horde!"* | Grunt |

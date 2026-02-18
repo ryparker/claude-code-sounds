@@ -34,7 +34,8 @@
     "stop": {
       "description": "Done responding — acknowledgment",
       "files": [
-        { "src": "Peon/PeonYesAttack2.wav", "name": "zug-zug.wav" },
+        { "src": "Grunt/GruntYes4.wav", "name": "zug-zug.wav" },
+        { "src": "Peon/PeonYesAttack2.wav", "name": "get-em.wav" },
         { "src": "Peon/PeonYesAttack1.wav", "name": "ok.wav" },
         { "src": "Peon/PeonYes1.wav", "name": "i-can-do-that.wav" },
         { "src": "Peon/PeonYes2.wav", "name": "be-happy-to.wav" },
@@ -52,7 +53,8 @@
         { "src": "Hellscream/GromWarcry1.wav", "name": "taste-the-fury.wav" },
         { "src": "Peon/PeonYesAttack3.wav", "name": "ill-try.wav" },
         { "src": "Peon/PeonWarcry1.wav", "name": "why-not.wav" },
-        { "src": "Peon/PeonYesAttack2.wav", "name": "zug-zug.wav" }
+        { "src": "Grunt/GruntYes4.wav", "name": "zug-zug.wav" },
+        { "src": "Peon/PeonYesAttack2.wav", "name": "get-em.wav" }
       ]
     },
     "idle": {

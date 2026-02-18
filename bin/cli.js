@@ -14,6 +14,7 @@ const SOUNDS_DIR = path.join(CLAUDE_DIR, "sounds");
 const HOOKS_DIR = path.join(CLAUDE_DIR, "hooks");
 const SETTINGS_PATH = path.join(CLAUDE_DIR, "settings.json");
 const THEMES_DIR = path.join(PKG_DIR, "themes");
+const INSTALLED_PATH = path.join(SOUNDS_DIR, ".installed.json");
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -64,6 +65,53 @@ function hasCommand(name) {
   } catch {
     return false;
   }
+}
+
+function readInstalled() {
+  if (fs.existsSync(INSTALLED_PATH)) {
+    return JSON.parse(fs.readFileSync(INSTALLED_PATH, "utf-8"));
+  }
+  return null;
+}
+
+function writeInstalled(themeName) {
+  mkdirp(SOUNDS_DIR);
+  fs.writeFileSync(INSTALLED_PATH, JSON.stringify({ theme: themeName }, null, 2) + "\n");
+}
+
+/**
+ * Check if sounds are already installed.
+ * Returns { theme, themeDisplay, totalEnabled, totalAvailable, categories } or null.
+ */
+function getExistingInstall() {
+  const installed = readInstalled();
+  if (!installed) return null;
+
+  const themeJsonPath = path.join(THEMES_DIR, installed.theme, "theme.json");
+  if (!fs.existsSync(themeJsonPath)) return null;
+
+  const theme = JSON.parse(fs.readFileSync(themeJsonPath, "utf-8"));
+  let totalEnabled = 0;
+  const totalAvailable = Object.values(theme.sounds).reduce((sum, c) => sum + c.files.length, 0);
+
+  for (const cat of Object.keys(theme.sounds)) {
+    const catDir = path.join(SOUNDS_DIR, cat);
+    try {
+      for (const f of fs.readdirSync(catDir)) {
+        if (f.endsWith(".wav") || f.endsWith(".mp3")) totalEnabled++;
+      }
+    } catch {}
+  }
+
+  if (totalEnabled === 0) return null;
+
+  return {
+    theme: installed.theme,
+    themeDisplay: theme.name,
+    themeDescription: theme.description,
+    totalEnabled,
+    totalAvailable,
+  };
 }
 
 // ─── ANSI helpers ────────────────────────────────────────────────────────────
@@ -191,29 +239,61 @@ function select(title, options) {
 
 /**
  * Multi-select checklist with toggle, preview, and confirm.
- * Returns array of selected indices.
+ * Returns array of selected indices, or null if back was pressed.
  */
-function multiSelect(title, items, defaults, previewDir) {
+function multiSelect(title, items, defaults, previewDir, { allowBack = false } = {}) {
   return new Promise((resolve) => {
     let cursor = 0;
+    let scrollTop = 0;
     const checked = items.map((_, i) => defaults.includes(i));
-    const lineCount = items.length + 3; // title + blank + items + hint
+
+    // Calculate scrolling dimensions
+    const termRows = process.stdout.rows || 24;
+    const maxItemRows = Math.max(5, termRows - 5); // 5 = title + blank + hint + 2 buffer
+    const needsScroll = items.length > maxItemRows;
+    // When scrolling, reserve 2 rows for ▲/▼ indicators (always present for stable line count)
+    const visibleCount = needsScroll ? maxItemRows - 2 : items.length;
+    const lineCount = needsScroll ? maxItemRows + 3 : items.length + 3;
+
+    function adjustScroll() {
+      if (!needsScroll) return;
+      if (cursor < scrollTop) scrollTop = cursor;
+      if (cursor >= scrollTop + visibleCount) scrollTop = cursor - visibleCount + 1;
+    }
 
     function render(initial) {
       if (!initial) moveCursorUp(lineCount);
       print(`  ${title}\n`);
-      for (let i = 0; i < items.length; i++) {
-        const pointer = i === cursor ? `${CYAN}  ❯ ` : "    ";
-        const box = checked[i] ? `${GREEN}[✓]${RESET}` : `${DIM}[ ]${RESET}`;
-        const label = items[i].label;
-        const desc = items[i].description ? `  ${DIM}${items[i].description}${RESET}` : "";
-        print(`${pointer}${RESET}${box} ${label}${desc}`);
+
+      if (needsScroll) {
+        const above = scrollTop;
+        const below = items.length - scrollTop - visibleCount;
+        print(above > 0 ? `${DIM}    ▲ ${above} more${RESET}` : "");
+        for (let i = scrollTop; i < scrollTop + visibleCount; i++) {
+          const pointer = i === cursor ? `${CYAN}  ❯ ` : "    ";
+          const box = checked[i] ? `${GREEN}[✓]${RESET}` : `${DIM}[ ]${RESET}`;
+          const label = items[i].label;
+          const desc = items[i].description ? `  ${DIM}${items[i].description}${RESET}` : "";
+          print(`${pointer}${RESET}${box} ${label}${desc}`);
+        }
+        print(below > 0 ? `${DIM}    ▼ ${below} more${RESET}` : "");
+      } else {
+        for (let i = 0; i < items.length; i++) {
+          const pointer = i === cursor ? `${CYAN}  ❯ ` : "    ";
+          const box = checked[i] ? `${GREEN}[✓]${RESET}` : `${DIM}[ ]${RESET}`;
+          const label = items[i].label;
+          const desc = items[i].description ? `  ${DIM}${items[i].description}${RESET}` : "";
+          print(`${pointer}${RESET}${box} ${label}${desc}`);
+        }
       }
+
       const previewHint = previewDir ? " · p preview" : "";
-      print(`${DIM}  ↑↓ navigate · space toggle${previewHint} · enter confirm${RESET}`);
+      const backHint = allowBack ? "← back · " : "";
+      print(`${DIM}  ${backHint}↑↓ navigate · space toggle · a all${previewHint} · →/enter confirm${RESET}`);
     }
 
     process.stdout.write(HIDE_CURSOR);
+    adjustScroll();
     render(true);
 
     process.stdin.setRawMode(true);
@@ -230,14 +310,29 @@ function multiSelect(title, items, defaults, previewDir) {
         return;
       }
 
+      // Left arrow — go back
+      if (allowBack && key === "\x1b[D") {
+        process.stdin.setRawMode(false);
+        process.stdin.pause();
+        process.stdin.removeListener("data", onKey);
+        killPreview();
+        moveCursorUp(lineCount);
+        clearLines(lineCount);
+        process.stdout.write(SHOW_CURSOR);
+        resolve(null);
+        return;
+      }
+
       if (key === "\x1b[A" || key === "k") {
         cursor = (cursor - 1 + items.length) % items.length;
+        adjustScroll();
         render(false);
         return;
       }
 
       if (key === "\x1b[B" || key === "j") {
         cursor = (cursor + 1) % items.length;
+        adjustScroll();
         render(false);
         return;
       }
@@ -249,6 +344,14 @@ function multiSelect(title, items, defaults, previewDir) {
         return;
       }
 
+      // a — toggle all
+      if (key === "a") {
+        const allChecked = checked.every(Boolean);
+        checked.fill(!allChecked);
+        render(false);
+        return;
+      }
+
       // p — preview sound
       if (key === "p" && previewDir && items[cursor].file) {
         const soundPath = path.join(previewDir, items[cursor].file);
@@ -256,8 +359,8 @@ function multiSelect(title, items, defaults, previewDir) {
         return;
       }
 
-      // Enter — confirm
-      if (key === "\r" || key === "\n") {
+      // Enter or right arrow — confirm
+      if (key === "\r" || key === "\n" || key === "\x1b[C") {
         process.stdin.setRawMode(false);
         process.stdin.pause();
         process.stdin.removeListener("data", onKey);
@@ -375,6 +478,174 @@ function uninstall() {
   print("");
 }
 
+// ─── Sound Item Builder ─────────────────────────────────────────────────────
+
+/**
+ * Build the full list of sound items for a category.
+ * Native sounds (from this category's theme.json entry) come first,
+ * then borrowed sounds from all other categories, deduplicated by filename.
+ */
+function buildCategoryItems(theme, category) {
+  const config = theme.sounds[category];
+  const categories = Object.keys(theme.sounds);
+  const items = [];
+  const seen = new Set();
+
+  // Native sounds first
+  for (const f of config.files) {
+    seen.add(f.name);
+    items.push({
+      label: f.name.replace(/\.(wav|mp3)$/, ""),
+      description: f.description || "",
+      file: f.name,
+      src: f.src,
+      native: true,
+      originCat: category,
+    });
+  }
+
+  // Borrowed sounds from other categories
+  for (const otherCat of categories) {
+    if (otherCat === category) continue;
+    for (const f of theme.sounds[otherCat].files) {
+      if (seen.has(f.name)) continue;
+      seen.add(f.name);
+      items.push({
+        label: f.name.replace(/\.(wav|mp3)$/, ""),
+        description: `from ${otherCat}`,
+        file: f.name,
+        src: f.src,
+        native: false,
+        originCat: otherCat,
+      });
+    }
+  }
+
+  return items;
+}
+
+/**
+ * Resolve a sound file's source from download (tmpDir/Orc/...).
+ */
+function resolveDownloadSrc(srcBase, src) {
+  if (src.startsWith("@soundfxcenter/")) {
+    return path.join(srcBase, path.basename(src));
+  }
+  return path.join(srcBase, src);
+}
+
+// ─── Reconfigure Flow ───────────────────────────────────────────────────────
+
+async function reconfigure(existingInstall) {
+  const themeDir = path.join(THEMES_DIR, existingInstall.theme);
+  const theme = JSON.parse(fs.readFileSync(path.join(themeDir, "theme.json"), "utf-8"));
+  const categories = Object.keys(theme.sounds);
+  const tmpDirs = [];
+
+  try {
+    let catIdx = 0;
+    while (catIdx < categories.length) {
+      const cat = categories[catIdx];
+      const config = theme.sounds[cat];
+      const catDir = path.join(SOUNDS_DIR, cat);
+      const disabledDir = path.join(catDir, ".disabled");
+      const items = buildCategoryItems(theme, cat);
+
+      // Determine current state: checked if file exists in category dir
+      const defaults = [];
+      for (let i = 0; i < items.length; i++) {
+        if (fs.existsSync(path.join(catDir, items[i].file))) {
+          defaults.push(i);
+        }
+      }
+
+      // Build preview dir with all sounds from all possible locations
+      const previewDir = fs.mkdtempSync(path.join(os.tmpdir(), `claude-preview-`));
+      tmpDirs.push(previewDir);
+      for (const item of items) {
+        const originCatDir = path.join(SOUNDS_DIR, item.originCat);
+        const originDisabledDir = path.join(originCatDir, ".disabled");
+        const searchDirs = [catDir, disabledDir, originCatDir, originDisabledDir];
+        for (const dir of searchDirs) {
+          const p = path.join(dir, item.file);
+          if (fs.existsSync(p)) {
+            fs.copyFileSync(p, path.join(previewDir, item.file));
+            break;
+          }
+        }
+      }
+
+      const selected = await multiSelect(
+        `${BOLD}${cat}${RESET} ${DIM}— ${config.description}${RESET}`,
+        items,
+        defaults,
+        previewDir,
+        { allowBack: catIdx > 0 }
+      );
+
+      // Back was pressed — go to previous category
+      if (selected === null) {
+        catIdx--;
+        continue;
+      }
+
+      // Apply changes
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const isSelected = selected.includes(i);
+        const enabledPath = path.join(catDir, item.file);
+
+        if (item.native) {
+          const disabledPath = path.join(disabledDir, item.file);
+          if (isSelected && !fs.existsSync(enabledPath) && fs.existsSync(disabledPath)) {
+            fs.renameSync(disabledPath, enabledPath);
+          } else if (!isSelected && fs.existsSync(enabledPath)) {
+            mkdirp(disabledDir);
+            fs.renameSync(enabledPath, disabledPath);
+          }
+        } else {
+          // Borrowed sound: copy in or delete
+          if (isSelected && !fs.existsSync(enabledPath)) {
+            const previewFile = path.join(previewDir, item.file);
+            if (fs.existsSync(previewFile)) {
+              fs.copyFileSync(previewFile, enabledPath);
+            }
+          } else if (!isSelected && fs.existsSync(enabledPath)) {
+            fs.unlinkSync(enabledPath);
+          }
+        }
+      }
+
+      catIdx++;
+    }
+  } finally {
+    for (const dir of tmpDirs) {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  }
+
+  // Summary
+  let total = 0;
+  print(`  ${GREEN}✓${RESET} Configuration updated!`);
+  print("  ─────────────────────────────────────");
+
+  for (const cat of categories) {
+    const catDir = path.join(SOUNDS_DIR, cat);
+    let count = 0;
+    try {
+      for (const f of fs.readdirSync(catDir)) {
+        if (f.endsWith(".wav") || f.endsWith(".mp3")) count++;
+      }
+    } catch {}
+    total += count;
+    print(`    ${cat} (${count}) — ${theme.sounds[cat].description}`);
+  }
+
+  print("");
+  print(`  ${total} sound files across ${categories.length} events.`);
+  print("");
+}
+
 // ─── Install Flow ───────────────────────────────────────────────────────────
 
 async function interactiveInstall(autoYes) {
@@ -382,6 +653,31 @@ async function interactiveInstall(autoYes) {
   print(`  ${BOLD}claude-code-sounds${RESET}`);
   print("  ──────────────────────────────");
   print("");
+
+  // ── Detect existing install ───────────────────────────────────────────────
+
+  const existingInstall = getExistingInstall();
+
+  if (existingInstall && !autoYes) {
+    print(`  ${GREEN}✓${RESET} Already installed — ${BOLD}${existingInstall.themeDisplay}${RESET}`);
+    print(`    ${existingInstall.totalEnabled}/${existingInstall.totalAvailable} sounds enabled\n`);
+
+    const actionIdx = await select("What would you like to do?", [
+      { label: "Reconfigure", description: "Choose which sounds are enabled" },
+      { label: "Reinstall", description: "Re-download and start fresh" },
+      { label: "Uninstall", description: "Remove all sounds and hooks" },
+    ]);
+
+    if (actionIdx === 0) {
+      await reconfigure(existingInstall);
+      return;
+    }
+    if (actionIdx === 2) {
+      uninstall();
+      return;
+    }
+    // actionIdx === 1 falls through to full install
+  }
 
   // ── Step 1: Dependency Check ──────────────────────────────────────────────
 
@@ -469,10 +765,14 @@ async function interactiveInstall(autoYes) {
 
     // ── Step 4: Customize or Accept Defaults ──────────────────────────────
 
-    // Build a selection map: category -> array of file indices to include
+    // Build items and selections for each category (includes all theme sounds)
+    const categoryItems = {};
     const selections = {};
     for (const cat of categories) {
-      selections[cat] = theme.sounds[cat].files.map((_, i) => i);
+      const items = buildCategoryItems(theme, cat);
+      categoryItems[cat] = items;
+      // Default: select only native sounds
+      selections[cat] = items.map((item, i) => item.native ? i : -1).filter(i => i >= 0);
     }
 
     if (!autoYes) {
@@ -483,29 +783,21 @@ async function interactiveInstall(autoYes) {
       const customizeIdx = await select("Customize sounds for each hook?", customizeOptions);
 
       if (customizeIdx === 1) {
-        // Customize each category
-        for (const cat of categories) {
-          const config = theme.sounds[cat];
-          const items = config.files.map((f) => ({
-            label: f.name.replace(/\.(wav|mp3)$/, ""),
-            description: f.description || "",
-            file: f.name,
-          }));
-          const defaults = config.files.map((_, i) => i); // all selected by default
+        const srcBase = path.join(tmpDir, "Orc");
+        let catIdx = 0;
 
-          // Build preview dir: sounds are in tmpDir/Orc/... but we need them by name
-          // Copy files to a temp preview dir first
+        while (catIdx < categories.length) {
+          const cat = categories[catIdx];
+          const config = theme.sounds[cat];
+          const items = categoryItems[cat];
+          const defaults = selections[cat];
+
+          // Build preview dir with ALL theme sounds
           const previewDir = path.join(tmpDir, "_preview", cat);
           mkdirp(previewDir);
-          const srcBase = path.join(tmpDir, "Orc");
-          for (const file of config.files) {
-            let srcFile;
-            if (file.src.startsWith("@soundfxcenter/")) {
-              srcFile = path.join(srcBase, path.basename(file.src));
-            } else {
-              srcFile = path.join(srcBase, file.src);
-            }
-            const destFile = path.join(previewDir, file.name);
+          for (const item of items) {
+            const srcFile = resolveDownloadSrc(srcBase, item.src);
+            const destFile = path.join(previewDir, item.file);
             if (fs.existsSync(srcFile)) {
               fs.copyFileSync(srcFile, destFile);
             }
@@ -515,9 +807,17 @@ async function interactiveInstall(autoYes) {
             `${BOLD}${cat}${RESET} ${DIM}— ${config.description}${RESET}`,
             items,
             defaults,
-            previewDir
+            previewDir,
+            { allowBack: catIdx > 0 }
           );
+
+          if (selected === null) {
+            catIdx--;
+            continue;
+          }
+
           selections[cat] = selected;
+          catIdx++;
         }
       }
     }
@@ -526,39 +826,53 @@ async function interactiveInstall(autoYes) {
 
     print("  Installing sounds...");
 
-    // Clear existing sounds
+    // Clear existing sounds and .disabled dirs
     for (const cat of categories) {
       const catDir = path.join(SOUNDS_DIR, cat);
       for (const f of fs.readdirSync(catDir)) {
-        if (f.endsWith(".wav") || f.endsWith(".mp3")) {
-          fs.unlinkSync(path.join(catDir, f));
+        const fp = path.join(catDir, f);
+        if (f === ".disabled") {
+          fs.rmSync(fp, { recursive: true, force: true });
+        } else if (f.endsWith(".wav") || f.endsWith(".mp3")) {
+          fs.unlinkSync(fp);
         }
       }
     }
 
-    // Copy selected files
+    // Copy files from download based on selections
     const srcBase = path.join(tmpDir, "Orc");
     let total = 0;
-    for (const [category, config] of Object.entries(theme.sounds)) {
-      const selectedIndices = selections[category];
-      for (const idx of selectedIndices) {
-        const file = config.files[idx];
-        let srcFile;
-        if (file.src.startsWith("@soundfxcenter/")) {
-          srcFile = path.join(srcBase, path.basename(file.src));
-        } else {
-          srcFile = path.join(srcBase, file.src);
+    for (const cat of categories) {
+      const items = categoryItems[cat];
+      const selectedIndices = selections[cat];
+      const catDir = path.join(SOUNDS_DIR, cat);
+      const disabledDir = path.join(catDir, ".disabled");
+
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        const srcFile = resolveDownloadSrc(srcBase, item.src);
+
+        if (!fs.existsSync(srcFile)) {
+          if (item.native) {
+            print(`    ${YELLOW}⚠${RESET} ${item.src} not found, skipping`);
+          }
+          continue;
         }
 
-        const destFile = path.join(SOUNDS_DIR, category, file.name);
-        if (fs.existsSync(srcFile)) {
-          fs.copyFileSync(srcFile, destFile);
+        if (selectedIndices.includes(i)) {
+          fs.copyFileSync(srcFile, path.join(catDir, item.file));
           total++;
-        } else {
-          print(`    ${YELLOW}⚠${RESET} ${file.src} not found, skipping`);
+        } else if (item.native) {
+          // Save unselected native sounds to .disabled for future reconfigure
+          mkdirp(disabledDir);
+          fs.copyFileSync(srcFile, path.join(disabledDir, item.file));
         }
+        // Unselected borrowed sounds: skip (no need to store)
       }
     }
+
+    // Write install marker
+    writeInstalled(selectedTheme.name);
 
     // Copy play-sound.sh hook
     const hookSrc = path.join(PKG_DIR, "hooks", "play-sound.sh");
@@ -576,11 +890,9 @@ async function interactiveInstall(autoYes) {
     print(`  ${GREEN}✓${RESET} Installed! Here's what you'll hear:`);
     print("  ─────────────────────────────────────");
 
-    for (const [cat, config] of Object.entries(theme.sounds)) {
+    for (const cat of categories) {
       const count = selections[cat].length;
-      const totalAvailable = config.files.length;
-      const suffix = count < totalAvailable ? ` (${count}/${totalAvailable})` : ` (${count})`;
-      print(`    ${cat}${suffix} — ${config.description}`);
+      print(`    ${cat} (${count}) — ${theme.sounds[cat].description}`);
     }
 
     print("");
