@@ -18,28 +18,28 @@ describe("installSounds", () => {
   it("copies files to category dirs", (t) => {
     const { paths } = makeTempPaths(t);
     const total = lib.installSounds(
-      { start: [{ themeName: "wc3-peon", fileName: "ready-to-work.wav" }] },
+      { start: [{ themeName: "wc3-peon", fileName: "ready-to-work.mp3" }] },
       paths
     );
     assert.equal(total, 1);
-    assert.ok(fs.existsSync(path.join(paths.SOUNDS_DIR, "start", "ready-to-work.wav")));
+    assert.ok(fs.existsSync(path.join(paths.SOUNDS_DIR, "start", "ready-to-work.mp3")));
   });
 
   it("clears existing sounds before copying", (t) => {
     const { paths } = makeTempPaths(t);
     lib.installSounds(
-      { start: [{ themeName: "wc3-peon", fileName: "ready-to-work.wav" }] },
+      { start: [{ themeName: "wc3-peon", fileName: "ready-to-work.mp3" }] },
       paths
     );
     lib.installSounds(
-      { start: [{ themeName: "wc3-peon", fileName: "something-need-doing.wav" }] },
+      { start: [{ themeName: "wc3-peon", fileName: "something-need-doing.mp3" }] },
       paths
     );
 
     const files = fs.readdirSync(path.join(paths.SOUNDS_DIR, "start"));
     const soundFiles = files.filter((f) => f.endsWith(".wav") || f.endsWith(".mp3"));
     assert.equal(soundFiles.length, 1);
-    assert.equal(soundFiles[0], "something-need-doing.wav");
+    assert.equal(soundFiles[0], "something-need-doing.mp3");
   });
 
   it("returns correct count for multiple categories", (t) => {
@@ -47,10 +47,10 @@ describe("installSounds", () => {
     const total = lib.installSounds(
       {
         start: [
-          { themeName: "wc3-peon", fileName: "ready-to-work.wav" },
-          { themeName: "wc3-peon", fileName: "something-need-doing.wav" },
+          { themeName: "wc3-peon", fileName: "ready-to-work.mp3" },
+          { themeName: "wc3-peon", fileName: "something-need-doing.mp3" },
         ],
-        end: [{ themeName: "wc3-peon", fileName: "well-done.wav" }],
+        end: [{ themeName: "wc3-peon", fileName: "well-done.mp3" }],
       },
       paths
     );

@@ -11,16 +11,16 @@
       "description": "Session starting — the Force awakens",
       "files": [
         {
-          "name": "lightsaber-ignite.wav"
+          "name": "lightsaber-ignite.mp3"
         },
         {
-          "name": "force-will-be-with-you.wav"
+          "name": "force-will-be-with-you.mp3"
         },
         {
-          "name": "r2d2-woo-hoo.wav"
+          "name": "r2d2-woo-hoo.mp3"
         },
         {
-          "name": "force-is-strong.wav"
+          "name": "force-is-strong.mp3"
         }
       ]
     },
@@ -28,13 +28,13 @@
       "description": "Session over — farewell",
       "files": [
         {
-          "name": "lightsaber-off.wav"
+          "name": "lightsaber-off.mp3"
         },
         {
-          "name": "bad-feeling.wav"
+          "name": "bad-feeling.mp3"
         },
         {
-          "name": "yoda-900-years-old.wav"
+          "name": "yoda-900-years-old.mp3"
         }
       ]
     },
@@ -42,16 +42,16 @@
       "description": "User submitted prompt — ready to serve",
       "files": [
         {
-          "name": "r2d2-beep.wav"
+          "name": "r2d2-beep.mp3"
         },
         {
-          "name": "vader-yes-my-master.wav"
+          "name": "vader-yes-my-master.mp3"
         },
         {
-          "name": "blaster-firing.wav"
+          "name": "blaster-firing.mp3"
         },
         {
-          "name": "r2d2-yeah.wav"
+          "name": "r2d2-yeah.mp3"
         }
       ]
     },
@@ -59,13 +59,13 @@
       "description": "Done responding — task acknowledged",
       "files": [
         {
-          "name": "force-is-strong-with-this-one.wav"
+          "name": "force-is-strong-with-this-one.mp3"
         },
         {
-          "name": "yoda-do-or-do-not.wav"
+          "name": "yoda-do-or-do-not.mp3"
         },
         {
-          "name": "yoda-always-two.wav"
+          "name": "yoda-always-two.mp3"
         }
       ]
     },
@@ -73,16 +73,16 @@
       "description": "Permission prompt — sense a disturbance",
       "files": [
         {
-          "name": "vader-breathing.wav"
+          "name": "vader-breathing.mp3"
         },
         {
-          "name": "its-a-trap.wav"
+          "name": "its-a-trap.mp3"
         },
         {
-          "name": "yoda-much-fear.wav"
+          "name": "yoda-much-fear.mp3"
         },
         {
-          "name": "vader-what-is-thy-bidding.wav"
+          "name": "vader-what-is-thy-bidding.mp3"
         }
       ]
     },
@@ -90,13 +90,13 @@
       "description": "Waiting for input — restless",
       "files": [
         {
-          "name": "chewie-chatting.wav"
+          "name": "chewie-chatting.mp3"
         },
         {
-          "name": "yoda-laughing.wav"
+          "name": "yoda-laughing.mp3"
         },
         {
-          "name": "jabba-laughing.wav"
+          "name": "jabba-laughing.mp3"
         }
       ]
     },
@@ -104,13 +104,13 @@
       "description": "Spawning subagent — dispatching an ally",
       "files": [
         {
-          "name": "lord-vader-rise.wav"
+          "name": "lord-vader-rise.mp3"
         },
         {
-          "name": "i-am-your-father.wav"
+          "name": "i-am-your-father.mp3"
         },
         {
-          "name": "darth-maul-reveal-ourselves.wav"
+          "name": "darth-maul-reveal-ourselves.mp3"
         }
       ]
     },
@@ -118,13 +118,13 @@
       "description": "Tool failure — something went wrong",
       "files": [
         {
-          "name": "wilhelm-scream.wav"
+          "name": "wilhelm-scream.mp3"
         },
         {
-          "name": "great-disturbance.wav"
+          "name": "great-disturbance.mp3"
         },
         {
-          "name": "destroy-you.wav"
+          "name": "destroy-you.mp3"
         }
       ]
     },
@@ -132,13 +132,13 @@
       "description": "Task finished — victory for the Rebellion",
       "files": [
         {
-          "name": "decided-to-rescue-you.wav"
+          "name": "decided-to-rescue-you.mp3"
         },
         {
-          "name": "you-were-the-chosen-one.wav"
+          "name": "you-were-the-chosen-one.mp3"
         },
         {
-          "name": "destiny-fulfilled.wav"
+          "name": "destiny-fulfilled.mp3"
         }
       ]
     },
@@ -146,13 +146,13 @@
       "description": "Context compaction — memories fading like the Force",
       "files": [
         {
-          "name": "yoda-dangerous-disturbing.wav"
+          "name": "yoda-dangerous-disturbing.mp3"
         },
         {
-          "name": "yoda-twisted-by-dark-side.wav"
+          "name": "yoda-twisted-by-dark-side.mp3"
         },
         {
-          "name": "dark-side.wav"
+          "name": "dark-side.mp3"
         }
       ]
     },
@@ -160,13 +160,13 @@
       "description": "Teammate went idle — awaiting orders",
       "files": [
         {
-          "name": "r2d2-hey-you.wav"
+          "name": "r2d2-hey-you.mp3"
         },
         {
-          "name": "chewie-roar.wav"
+          "name": "chewie-roar.mp3"
         },
         {
-          "name": "luke-dont-do-that.wav"
+          "name": "luke-dont-do-that.mp3"
         }
       ]
     }

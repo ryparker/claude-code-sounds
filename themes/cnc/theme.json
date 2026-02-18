@@ -13,60 +13,60 @@
       "description": "Session starting -- EVA online, construction begins",
       "files": [
         { "name": "construction-complete.mp3" },
-        { "name": "power-up.wav" },
-        { "name": "radar-power-on.wav" },
-        { "name": "ts-startup.wav" },
-        { "name": "building-placed.wav" }
+        { "name": "power-up.mp3" },
+        { "name": "radar-power-on.mp3" },
+        { "name": "ts-startup.mp3" },
+        { "name": "building-placed.mp3" }
       ]
     },
     "end": {
       "description": "Session over -- mission accomplished or shutting down",
       "files": [
-        { "name": "selling.wav" },
-        { "name": "power-down.wav" },
-        { "name": "gdi-success.wav" },
-        { "name": "tanya-kiss-it-bye-bye.wav" }
+        { "name": "selling.mp3" },
+        { "name": "power-down.mp3" },
+        { "name": "gdi-success.mp3" },
+        { "name": "tanya-kiss-it-bye-bye.mp3" }
       ]
     },
     "prompt": {
       "description": "User submitted prompt -- unit acknowledging orders",
       "files": [
-        { "name": "allies-acknowledged.wav" },
-        { "name": "allies-affirmative.wav" },
-        { "name": "allies-yes-sir.wav" },
-        { "name": "soviet-affirmative.wav" },
-        { "name": "soviet-yes-sir.wav" },
-        { "name": "allies-at-once.wav" }
+        { "name": "allies-acknowledged.mp3" },
+        { "name": "allies-affirmative.mp3" },
+        { "name": "allies-yes-sir.mp3" },
+        { "name": "soviet-affirmative.mp3" },
+        { "name": "soviet-yes-sir.mp3" },
+        { "name": "allies-at-once.mp3" }
       ]
     },
     "stop": {
       "description": "Done responding -- task completed acknowledgment",
       "files": [
         { "name": "unit-ready.mp3" },
-        { "name": "allies-very-well.wav" },
-        { "name": "allies-of-course.wav" },
-        { "name": "allies-agreed.wav" },
-        { "name": "soviet-acknowledged.wav" }
+        { "name": "allies-very-well.mp3" },
+        { "name": "allies-of-course.mp3" },
+        { "name": "allies-agreed.mp3" },
+        { "name": "soviet-acknowledged.mp3" }
       ]
     },
     "permission": {
       "description": "Permission prompt -- awaiting orders from command",
       "files": [
-        { "name": "allies-waiting-orders.wav" },
-        { "name": "allies-reporting.wav" },
+        { "name": "allies-waiting-orders.mp3" },
+        { "name": "allies-reporting.mp3" },
         { "name": "incoming-transmission.mp3" },
-        { "name": "gdi-incoming-transmission.wav" },
-        { "name": "ts-auth.wav" }
+        { "name": "gdi-incoming-transmission.mp3" },
+        { "name": "ts-auth.mp3" }
       ]
     },
     "idle": {
       "description": "Waiting for input -- units standing by",
       "files": [
-        { "name": "allies-ready-and-waiting.wav" },
-        { "name": "gdi-on-hold.wav" },
-        { "name": "nod-on-hold.wav" },
+        { "name": "allies-ready-and-waiting.mp3" },
+        { "name": "gdi-on-hold.mp3" },
+        { "name": "nod-on-hold.mp3" },
         { "name": "no-money.mp3" },
-        { "name": "ts-reminder.wav" }
+        { "name": "ts-reminder.mp3" }
       ]
     },
     "subagent": {
@@ -75,45 +75,45 @@
         { "name": "reinforcements-ready.mp3" },
         { "name": "building.mp3" },
         { "name": "unit-ready.mp3" },
-        { "name": "soviet-at-once.wav" },
-        { "name": "soviet-reporting.wav" }
+        { "name": "soviet-at-once.mp3" },
+        { "name": "soviet-reporting.mp3" }
       ]
     },
     "error": {
       "description": "Tool failure -- something went wrong on the battlefield",
       "files": [
-        { "name": "gdi-unable-to-comply.wav" },
-        { "name": "nod-unable-to-comply.wav" },
+        { "name": "gdi-unable-to-comply.mp3" },
+        { "name": "nod-unable-to-comply.mp3" },
         { "name": "insufficient-funds.mp3" },
         { "name": "unit-lost.mp3" },
-        { "name": "tanya-death.wav" }
+        { "name": "tanya-death.mp3" }
       ]
     },
     "task-completed": {
       "description": "Task finished -- mission accomplished",
       "files": [
         { "name": "unit-promoted.mp3" },
-        { "name": "tanya-yeah.wav" },
-        { "name": "tanya-shake-it-baby.wav" },
-        { "name": "cha-ching.wav" }
+        { "name": "tanya-yeah.mp3" },
+        { "name": "tanya-shake-it-baby.mp3" },
+        { "name": "cha-ching.mp3" }
       ]
     },
     "compact": {
       "description": "Context compaction -- low power, systems straining",
       "files": [
-        { "name": "nod-low-power.wav" },
+        { "name": "nod-low-power.mp3" },
         { "name": "repairing.mp3" },
-        { "name": "gdi-warning.wav" },
-        { "name": "nod-incoming-transmission.wav" }
+        { "name": "gdi-warning.mp3" },
+        { "name": "nod-incoming-transmission.mp3" }
       ]
     },
     "teammate-idle": {
       "description": "Teammate went idle -- commanding attention",
       "files": [
         { "name": "base-under-attack.mp3" },
-        { "name": "radar-alert.wav" },
-        { "name": "soviet-comrade.wav" },
-        { "name": "alarm.wav" }
+        { "name": "radar-alert.mp3" },
+        { "name": "soviet-comrade.mp3" },
+        { "name": "alarm.mp3" }
       ]
     }
   }

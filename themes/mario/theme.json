@@ -10,19 +10,19 @@
       "description": "Session starting — here we go!",
       "files": [
         {
-          "name": "lets-a-go.wav"
+          "name": "lets-a-go.mp3"
         },
         {
-          "name": "here-we-go.wav"
+          "name": "here-we-go.mp3"
         },
         {
-          "name": "its-a-me-mario.wav"
+          "name": "its-a-me-mario.mp3"
         },
         {
-          "name": "hello.wav"
+          "name": "hello.mp3"
         },
         {
-          "name": "1-up.wav"
+          "name": "1-up.mp3"
         }
       ]
     },
@@ -30,16 +30,16 @@
       "description": "Session over — course clear",
       "files": [
         {
-          "name": "stage-clear.wav"
+          "name": "stage-clear.mp3"
         },
         {
-          "name": "world-clear.wav"
+          "name": "world-clear.mp3"
         },
         {
-          "name": "flagpole.wav"
+          "name": "flagpole.mp3"
         },
         {
-          "name": "okey-dokey.wav"
+          "name": "okey-dokey.mp3"
         }
       ]
     },
@@ -47,16 +47,16 @@
       "description": "User submitted prompt — coin collected",
       "files": [
         {
-          "name": "coin.wav"
+          "name": "coin.mp3"
         },
         {
-          "name": "block-bump.wav"
+          "name": "block-bump.mp3"
         },
         {
-          "name": "fireball.wav"
+          "name": "fireball.mp3"
         },
         {
-          "name": "haha.wav"
+          "name": "haha.mp3"
         }
       ]
     },
@@ -64,16 +64,16 @@
       "description": "Done responding — power-up complete",
       "files": [
         {
-          "name": "power-up.wav"
+          "name": "power-up.mp3"
         },
         {
-          "name": "smw-power-up.wav"
+          "name": "smw-power-up.mp3"
         },
         {
-          "name": "smb3-power-up.wav"
+          "name": "smb3-power-up.mp3"
         },
         {
-          "name": "stomp.wav"
+          "name": "stomp.mp3"
         }
       ]
     },
@@ -81,16 +81,16 @@
       "description": "Permission prompt — question block",
       "files": [
         {
-          "name": "pause.wav"
+          "name": "pause.mp3"
         },
         {
-          "name": "question-block.wav"
+          "name": "question-block.mp3"
         },
         {
-          "name": "message-block.wav"
+          "name": "message-block.mp3"
         },
         {
-          "name": "warp-whistle.wav"
+          "name": "warp-whistle.mp3"
         }
       ]
     },
@@ -98,16 +98,16 @@
       "description": "Waiting for input — Mario is bored",
       "files": [
         {
-          "name": "snore.wav"
+          "name": "snore.mp3"
         },
         {
-          "name": "yawn.wav"
+          "name": "yawn.mp3"
         },
         {
-          "name": "tired.wav"
+          "name": "tired.mp3"
         },
         {
-          "name": "mamma-mia.wav"
+          "name": "mamma-mia.mp3"
         }
       ]
     },
@@ -115,16 +115,16 @@
       "description": "Spawning subagent — summoning helper",
       "files": [
         {
-          "name": "mushroom-appears.wav"
+          "name": "mushroom-appears.mp3"
         },
         {
-          "name": "vine-grow.wav"
+          "name": "vine-grow.mp3"
         },
         {
-          "name": "raccoon-transform.wav"
+          "name": "raccoon-transform.mp3"
         },
         {
-          "name": "yahoo.wav"
+          "name": "yahoo.mp3"
         }
       ]
     },
@@ -132,22 +132,22 @@
       "description": "Tool failure — took damage",
       "files": [
         {
-          "name": "death.wav"
+          "name": "death.mp3"
         },
         {
-          "name": "hurt.wav"
+          "name": "hurt.mp3"
         },
         {
-          "name": "burned.wav"
+          "name": "burned.mp3"
         },
         {
-          "name": "doh.wav"
+          "name": "doh.mp3"
         },
         {
-          "name": "oof.wav"
+          "name": "oof.mp3"
         },
         {
-          "name": "game-over.wav"
+          "name": "game-over.mp3"
         }
       ]
     },
@@ -155,16 +155,16 @@
       "description": "Task finished — star collected",
       "files": [
         {
-          "name": "star-appears.wav"
+          "name": "star-appears.mp3"
         },
         {
-          "name": "level-clear.wav"
+          "name": "level-clear.mp3"
         },
         {
-          "name": "happy-message.wav"
+          "name": "happy-message.mp3"
         },
         {
-          "name": "yippee.wav"
+          "name": "yippee.mp3"
         }
       ]
     },
@@ -172,16 +172,16 @@
       "description": "Context compaction — pipe warp",
       "files": [
         {
-          "name": "pipe-warp.wav"
+          "name": "pipe-warp.mp3"
         },
         {
-          "name": "smw-pipe.wav"
+          "name": "smw-pipe.mp3"
         },
         {
-          "name": "warp.wav"
+          "name": "warp.mp3"
         },
         {
-          "name": "shrink.wav"
+          "name": "shrink.mp3"
         }
       ]
     },
@@ -189,16 +189,16 @@
       "description": "Teammate went idle — notification",
       "files": [
         {
-          "name": "smw-1-up.wav"
+          "name": "smw-1-up.mp3"
         },
         {
-          "name": "break-block.wav"
+          "name": "break-block.mp3"
         },
         {
-          "name": "whoa.wav"
+          "name": "whoa.mp3"
         },
         {
-          "name": "waha.wav"
+          "name": "waha.mp3"
         }
       ]
     }

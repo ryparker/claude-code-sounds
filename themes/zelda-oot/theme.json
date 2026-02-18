@@ -10,19 +10,19 @@
       "description": "Session starting — Navi greets you",
       "files": [
         {
-          "name": "hey.wav"
+          "name": "hey.mp3"
         },
         {
-          "name": "hello.wav"
+          "name": "hello.mp3"
         },
         {
-          "name": "listen.wav"
+          "name": "listen.mp3"
         },
         {
-          "name": "great-fairy-laugh.wav"
+          "name": "great-fairy-laugh.mp3"
         },
         {
-          "name": "open-chest.wav"
+          "name": "open-chest.mp3"
         }
       ]
     },
@@ -30,13 +30,13 @@
       "description": "Session over — quest complete",
       "files": [
         {
-          "name": "item-fanfare.wav"
+          "name": "item-fanfare.mp3"
         },
         {
-          "name": "secret-discovered.wav"
+          "name": "secret-discovered.mp3"
         },
         {
-          "name": "dialogue-done.wav"
+          "name": "dialogue-done.mp3"
         }
       ]
     },
@@ -44,19 +44,19 @@
       "description": "Permission prompt — Navi warns you",
       "files": [
         {
-          "name": "watch-out.wav"
+          "name": "watch-out.mp3"
         },
         {
-          "name": "hey.wav"
+          "name": "hey.mp3"
         },
         {
-          "name": "listen.wav"
+          "name": "listen.mp3"
         },
         {
-          "name": "pause-menu.wav"
+          "name": "pause-menu.mp3"
         },
         {
-          "name": "z-target.wav"
+          "name": "z-target.mp3"
         }
       ]
     },
@@ -64,19 +64,19 @@
       "description": "Done responding — loot collected",
       "files": [
         {
-          "name": "secret-discovered.wav"
+          "name": "secret-discovered.mp3"
         },
         {
-          "name": "get-item.wav"
+          "name": "get-item.mp3"
         },
         {
-          "name": "get-rupee.wav"
+          "name": "get-rupee.mp3"
         },
         {
-          "name": "open-small-chest.wav"
+          "name": "open-small-chest.mp3"
         },
         {
-          "name": "song-correct.wav"
+          "name": "song-correct.mp3"
         }
       ]
     },
@@ -84,19 +84,19 @@
       "description": "Spawning subagent — Link attacks",
       "files": [
         {
-          "name": "sword-draw.wav"
+          "name": "sword-draw.mp3"
         },
         {
-          "name": "link-attack.wav"
+          "name": "link-attack.mp3"
         },
         {
-          "name": "link-strong-attack.wav"
+          "name": "link-strong-attack.mp3"
         },
         {
-          "name": "hey.wav"
+          "name": "hey.mp3"
         },
         {
-          "name": "spin-attack.wav"
+          "name": "spin-attack.mp3"
         }
       ]
     },
@@ -104,19 +104,19 @@
       "description": "Waiting for input — Navi pesters you",
       "files": [
         {
-          "name": "hey.wav"
+          "name": "hey.mp3"
         },
         {
-          "name": "listen.wav"
+          "name": "listen.mp3"
         },
         {
-          "name": "watch-out.wav"
+          "name": "watch-out.mp3"
         },
         {
-          "name": "low-health.wav"
+          "name": "low-health.mp3"
         },
         {
-          "name": "snore.wav"
+          "name": "snore.mp3"
         }
       ]
     },
@@ -124,16 +124,16 @@
       "description": "Tool failure — Link takes damage",
       "files": [
         {
-          "name": "error.wav"
+          "name": "error.mp3"
         },
         {
-          "name": "song-error.wav"
+          "name": "song-error.mp3"
         },
         {
-          "name": "link-hurt.wav"
+          "name": "link-hurt.mp3"
         },
         {
-          "name": "ganondorf-laugh.wav"
+          "name": "ganondorf-laugh.mp3"
         }
       ]
     },
@@ -141,19 +141,19 @@
       "description": "User submitted prompt — adventure continues",
       "files": [
         {
-          "name": "hey.wav"
+          "name": "hey.mp3"
         },
         {
-          "name": "look.wav"
+          "name": "look.mp3"
         },
         {
-          "name": "menu-select.wav"
+          "name": "menu-select.mp3"
         },
         {
-          "name": "dialogue-next.wav"
+          "name": "dialogue-next.mp3"
         },
         {
-          "name": "get-heart.wav"
+          "name": "get-heart.mp3"
         }
       ]
     },
@@ -161,10 +161,10 @@
       "description": "Task finished — treasure acquired",
       "files": [
         {
-          "name": "item-fanfare.wav"
+          "name": "item-fanfare.mp3"
         },
         {
-          "name": "secret-discovered.wav"
+          "name": "secret-discovered.mp3"
         }
       ]
     },
@@ -172,16 +172,16 @@
       "description": "Context compaction — health running low",
       "files": [
         {
-          "name": "low-health.wav"
+          "name": "low-health.mp3"
         },
         {
-          "name": "pause-close.wav"
+          "name": "pause-close.mp3"
         },
         {
-          "name": "watch-out.wav"
+          "name": "watch-out.mp3"
         },
         {
-          "name": "error.wav"
+          "name": "error.mp3"
         }
       ]
     },
@@ -189,16 +189,16 @@
       "description": "Teammate went idle — Navi nags",
       "files": [
         {
-          "name": "hey.wav"
+          "name": "hey.mp3"
         },
         {
-          "name": "listen.wav"
+          "name": "listen.mp3"
         },
         {
-          "name": "watch-out.wav"
+          "name": "watch-out.mp3"
         },
         {
-          "name": "low-health.wav"
+          "name": "low-health.mp3"
         }
       ]
     }

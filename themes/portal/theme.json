@@ -10,16 +10,16 @@
       "description": "Session starting — test chamber initiated",
       "files": [
         {
-          "name": "portalgun-powerup.wav"
+          "name": "portalgun-powerup.mp3"
         },
         {
-          "name": "turret-activated.wav"
+          "name": "turret-activated.mp3"
         },
         {
-          "name": "portal-open.wav"
+          "name": "portal-open.mp3"
         },
         {
-          "name": "test-chamber-start.wav"
+          "name": "test-chamber-start.mp3"
         }
       ]
     },
@@ -27,16 +27,16 @@
       "description": "Session over — test complete",
       "files": [
         {
-          "name": "portal-close.wav"
+          "name": "portal-close.mp3"
         },
         {
-          "name": "portal-close-alt.wav"
+          "name": "portal-close-alt.mp3"
         },
         {
-          "name": "turret-goodbye.wav"
+          "name": "turret-goodbye.mp3"
         },
         {
-          "name": "fizzler-shutdown.wav"
+          "name": "fizzler-shutdown.mp3"
         }
       ]
     },
@@ -44,16 +44,16 @@
       "description": "User submitted prompt — input received",
       "files": [
         {
-          "name": "button-positive.wav"
+          "name": "button-positive.mp3"
         },
         {
-          "name": "button-press.wav"
+          "name": "button-press.mp3"
         },
         {
-          "name": "ui-click.wav"
+          "name": "ui-click.mp3"
         },
         {
-          "name": "portal-enter.wav"
+          "name": "portal-enter.mp3"
         }
       ]
     },
@@ -61,16 +61,16 @@
       "description": "Done responding — task acknowledged",
       "files": [
         {
-          "name": "synth-positive.wav"
+          "name": "synth-positive.mp3"
         },
         {
-          "name": "button-release.wav"
+          "name": "button-release.mp3"
         },
         {
-          "name": "portal-exit.wav"
+          "name": "portal-exit.mp3"
         },
         {
-          "name": "turret-done.wav"
+          "name": "turret-done.mp3"
         }
       ]
     },
@@ -78,16 +78,16 @@
       "description": "Permission prompt — turret alert",
       "files": [
         {
-          "name": "turret-whos-there.wav"
+          "name": "turret-whos-there.mp3"
         },
         {
-          "name": "turret-alert.wav"
+          "name": "turret-alert.mp3"
         },
         {
-          "name": "klaxon-alarm.wav"
+          "name": "klaxon-alarm.mp3"
         },
         {
-          "name": "turret-i-see-you.wav"
+          "name": "turret-i-see-you.mp3"
         }
       ]
     },
@@ -95,16 +95,16 @@
       "description": "Waiting for input — are you still there?",
       "files": [
         {
-          "name": "turret-are-you-still-there.wav"
+          "name": "turret-are-you-still-there.mp3"
         },
         {
-          "name": "turret-searching.wav"
+          "name": "turret-searching.mp3"
         },
         {
-          "name": "turret-hello.wav"
+          "name": "turret-hello.mp3"
         },
         {
-          "name": "turret-ping.wav"
+          "name": "turret-ping.mp3"
         }
       ]
     },
@@ -112,16 +112,16 @@
       "description": "Spawning subagent — deploying through portal",
       "files": [
         {
-          "name": "shoot-blue-portal.wav"
+          "name": "shoot-blue-portal.mp3"
         },
         {
-          "name": "shoot-orange-portal.wav"
+          "name": "shoot-orange-portal.mp3"
         },
         {
-          "name": "turret-deploy.wav"
+          "name": "turret-deploy.mp3"
         },
         {
-          "name": "core-attach.wav"
+          "name": "core-attach.mp3"
         }
       ]
     },
@@ -129,19 +129,19 @@
       "description": "Tool failure — fizzled",
       "files": [
         {
-          "name": "turret-ow.wav"
+          "name": "turret-ow.mp3"
         },
         {
-          "name": "portal-fizzle.wav"
+          "name": "portal-fizzle.mp3"
         },
         {
-          "name": "emancipation-grill.wav"
+          "name": "emancipation-grill.mp3"
         },
         {
-          "name": "synth-negative.wav"
+          "name": "synth-negative.mp3"
         },
         {
-          "name": "invalid-surface.wav"
+          "name": "invalid-surface.mp3"
         }
       ]
     },
@@ -149,13 +149,13 @@
       "description": "Task finished — test chamber complete",
       "files": [
         {
-          "name": "test-chamber-complete.wav"
+          "name": "test-chamber-complete.mp3"
         },
         {
-          "name": "core-complete.wav"
+          "name": "core-complete.mp3"
         },
         {
-          "name": "announcer-post.wav"
+          "name": "announcer-post.mp3"
         }
       ]
     },
@@ -163,13 +163,13 @@
       "description": "Context compaction — memory fizzling",
       "files": [
         {
-          "name": "fizzler-start.wav"
+          "name": "fizzler-start.mp3"
         },
         {
-          "name": "turret-retract.wav"
+          "name": "turret-retract.mp3"
         },
         {
-          "name": "portal-whoosh-close.wav"
+          "name": "portal-whoosh-close.mp3"
         }
       ]
     },
@@ -177,13 +177,13 @@
       "description": "Teammate went idle — turret lost target",
       "files": [
         {
-          "name": "turret-target-lost.wav"
+          "name": "turret-target-lost.mp3"
         },
         {
-          "name": "turret-hellooo.wav"
+          "name": "turret-hellooo.mp3"
         },
         {
-          "name": "turret-no-hard-feelings.wav"
+          "name": "turret-no-hard-feelings.mp3"
         }
       ]
     }

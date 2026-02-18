@@ -11,16 +11,16 @@
       "description": "Session starting — being summoned",
       "files": [
         {
-          "name": "ready-to-work.wav"
+          "name": "ready-to-work.mp3"
         },
         {
-          "name": "something-need-doing.wav"
+          "name": "something-need-doing.mp3"
         },
         {
-          "name": "how-can-i-help.wav"
+          "name": "how-can-i-help.mp3"
         },
         {
-          "name": "someone-call-for-the-doctor.wav"
+          "name": "someone-call-for-the-doctor.mp3"
         },
         {
           "name": "more-work.mp3"
@@ -31,13 +31,13 @@
       "description": "Session over — farewell",
       "files": [
         {
-          "name": "well-done.wav"
+          "name": "well-done.mp3"
         },
         {
-          "name": "finally.wav"
+          "name": "finally.mp3"
         },
         {
-          "name": "okie-dokie.wav"
+          "name": "okie-dokie.mp3"
         }
       ]
     },
@@ -45,19 +45,19 @@
       "description": "Permission prompt — what do you want to approve?",
       "files": [
         {
-          "name": "hmmm.wav"
+          "name": "hmmm.mp3"
         },
         {
-          "name": "what-you-want.wav"
+          "name": "what-you-want.mp3"
         },
         {
-          "name": "what-you-want-me-to-do.wav"
+          "name": "what-you-want-me-to-do.mp3"
         },
         {
-          "name": "who-you-want-me-kill.wav"
+          "name": "who-you-want-me-kill.mp3"
         },
         {
-          "name": "you-seek-me-help.wav"
+          "name": "you-seek-me-help.mp3"
         }
       ]
     },
@@ -65,31 +65,31 @@
       "description": "Done responding — acknowledgment",
       "files": [
         {
-          "name": "zug-zug.wav"
+          "name": "zug-zug.mp3"
         },
         {
-          "name": "get-em.wav"
+          "name": "get-em.mp3"
         },
         {
-          "name": "ok.wav"
+          "name": "ok.mp3"
         },
         {
-          "name": "i-can-do-that.wav"
+          "name": "i-can-do-that.mp3"
         },
         {
-          "name": "be-happy-to.wav"
+          "name": "be-happy-to.mp3"
         },
         {
-          "name": "understood.wav"
+          "name": "understood.mp3"
         },
         {
-          "name": "of-course.wav"
+          "name": "of-course.mp3"
         },
         {
-          "name": "it-is-certain.wav"
+          "name": "it-is-certain.mp3"
         },
         {
-          "name": "whatever-you-say.wav"
+          "name": "whatever-you-say.mp3"
         }
       ]
     },
@@ -97,25 +97,25 @@
       "description": "Spawning subagent — dispatching",
       "files": [
         {
-          "name": "work-work.wav"
+          "name": "work-work.mp3"
         },
         {
-          "name": "for-the-horde.wav"
+          "name": "for-the-horde.mp3"
         },
         {
-          "name": "taste-the-fury.wav"
+          "name": "taste-the-fury.mp3"
         },
         {
-          "name": "ill-try.wav"
+          "name": "ill-try.mp3"
         },
         {
-          "name": "why-not.wav"
+          "name": "why-not.mp3"
         },
         {
-          "name": "zug-zug.wav"
+          "name": "zug-zug.mp3"
         },
         {
-          "name": "get-em.wav"
+          "name": "get-em.mp3"
         }
       ]
     },
@@ -123,25 +123,25 @@
       "description": "Waiting for input — bored and annoyed",
       "files": [
         {
-          "name": "me-busy-leave-me-alone.wav"
+          "name": "me-busy-leave-me-alone.mp3"
         },
         {
-          "name": "no-time-for-play.wav"
+          "name": "no-time-for-play.mp3"
         },
         {
-          "name": "me-not-that-kind-of-orc.wav"
+          "name": "me-not-that-kind-of-orc.mp3"
         },
         {
-          "name": "why-you-poking-me.wav"
+          "name": "why-you-poking-me.mp3"
         },
         {
-          "name": "not-easy-being-green.wav"
+          "name": "not-easy-being-green.mp3"
         },
         {
-          "name": "i-can-wait-no-longer.wav"
+          "name": "i-can-wait-no-longer.mp3"
         },
         {
-          "name": "outlook-not-so-good.wav"
+          "name": "outlook-not-so-good.mp3"
         }
       ]
     },
@@ -149,16 +149,16 @@
       "description": "Tool failure — something broke",
       "files": [
         {
-          "name": "peon-death.wav"
+          "name": "peon-death.mp3"
         },
         {
-          "name": "grunt-death.wav"
+          "name": "grunt-death.mp3"
         },
         {
-          "name": "headhunter-death.wav"
+          "name": "headhunter-death.mp3"
         },
         {
-          "name": "reply-hazy-try-again.wav"
+          "name": "reply-hazy-try-again.mp3"
         }
       ]
     },
@@ -166,22 +166,22 @@
       "description": "User submitted prompt — acknowledging order",
       "files": [
         {
-          "name": "yes.wav"
+          "name": "yes.mp3"
         },
         {
-          "name": "dabu.wav"
+          "name": "dabu.mp3"
         },
         {
-          "name": "zug-zug.wav"
+          "name": "zug-zug.mp3"
         },
         {
-          "name": "right-away.wav"
+          "name": "right-away.mp3"
         },
         {
-          "name": "immediately.wav"
+          "name": "immediately.mp3"
         },
         {
-          "name": "anything-you-want.wav"
+          "name": "anything-you-want.mp3"
         },
         {
           "name": "more-work.mp3"
@@ -192,10 +192,10 @@
       "description": "Task finished — victory",
       "files": [
         {
-          "name": "well-done.wav"
+          "name": "well-done.mp3"
         },
         {
-          "name": "finally.wav"
+          "name": "finally.mp3"
         }
       ]
     },
@@ -203,16 +203,16 @@
       "description": "Context compaction — memory fading",
       "files": [
         {
-          "name": "concentrate-and-ask-again.wav"
+          "name": "concentrate-and-ask-again.mp3"
         },
         {
-          "name": "reply-hazy-try-again.wav"
+          "name": "reply-hazy-try-again.mp3"
         },
         {
-          "name": "death.wav"
+          "name": "death.mp3"
         },
         {
-          "name": "i-can-wait-no-longer.wav"
+          "name": "i-can-wait-no-longer.mp3"
         }
       ]
     },
@@ -220,16 +220,16 @@
       "description": "Teammate went idle — impatient",
       "files": [
         {
-          "name": "what.wav"
+          "name": "what.mp3"
         },
         {
-          "name": "me-busy-leave-me-alone.wav"
+          "name": "me-busy-leave-me-alone.mp3"
         },
         {
-          "name": "no-time-for-play.wav"
+          "name": "no-time-for-play.mp3"
         },
         {
-          "name": "i-can-wait-no-longer.wav"
+          "name": "i-can-wait-no-longer.mp3"
         }
       ]
     }

@@ -11,7 +11,7 @@
       "description": "Session starting — a wild Claude appeared in the tall grass!",
       "files": [
         { "name": "wild-encounter.mp3" },
-        { "name": "ball-open.wav" },
+        { "name": "ball-open.mp3" },
         { "name": "battle-start.mp3" },
         { "name": "trainer-encounter.mp3" },
         { "name": "dragon-dance.mp3" }
@@ -22,7 +22,7 @@
       "files": [
         { "name": "pokemon-center-heal.mp3" },
         { "name": "save-game.mp3" },
-        { "name": "save.wav" },
+        { "name": "save.mp3" },
         { "name": "pokemon-center-music.mp3" },
         { "name": "battle-victory.mp3" }
       ]
@@ -30,16 +30,16 @@
     "prompt": {
       "description": "User submitted prompt — menu select in the PokéNav",
       "files": [
-        { "name": "select.wav" },
-        { "name": "effective.wav" },
-        { "name": "use-item.wav" },
-        { "name": "win-open.wav" }
+        { "name": "select.mp3" },
+        { "name": "effective.mp3" },
+        { "name": "use-item.mp3" },
+        { "name": "win-open.mp3" }
       ]
     },
     "stop": {
       "description": "Done responding — move learned, ready for next command",
       "files": [
-        { "name": "success.wav" },
+        { "name": "success.mp3" },
         { "name": "item-found.mp3" },
         { "name": "stat-rise.mp3" },
         { "name": "hit-normal.mp3" }
@@ -48,11 +48,11 @@
     "permission": {
       "description": "Permission prompt — a wild encounter needs your attention!",
       "files": [
-        { "name": "super-effective-sfx.wav" },
+        { "name": "super-effective-sfx.mp3" },
         { "name": "screech.mp3" },
-        { "name": "wall-hit.wav" },
+        { "name": "wall-hit.mp3" },
         { "name": "roar.mp3" },
-        { "name": "bang.wav" }
+        { "name": "bang.mp3" }
       ]
     },
     "idle": {
@@ -61,13 +61,13 @@
         { "name": "slowpoke-cry.mp3" },
         { "name": "rest.mp3" },
         { "name": "yawn.mp3" },
-        { "name": "ledge.wav" }
+        { "name": "ledge.mp3" }
       ]
     },
     "subagent": {
       "description": "Spawning subagent — Go, I choose you!",
       "files": [
-        { "name": "ball-throw.wav" },
+        { "name": "ball-throw.mp3" },
         { "name": "recall-pokeball.mp3" },
         { "name": "baton-pass.mp3" },
         { "name": "teleport.mp3" },
@@ -77,11 +77,11 @@
     "error": {
       "description": "Tool failure — it's not very effective...",
       "files": [
-        { "name": "faint.wav" },
+        { "name": "faint.mp3" },
         { "name": "battle-faint.mp3" },
         { "name": "explosion.mp3" },
         { "name": "self-destruct.mp3" },
-        { "name": "not-effective.wav" }
+        { "name": "not-effective.mp3" }
       ]
     },
     "task-completed": {
@@ -97,9 +97,9 @@
     "compact": {
       "description": "Context compaction — storing Pokemon in the PC",
       "files": [
-        { "name": "pc-login.wav" },
-        { "name": "pc-on.wav" },
-        { "name": "pc-off.wav" },
+        { "name": "pc-login.mp3" },
+        { "name": "pc-on.mp3" },
+        { "name": "pc-off.mp3" },
         { "name": "substitute.mp3" },
         { "name": "transform.mp3" }
       ]
