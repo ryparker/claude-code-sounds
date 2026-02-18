@@ -22,6 +22,7 @@
   },
   "files": [
     "bin/",
+    "commands/",
     "hooks/",
     "themes/",
     "images/"

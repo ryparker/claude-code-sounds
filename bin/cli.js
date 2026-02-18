@@ -348,6 +348,7 @@ function uninstallAll() {
   if (removed.sounds) p.log.step("Removed ~/.claude/sounds/");
   if (removed.hookScript) p.log.step("Removed ~/.claude/hooks/play-sound.sh");
   if (removed.hooksConfig) p.log.step("Removed hooks from settings.json");
+  if (removed.commands) p.log.step("Removed /mute and /unmute commands");
 }
 
 // ─── Print Summary ───────────────────────────────────────────────────────────

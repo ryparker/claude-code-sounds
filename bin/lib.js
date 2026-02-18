@@ -10,6 +10,7 @@ function createPaths(claudeDir, pkgDir) {
     SOUNDS_DIR: path.join(claudeDir, "sounds"),
     HOOKS_DIR: path.join(claudeDir, "hooks"),
     SETTINGS_PATH: path.join(claudeDir, "settings.json"),
+    COMMANDS_DIR: path.join(claudeDir, "commands"),
     THEMES_DIR: path.join(pkgDir, "themes"),
     INSTALLED_PATH: path.join(claudeDir, "sounds", ".installed.json"),
     PKG_DIR: pkgDir,
@@ -218,10 +219,21 @@ function installHooksConfig(paths) {
   const settings = readSettings(paths);
   settings.hooks = HOOKS_CONFIG;
   writeSettings(settings, paths);
+
+  // Install slash commands (/mute, /unmute)
+  const cmdsSrc = path.join(paths.PKG_DIR, "commands");
+  if (fs.existsSync(cmdsSrc)) {
+    mkdirp(paths.COMMANDS_DIR);
+    for (const file of fs.readdirSync(cmdsSrc)) {
+      if (file.endsWith(".md")) {
+        fs.copyFileSync(path.join(cmdsSrc, file), path.join(paths.COMMANDS_DIR, file));
+      }
+    }
+  }
 }
 
 function uninstallAll(paths) {
-  const removed = { sounds: false, hookScript: false, hooksConfig: false };
+  const removed = { sounds: false, hookScript: false, hooksConfig: false, commands: false };
 
   if (fs.existsSync(paths.SOUNDS_DIR)) {
     fs.rmSync(paths.SOUNDS_DIR, { recursive: true });
@@ -239,6 +251,14 @@ function uninstallAll(paths) {
     delete settings.hooks;
     writeSettings(settings, paths);
     removed.hooksConfig = true;
+  }
+
+  for (const cmd of ["mute.md", "unmute.md"]) {
+    const cmdPath = path.join(paths.COMMANDS_DIR, cmd);
+    if (fs.existsSync(cmdPath)) {
+      fs.unlinkSync(cmdPath);
+      removed.commands = true;
+    }
   }
 
   return removed;

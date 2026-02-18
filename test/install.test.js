@@ -103,6 +103,13 @@ describe("installHooksConfig", () => {
     assert.equal(settings.existingKey, "value");
     assert.ok(settings.hooks);
   });
+
+  it("installs slash commands", (t) => {
+    const { paths } = makeTempPaths(t);
+    lib.installHooksConfig(paths);
+    assert.ok(fs.existsSync(path.join(paths.COMMANDS_DIR, "mute.md")));
+    assert.ok(fs.existsSync(path.join(paths.COMMANDS_DIR, "unmute.md")));
+  });
 });
 
 describe("uninstallAll", () => {
@@ -135,6 +142,18 @@ describe("uninstallAll", () => {
     const settings = JSON.parse(fs.readFileSync(paths.SETTINGS_PATH, "utf-8"));
     assert.equal(settings.hooks, undefined);
     assert.equal(settings.other, "keep");
+  });
+
+  it("removes slash commands", (t) => {
+    const { paths } = makeTempPaths(t);
+    fs.mkdirSync(paths.COMMANDS_DIR, { recursive: true });
+    fs.writeFileSync(path.join(paths.COMMANDS_DIR, "mute.md"), "test");
+    fs.writeFileSync(path.join(paths.COMMANDS_DIR, "unmute.md"), "test");
+
+    const removed = lib.uninstallAll(paths);
+    assert.ok(removed.commands);
+    assert.ok(!fs.existsSync(path.join(paths.COMMANDS_DIR, "mute.md")));
+    assert.ok(!fs.existsSync(path.join(paths.COMMANDS_DIR, "unmute.md")));
   });
 
   it("handles missing state gracefully", (t) => {
