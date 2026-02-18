@@ -18,6 +18,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Validate theme.json files
         run: |
           node -e "
