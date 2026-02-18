@@ -8,7 +8,7 @@
 
 Plays sound effects when sessions start, prompts are submitted, responses finish, errors occur, and more.
 
-Ships with 16 themes. Bring your own sounds or create new ones.
+Ships with 15 themes. Bring your own sounds or create new ones.
 
 *"Something need doing?"*
 
@@ -59,7 +59,6 @@ npx claude-code-sounds --help             # Show help
 | **Diablo 2** (`diablo2`) | 46 | *"Stay awhile and listen"* — Deckard Cain, item drops, and the Prime Evils |
 | **Halo** (`halo`) | 52 | *"Wake me when you need me"* — Master Chief, Cortana, and the multiplayer announcer |
 | **Metal Gear Solid** (`mgs`) | 40 | *"Kept you waiting, huh?"* — Codec calls, alert sounds, and Snake |
-| **Pokemon Gen 1** (`pokemon-gen1`) | 49 | *"Wild PIKACHU appeared!"* — Cries, battle sounds, and Kanto menus |
 | **Pokemon Gen 3** (`pokemon-gen3`) | 51 | *"A wild TREECKO appeared!"* — GBA battle cries, Hoenn fanfares, and RSE bleeps |
 | **Portal** (`portal`) | 42 | *"Are you still there?"* — Turrets, portal guns, and Aperture Science |
 | **Short Circuit** (`short-circuit`) | 41 | *"Number 5 is alive!"* — The lovable sentient robot from the 1986 classic |

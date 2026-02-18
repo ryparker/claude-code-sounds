@@ -7,7 +7,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 # Validate
 node --check bin/cli.js
-shellcheck -S warning hooks/*.sh install.sh preview.sh themes/*/download.sh
 
 # Smoke tests
 node bin/cli.js --help
@@ -16,18 +15,19 @@ node bin/cli.js --list
 # Package check
 npm pack --dry-run
 
-# Full interactive install (macOS only — requires afplay, curl, unzip)
+# Full interactive install (macOS only — requires afplay)
 node bin/cli.js --yes
 
-# Preview installed sounds
-./preview.sh
+# Detect audio watermarks (requires ffmpeg, numpy)
+python3 scripts/detect-watermarks.py themes/*/sounds/         # Scan
+python3 scripts/detect-watermarks.py --fix themes/*/sounds/   # Scan and trim
 ```
 
-CI runs on Node 16, 18, 20, 22 and must pass: theme.json validation, ShellCheck (warning severity), Node syntax check, smoke tests, and package sanity.
+CI runs on Node 20, 22 and must pass: theme.json validation (including sound file existence), ShellCheck (warning severity), Node syntax check, smoke tests, and package sanity.
 
 ## Architecture
 
-**Sound theme installer for Claude Code lifecycle hooks.** macOS-only (`afplay`). Zero npm dependencies.
+**Sound theme installer for Claude Code lifecycle hooks.** macOS-only (`afplay`). Dependencies: `@clack/core`, `@clack/prompts` (ESM-only, requires Node 20+).
 
 ### Two install paths
 
@@ -36,7 +36,7 @@ CI runs on Node 16, 18, 20, 22 and must pass: theme.json validation, ShellCheck 
 
 ### How it works
 
-1. User picks a theme → `themes/<id>/download.sh` fetches audio files into a temp dir
+1. User picks a theme → sounds are copied from `themes/<id>/sounds/` (embedded in the npm package)
 2. CLI reads `themes/<id>/theme.json` to map files into 11 hook categories
 3. Selected sounds copied to `~/.claude/sounds/<category>/`
 4. `hooks/play-sound.sh` copied to `~/.claude/hooks/`
@@ -47,11 +47,11 @@ CI runs on Node 16, 18, 20, 22 and must pass: theme.json validation, ShellCheck 
 
 ```
 themes/<id>/
-├── theme.json     # name, description, author, srcBase, sounds (11 categories)
-└── download.sh    # $1=sounds_dir, $2=tmp_dir — downloads to $2/<srcBase>/
+├── theme.json     # name, description, author, sources, sounds (11 categories)
+└── sounds/        # .wav and .mp3 files referenced by name in theme.json
 ```
 
-Each category in `theme.json` has `description` and `files[]` (each with `src` and `name`). The `src` path is relative to `$TMP_DIR/<srcBase>/` after download. Special prefix `@soundfxcenter/` maps to supplemental downloads.
+Each category in `theme.json` has `description` and `files[]` (each with `name` matching a file in `sounds/`). No download scripts — all audio is embedded directly in the repo.
 
 ### 11 hook categories
 
@@ -59,14 +59,14 @@ Each category in `theme.json` has `description` and `files[]` (each with `src` a
 
 ### Key files
 
-- **`bin/cli.js`** (~940 lines) — Main CLI: arg parsing, interactive TUI (raw-mode ANSI menus with vim keys), theme discovery, download orchestration, sound customization with borrowing, hook installation
+- **`bin/cli.js`** (~1040 lines) — Main CLI: arg parsing, interactive TUI (raw-mode ANSI menus with vim keys), theme discovery, sound customization with borrowing, hook installation
 - **`hooks/play-sound.sh`** — Event handler: drains stdin, collects `.wav`/`.mp3` from category dir, picks random, plays background `afplay`
 - **`install.sh`** — Bash alternative installer (uses `jq` for JSON)
-- **`preview.sh`** — Plays all installed sounds sequentially for testing
+- **`scripts/detect-watermarks.py`** — Detects and trims audio watermarks using fingerprint matching and auto-clustering. Watermark references stored in `scripts/watermarks/`. Not tracked in git.
 
 ### Installation state
 
-- `~/.claude/sounds/.installed.json` — Tracks active theme `{"theme":"wc3-peon"}`
+- `~/.claude/sounds/.installed.json` — Tracks active themes and file mappings
 - `~/.claude/sounds/<category>/` — Active sound files
 - `~/.claude/sounds/<category>/.disabled/` — Deselected native sounds (for reconfigure)
 - `~/.claude/settings.json` — Hook config under `.hooks` key
@@ -77,3 +77,5 @@ Each category in `theme.json` has `description` and `files[]` (each with `src` a
 - All hooks have 5-second timeout and run non-blocking
 - `npm pack` only includes `bin/`, `hooks/`, `themes/`, `images/`
 - Publish uses npm Trusted Publishing (OIDC, no token) triggered by GitHub Release with `vX.Y.Z` tag matching `package.json` version
+- Theme sound files use descriptive kebab-case names (e.g. `ready-to-work.wav`, `zealot-my-life-for-aiur.wav`)
+- `scripts/` and `scripts/watermarks/` are not tracked in git
