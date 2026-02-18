@@ -38,8 +38,9 @@ jobs:
                 check(val.description, cat + ': missing description');
                 check(Array.isArray(val.files), cat + ': missing files array');
                 for (const f of val.files || []) {
-                  check(f.src, cat + ': file missing src');
                   check(f.name, cat + ': file missing name');
+                  const soundFile = path.join('themes', theme, 'sounds', f.name);
+                  check(fs.existsSync(soundFile), cat + ': sound file missing: ' + f.name);
                 }
               }
               console.log('  OK');
