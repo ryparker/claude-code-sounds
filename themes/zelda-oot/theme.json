@@ -2,109 +2,204 @@
   "name": "Zelda: Ocarina of Time",
   "description": "Navi, Link, and iconic OOT jingles — Hey! Listen!",
   "author": "ryparker",
-  "sources": ["noproblo.dayjo.org"],
-  "srcBase": "OOT",
+  "sources": [
+    "noproblo.dayjo.org"
+  ],
   "sounds": {
     "start": {
       "description": "Session starting — Navi greets you",
       "files": [
-        { "src": "OOT_Navi_Hey1.wav", "name": "hey.wav" },
-        { "src": "OOT_Navi_Hello1.wav", "name": "hello.wav" },
-        { "src": "OOT_Navi_Listen1.wav", "name": "listen.wav" },
-        { "src": "OOT_GreatFairy_Laugh1.wav", "name": "great-fairy-laugh.wav" },
-        { "src": "OOT_Chest_Big.wav", "name": "open-chest.wav" }
+        {
+          "name": "hey.wav"
+        },
+        {
+          "name": "hello.wav"
+        },
+        {
+          "name": "listen.wav"
+        },
+        {
+          "name": "great-fairy-laugh.wav"
+        },
+        {
+          "name": "open-chest.wav"
+        }
       ]
     },
     "end": {
       "description": "Session over — quest complete",
       "files": [
-        { "src": "OOT_Fanfare_SmallItem.wav", "name": "item-fanfare.wav" },
-        { "src": "OOT_Secret_Mono.wav", "name": "secret-discovered.wav" },
-        { "src": "OOT_Dialogue_Done_Mono.wav", "name": "dialogue-done.wav" }
+        {
+          "name": "item-fanfare.wav"
+        },
+        {
+          "name": "secret-discovered.wav"
+        },
+        {
+          "name": "dialogue-done.wav"
+        }
       ]
     },
     "permission": {
       "description": "Permission prompt — Navi warns you",
       "files": [
-        { "src": "OOT_Navi_WatchOut1.wav", "name": "watch-out.wav" },
-        { "src": "OOT_Navi_Hey1.wav", "name": "hey.wav" },
-        { "src": "OOT_Navi_Listen1.wav", "name": "listen.wav" },
-        { "src": "OOT_PauseMenu_Open_Mono.wav", "name": "pause-menu.wav" },
-        { "src": "OOT_ZTarget_Enemy.wav", "name": "z-target.wav" }
+        {
+          "name": "watch-out.wav"
+        },
+        {
+          "name": "hey.wav"
+        },
+        {
+          "name": "listen.wav"
+        },
+        {
+          "name": "pause-menu.wav"
+        },
+        {
+          "name": "z-target.wav"
+        }
       ]
     },
     "stop": {
       "description": "Done responding — loot collected",
       "files": [
-        { "src": "OOT_Secret_Mono.wav", "name": "secret-discovered.wav" },
-        { "src": "OOT_Get_SmallItem1.wav", "name": "get-item.wav" },
-        { "src": "OOT_Get_Rupee.wav", "name": "get-rupee.wav" },
-        { "src": "OOT_Chest_Small.wav", "name": "open-small-chest.wav" },
-        { "src": "OOT_Song_Correct_Mono.wav", "name": "song-correct.wav" }
+        {
+          "name": "secret-discovered.wav"
+        },
+        {
+          "name": "get-item.wav"
+        },
+        {
+          "name": "get-rupee.wav"
+        },
+        {
+          "name": "open-small-chest.wav"
+        },
+        {
+          "name": "song-correct.wav"
+        }
       ]
     },
     "subagent": {
       "description": "Spawning subagent — Link attacks",
       "files": [
-        { "src": "OOT_Sword_Draw.wav", "name": "sword-draw.wav" },
-        { "src": "OOT_AdultLink_Attack1.wav", "name": "link-attack.wav" },
-        { "src": "OOT_AdultLink_StrongAttack1.wav", "name": "link-strong-attack.wav" },
-        { "src": "OOT_Navi_Hey1.wav", "name": "hey.wav" },
-        { "src": "OOT_Sword_Spin.wav", "name": "spin-attack.wav" }
+        {
+          "name": "sword-draw.wav"
+        },
+        {
+          "name": "link-attack.wav"
+        },
+        {
+          "name": "link-strong-attack.wav"
+        },
+        {
+          "name": "hey.wav"
+        },
+        {
+          "name": "spin-attack.wav"
+        }
       ]
     },
     "idle": {
       "description": "Waiting for input — Navi pesters you",
       "files": [
-        { "src": "OOT_Navi_Hey1.wav", "name": "hey.wav" },
-        { "src": "OOT_Navi_Listen1.wav", "name": "listen.wav" },
-        { "src": "OOT_Navi_WatchOut1.wav", "name": "watch-out.wav" },
-        { "src": "OOT_LowHealth.wav", "name": "low-health.wav" },
-        { "src": "OOT_Talon_Snore.wav", "name": "snore.wav" }
+        {
+          "name": "hey.wav"
+        },
+        {
+          "name": "listen.wav"
+        },
+        {
+          "name": "watch-out.wav"
+        },
+        {
+          "name": "low-health.wav"
+        },
+        {
+          "name": "snore.wav"
+        }
       ]
     },
     "error": {
       "description": "Tool failure — Link takes damage",
       "files": [
-        { "src": "OOT_Error.wav", "name": "error.wav" },
-        { "src": "OOT_Song_Error.wav", "name": "song-error.wav" },
-        { "src": "OOT_AdultLink_Hurt1.wav", "name": "link-hurt.wav" },
-        { "src": "OOT_Ganondorf_Heheh.wav", "name": "ganondorf-laugh.wav" }
+        {
+          "name": "error.wav"
+        },
+        {
+          "name": "song-error.wav"
+        },
+        {
+          "name": "link-hurt.wav"
+        },
+        {
+          "name": "ganondorf-laugh.wav"
+        }
       ]
     },
     "prompt": {
       "description": "User submitted prompt — adventure continues",
       "files": [
-        { "src": "OOT_Navi_Hey1.wav", "name": "hey.wav" },
-        { "src": "OOT_Navi_Look1.wav", "name": "look.wav" },
-        { "src": "OOT_MainMenu_Select.wav", "name": "menu-select.wav" },
-        { "src": "OOT_Dialogue_Next.wav", "name": "dialogue-next.wav" },
-        { "src": "OOT_Get_Heart.wav", "name": "get-heart.wav" }
+        {
+          "name": "hey.wav"
+        },
+        {
+          "name": "look.wav"
+        },
+        {
+          "name": "menu-select.wav"
+        },
+        {
+          "name": "dialogue-next.wav"
+        },
+        {
+          "name": "get-heart.wav"
+        }
       ]
     },
     "task-completed": {
       "description": "Task finished — treasure acquired",
       "files": [
-        { "src": "OOT_Fanfare_SmallItem.wav", "name": "item-fanfare.wav" },
-        { "src": "OOT_Secret_Mono.wav", "name": "secret-discovered.wav" }
+        {
+          "name": "item-fanfare.wav"
+        },
+        {
+          "name": "secret-discovered.wav"
+        }
       ]
     },
     "compact": {
       "description": "Context compaction — health running low",
       "files": [
-        { "src": "OOT_LowHealth.wav", "name": "low-health.wav" },
-        { "src": "OOT_PauseMenu_Close_Mono.wav", "name": "pause-close.wav" },
-        { "src": "OOT_Navi_WatchOut1.wav", "name": "watch-out.wav" },
-        { "src": "OOT_Error.wav", "name": "error.wav" }
+        {
+          "name": "low-health.wav"
+        },
+        {
+          "name": "pause-close.wav"
+        },
+        {
+          "name": "watch-out.wav"
+        },
+        {
+          "name": "error.wav"
+        }
       ]
     },
     "teammate-idle": {
       "description": "Teammate went idle — Navi nags",
       "files": [
-        { "src": "OOT_Navi_Hey1.wav", "name": "hey.wav" },
-        { "src": "OOT_Navi_Listen1.wav", "name": "listen.wav" },
-        { "src": "OOT_Navi_WatchOut1.wav", "name": "watch-out.wav" },
-        { "src": "OOT_LowHealth.wav", "name": "low-health.wav" }
+        {
+          "name": "hey.wav"
+        },
+        {
+          "name": "listen.wav"
+        },
+        {
+          "name": "watch-out.wav"
+        },
+        {
+          "name": "low-health.wav"
+        }
       ]
     }
   }

@@ -14,23 +14,18 @@ Thanks for your interest in contributing! This project adds sound themes to Clau
   "name": "Display Name",
   "description": "Short description of the theme",
   "author": "your-github-username",
-  "srcBase": "SubdirectoryName",
   "sounds": {
     "start": {
       "description": "When this category plays",
       "files": [
-        { "src": "relative/path/to/file.wav", "name": "descriptive-name.wav" }
+        { "name": "descriptive-name.wav" }
       ]
     }
   }
 }
 ```
 
-3. Add a `download.sh` that accepts two arguments:
-   - `$1` — target sounds directory (`~/.claude/sounds`)
-   - `$2` — temp directory for downloads
-
-4. The script should download sound files into `$2/<srcBase>/` so the installer can find them.
+3. Place audio files in `themes/<your-theme>/sounds/` with filenames matching the `name` field in `theme.json`.
 
 ### Required categories
 
@@ -74,7 +69,7 @@ node bin/cli.js --yes
 All `.sh` files must pass ShellCheck at warning severity:
 
 ```bash
-shellcheck -S warning hooks/*.sh install.sh preview.sh themes/*/download.sh
+shellcheck -S warning hooks/*.sh install.sh preview.sh
 ```
 
 ## Pull Request Expectations

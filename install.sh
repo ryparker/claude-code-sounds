@@ -89,58 +89,31 @@ echo ""
 
 # ─── Create directories ──────────────────────────────────────────────────────
 
-echo "[1/4] Creating directories..."
+echo "[1/3] Creating directories..."
 CATEGORIES=$(jq -r '.sounds | keys[]' "$THEME_DIR/theme.json")
 for cat in $CATEGORIES; do
   mkdir -p "$SOUNDS_DIR/$cat"
 done
 mkdir -p "$HOOKS_DIR"
 
-# ─── Download sounds ─────────────────────────────────────────────────────────
+# ─── Copy sounds into categories ─────────────────────────────────────────────
 
-TMP_DIR=$(mktemp -d)
-trap 'rm -rf "$TMP_DIR"' EXIT
-
-echo "[2/4] Downloading sounds..."
-if [ -f "$THEME_DIR/download.sh" ]; then
-  bash "$THEME_DIR/download.sh" "$SOUNDS_DIR" "$TMP_DIR"
-else
-  echo "  No download script found — skipping."
-fi
-
-# ─── Sort sounds into categories ─────────────────────────────────────────────
-
-echo "[3/4] Sorting sounds..."
+echo "[2/3] Copying sounds..."
 
 # Clear existing sounds
 for cat in $CATEGORIES; do
   rm -f "$SOUNDS_DIR/$cat"/*.wav "$SOUNDS_DIR/$cat"/*.mp3 2>/dev/null
 done
 
-# Read theme.json and copy files
-SRC="$TMP_DIR/Orc"
-jq -r '.sounds | to_entries[] | .key as $cat | .value.files[] | "\($cat)\t\(.src)\t\(.name)"' "$THEME_DIR/theme.json" | \
-while IFS=$'\t' read -r category src name; do
-  # Handle special sources
-  case "$src" in
-    @soundfxcenter/*)
-      src_file="$TMP_DIR/Orc/$(basename "$src")"
-      ;;
-    *)
-      src_file="$SRC/$src"
-      ;;
-  esac
-
-  if [ -f "$src_file" ]; then
-    cp "$src_file" "$SOUNDS_DIR/$category/$name"
-  else
-    echo "  Warning: $src not found, skipping"
-  fi
+# Read theme.json and copy files from themes/<theme>/sounds/<name>
+jq -r '.sounds | to_entries[] | .key as $cat | .value.files[] | "\($cat)\t\(.name)"' "$THEME_DIR/theme.json" |
+while IFS=$'\t' read -r category name; do
+  [ -f "$THEME_DIR/sounds/$name" ] && cp "$THEME_DIR/sounds/$name" "$SOUNDS_DIR/$category/$name"
 done
 
 # ─── Install hooks ───────────────────────────────────────────────────────────
 
-echo "[4/4] Installing hooks..."
+echo "[3/3] Installing hooks..."
 
 # Copy the play-sound script
 cp "$SCRIPT_DIR/hooks/play-sound.sh" "$HOOKS_DIR/play-sound.sh"

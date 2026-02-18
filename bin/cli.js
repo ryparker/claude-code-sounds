@@ -54,7 +54,6 @@ function listThemes() {
       description: meta.description || "",
       display: meta.name || name,
       soundCount,
-      srcBase: meta.srcBase || name,
       sources: meta.sources || [],
     });
   }
@@ -91,11 +90,8 @@ function readThemeJson(themeName) {
   );
 }
 
-function resolveDownloadSrc(tmpDir, srcBase, src) {
-  if (src.startsWith("@")) {
-    return path.join(tmpDir, srcBase, path.basename(src));
-  }
-  return path.join(tmpDir, srcBase, src);
+function resolveThemeSoundPath(themeName, fileName) {
+  return path.join(THEMES_DIR, themeName, "sounds", fileName);
 }
 
 // ─── Preview ─────────────────────────────────────────────────────────────────
@@ -426,31 +422,15 @@ class SoundGrid extends Prompt {
   }
 }
 
-// ─── Download Themes ─────────────────────────────────────────────────────────
-
-function downloadThemes(themeNames, tmpDir) {
-  for (const themeName of themeNames) {
-    const downloadScript = path.join(THEMES_DIR, themeName, "download.sh");
-    if (fs.existsSync(downloadScript)) {
-      exec(`bash "${downloadScript}" "${SOUNDS_DIR}" "${tmpDir}"`, {
-        stdio: "inherit",
-        timeout: 120000,
-      });
-    }
-  }
-}
-
 // ─── Install Sounds ──────────────────────────────────────────────────────────
 
 /**
- * Copy selected sound files from tmpDir to SOUNDS_DIR.
+ * Copy selected sound files from package to SOUNDS_DIR.
  *
- * @param {Object<string, Array<{themeName: string, fileName: string, src: string}>>} selections
- * @param {Object<string, object>} themeData - theme name -> parsed theme.json
- * @param {string} tmpDir
+ * @param {Object<string, Array<{themeName: string, fileName: string}>>} selections
  * @returns {number} Total files installed
  */
-function installSounds(selections, themeData, tmpDir) {
+function installSounds(selections) {
   let total = 0;
 
   for (const [cat, items] of Object.entries(selections)) {
@@ -468,9 +448,7 @@ function installSounds(selections, themeData, tmpDir) {
 
     // Copy selected sounds
     for (const item of items) {
-      const theme = themeData[item.themeName];
-      const srcBase = theme.srcBase || item.themeName;
-      const srcPath = resolveDownloadSrc(tmpDir, srcBase, item.src);
+      const srcPath = resolveThemeSoundPath(item.themeName, item.fileName);
       const destPath = path.join(catDir, item.fileName);
 
       if (fs.existsSync(srcPath)) {
@@ -568,20 +546,8 @@ function uninstallAll() {
 // ─── Check Dependencies ─────────────────────────────────────────────────────
 
 function checkDependencies() {
-  const deps = ["afplay", "curl", "unzip"];
-  const missing = [];
-
-  for (const dep of deps) {
-    if (!hasCommand(dep)) missing.push(dep);
-  }
-
-  if (missing.includes("afplay")) {
+  if (!hasCommand("afplay")) {
     p.cancel("afplay is not available. claude-code-sounds requires macOS.");
-    process.exit(1);
-  }
-
-  if (missing.length > 0) {
-    p.cancel(`Missing dependencies: ${missing.join(", ")}. Install them and try again.`);
     process.exit(1);
   }
 }
@@ -637,34 +603,23 @@ function detectExistingInstall() {
 async function quickInstall(theme) {
   const themeJson = readThemeJson(theme.name);
   const categories = Object.keys(themeJson.sounds);
-  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "claude-sounds-"));
 
-  try {
-    for (const cat of categories) mkdirp(path.join(SOUNDS_DIR, cat));
+  for (const cat of categories) mkdirp(path.join(SOUNDS_DIR, cat));
 
-    const s = p.spinner();
-    s.start(`Downloading ${theme.display}...`);
-    downloadThemes([theme.name], tmpDir);
-    s.stop(`Downloaded ${theme.display}.`);
-
-    // Build selections: all native sounds per category
-    const selections = {};
-    for (const cat of categories) {
-      selections[cat] = themeJson.sounds[cat].files.map((f) => ({
-        themeName: theme.name,
-        fileName: f.name,
-        src: f.src,
-      }));
-    }
-
-    const total = installSounds(selections, { [theme.name]: themeJson }, tmpDir);
-    writeInstalled({ themes: [theme.name], mode: "quick" });
-    installHooksConfig();
-
-    p.log.success(`Installed ${total} sounds across ${categories.length} hooks.`);
-  } finally {
-    fs.rmSync(tmpDir, { recursive: true, force: true });
+  // Build selections: all native sounds per category
+  const selections = {};
+  for (const cat of categories) {
+    selections[cat] = themeJson.sounds[cat].files.map((f) => ({
+      themeName: theme.name,
+      fileName: f.name,
+    }));
   }
+
+  const total = installSounds(selections);
+  writeInstalled({ themes: [theme.name], mode: "quick" });
+  installHooksConfig();
+
+  p.log.success(`Installed ${total} sounds across ${categories.length} hooks.`);
 }
 
 // ─── Custom Install ──────────────────────────────────────────────────────────
@@ -675,95 +630,77 @@ async function customInstall(selectedThemes) {
     themeData[theme.name] = readThemeJson(theme.name);
   }
 
-  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "claude-sounds-"));
+  // Build rows (sound items + group headers)
+  const rows = [];
+  for (const theme of selectedThemes) {
+    const themeJson = themeData[theme.name];
+    rows.push({ type: 'header', theme: theme.name, label: theme.display });
 
-  try {
-    const s = p.spinner();
-    s.start(`Downloading ${selectedThemes.length} theme${selectedThemes.length > 1 ? "s" : ""}...`);
-    downloadThemes(selectedThemes.map((t) => t.name), tmpDir);
-    s.stop(`Downloaded ${selectedThemes.length} theme${selectedThemes.length > 1 ? "s" : ""}.`);
+    const seenFiles = new Set();
+    for (const cat of Object.keys(themeJson.sounds)) {
+      for (const file of themeJson.sounds[cat].files) {
+        const key = `${theme.name}:${file.name}`;
+        if (seenFiles.has(key)) continue;
+        seenFiles.add(key);
 
-    // Build rows (sound items + group headers)
-    const rows = [];
-    for (const theme of selectedThemes) {
-      const themeJson = themeData[theme.name];
-      rows.push({ type: 'header', theme: theme.name, label: theme.display });
-
-      const seenFiles = new Set();
-      for (const cat of Object.keys(themeJson.sounds)) {
-        for (const file of themeJson.sounds[cat].files) {
-          const key = `${theme.name}:${file.name}`;
-          if (seenFiles.has(key)) continue;
-          seenFiles.add(key);
-
-          const srcPath = resolveDownloadSrc(tmpDir, themeJson.srcBase || theme.name, file.src);
-          rows.push({
-            type: 'sound',
-            theme: theme.name,
-            label: file.name.replace(/\.(wav|mp3)$/, ''),
-            fileName: file.name,
-            src: file.src,
-            previewPath: fs.existsSync(srcPath) ? srcPath : undefined,
-          });
-        }
-      }
-    }
-
-    // Build initial grid: pre-check each sound for its native hook(s)
-    const soundOnlyRows = rows.filter(r => r.type === 'sound');
-    const initialGrid = soundOnlyRows.map(soundRow => {
-      return HOOKS.map(hook => {
-        const themeJson = themeData[soundRow.theme];
-        const catSounds = themeJson.sounds[hook.key];
-        if (!catSounds) return false;
-        return catSounds.files.some(f => f.name === soundRow.fileName);
-      });
-    });
-
-    const gridResult = await new SoundGrid({
-      message: 'Assign sounds to hooks',
-      rows,
-      hooks: HOOKS,
-      initialGrid,
-    }).prompt();
-
-    killPreview();
-
-    if (p.isCancel(gridResult)) {
-      p.cancel("Cancelled.");
-      process.exit(0);
-    }
-
-    // Convert grid result to selections format for installSounds()
-    const selections = {};
-    for (const hook of HOOKS) {
-      const items = gridResult[hook.key];
-      if (items && items.length > 0) {
-        selections[hook.key] = items.map(item => {
-          const themeJson = themeData[item.theme];
-          let src = '';
-          for (const cat of Object.keys(themeJson.sounds)) {
-            const file = themeJson.sounds[cat].files.find(f => f.name === item.fileName);
-            if (file) { src = file.src; break; }
-          }
-          return { themeName: item.theme, fileName: item.fileName, src };
+        const srcPath = resolveThemeSoundPath(theme.name, file.name);
+        rows.push({
+          type: 'sound',
+          theme: theme.name,
+          label: file.name.replace(/\.(wav|mp3)$/, ''),
+          fileName: file.name,
+          previewPath: fs.existsSync(srcPath) ? srcPath : undefined,
         });
       }
     }
-
-    for (const cat of Object.keys(selections)) {
-      mkdirp(path.join(SOUNDS_DIR, cat));
-    }
-
-    const total = installSounds(selections, themeData, tmpDir);
-    writeInstalled({ themes: selectedThemes.map((t) => t.name), mode: "custom" });
-    installHooksConfig();
-
-    printSummary(selections);
-  } finally {
-    killPreview();
-    fs.rmSync(tmpDir, { recursive: true, force: true });
   }
+
+  // Build initial grid: pre-check each sound for its native hook(s)
+  const soundOnlyRows = rows.filter(r => r.type === 'sound');
+  const initialGrid = soundOnlyRows.map(soundRow => {
+    return HOOKS.map(hook => {
+      const themeJson = themeData[soundRow.theme];
+      const catSounds = themeJson.sounds[hook.key];
+      if (!catSounds) return false;
+      return catSounds.files.some(f => f.name === soundRow.fileName);
+    });
+  });
+
+  const gridResult = await new SoundGrid({
+    message: 'Assign sounds to hooks',
+    rows,
+    hooks: HOOKS,
+    initialGrid,
+  }).prompt();
+
+  killPreview();
+
+  if (p.isCancel(gridResult)) {
+    p.cancel("Cancelled.");
+    process.exit(0);
+  }
+
+  // Convert grid result to selections format for installSounds()
+  const selections = {};
+  for (const hook of HOOKS) {
+    const items = gridResult[hook.key];
+    if (items && items.length > 0) {
+      selections[hook.key] = items.map(item => ({
+        themeName: item.theme,
+        fileName: item.fileName,
+      }));
+    }
+  }
+
+  for (const cat of Object.keys(selections)) {
+    mkdirp(path.join(SOUNDS_DIR, cat));
+  }
+
+  const total = installSounds(selections);
+  writeInstalled({ themes: selectedThemes.map((t) => t.name), mode: "custom" });
+  installHooksConfig();
+
+  printSummary(selections);
 }
 
 // ─── Reconfigure ─────────────────────────────────────────────────────────────
@@ -808,120 +745,74 @@ async function reconfigure(existingInstall) {
     } catch {}
   }
 
-  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "claude-sounds-"));
+  // Build rows
+  const rows = [];
+  for (const theme of selectedThemes) {
+    const themeJson = themeData[theme.name];
+    rows.push({ type: 'header', theme: theme.name, label: theme.display });
 
-  try {
-    // Split into already-installed vs new themes
-    const installedSet = new Set(existingInstall.themes);
-    const existingThemeNames = selectedThemes.filter(t => installedSet.has(t.name));
-    const newThemeNames = selectedThemes.filter(t => !installedSet.has(t.name));
+    const seenFiles = new Set();
+    for (const cat of Object.keys(themeJson.sounds)) {
+      for (const file of themeJson.sounds[cat].files) {
+        const key = `${theme.name}:${file.name}`;
+        if (seenFiles.has(key)) continue;
+        seenFiles.add(key);
 
-    // For already-installed themes, copy sounds from SOUNDS_DIR into tmpDir
-    // so installSounds() can use them as source (it clears SOUNDS_DIR first)
-    for (const theme of existingThemeNames) {
-      const themeJson = themeData[theme.name];
-      const srcBase = themeJson.srcBase || theme.name;
-      for (const [cat, catData] of Object.entries(themeJson.sounds)) {
-        for (const file of catData.files) {
-          const installed = path.join(SOUNDS_DIR, cat, file.name);
-          if (fs.existsSync(installed)) {
-            const dest = resolveDownloadSrc(tmpDir, srcBase, file.src);
-            mkdirp(path.dirname(dest));
-            fs.copyFileSync(installed, dest);
-          }
-        }
-      }
-    }
-
-    // Only download themes that aren't already installed
-    if (newThemeNames.length > 0) {
-      const s = p.spinner();
-      const label = newThemeNames.length === 1
-        ? newThemeNames[0].display
-        : `${newThemeNames.length} new themes`;
-      s.start(`Downloading ${label}...`);
-      downloadThemes(newThemeNames.map((t) => t.name), tmpDir);
-      s.stop(`Downloaded ${label}.`);
-    }
-
-    // Build rows
-    const rows = [];
-    for (const theme of selectedThemes) {
-      const themeJson = themeData[theme.name];
-      rows.push({ type: 'header', theme: theme.name, label: theme.display });
-
-      const seenFiles = new Set();
-      for (const cat of Object.keys(themeJson.sounds)) {
-        for (const file of themeJson.sounds[cat].files) {
-          const key = `${theme.name}:${file.name}`;
-          if (seenFiles.has(key)) continue;
-          seenFiles.add(key);
-
-          const srcPath = resolveDownloadSrc(tmpDir, themeJson.srcBase || theme.name, file.src);
-          rows.push({
-            type: 'sound',
-            theme: theme.name,
-            label: file.name.replace(/\.(wav|mp3)$/, ''),
-            fileName: file.name,
-            src: file.src,
-            previewPath: fs.existsSync(srcPath) ? srcPath : undefined,
-          });
-        }
-      }
-    }
-
-    // Build initial grid from currently installed files
-    const soundOnlyRows = rows.filter(r => r.type === 'sound');
-    const initialGrid = soundOnlyRows.map(soundRow => {
-      return HOOKS.map(hook => {
-        return currentFiles[hook.key]?.has(soundRow.fileName) || false;
-      });
-    });
-
-    const gridResult = await new SoundGrid({
-      message: 'Assign sounds to hooks',
-      rows,
-      hooks: HOOKS,
-      initialGrid,
-    }).prompt();
-
-    killPreview();
-
-    if (p.isCancel(gridResult)) {
-      p.cancel("Cancelled.");
-      process.exit(0);
-    }
-
-    // Convert grid result to selections
-    const selections = {};
-    for (const hook of HOOKS) {
-      const items = gridResult[hook.key];
-      if (items && items.length > 0) {
-        selections[hook.key] = items.map(item => {
-          const themeJson = themeData[item.theme];
-          let src = '';
-          for (const cat of Object.keys(themeJson.sounds)) {
-            const file = themeJson.sounds[cat].files.find(f => f.name === item.fileName);
-            if (file) { src = file.src; break; }
-          }
-          return { themeName: item.theme, fileName: item.fileName, src };
+        const srcPath = resolveThemeSoundPath(theme.name, file.name);
+        rows.push({
+          type: 'sound',
+          theme: theme.name,
+          label: file.name.replace(/\.(wav|mp3)$/, ''),
+          fileName: file.name,
+          previewPath: fs.existsSync(srcPath) ? srcPath : undefined,
         });
       }
     }
-
-    for (const cat of Object.keys(selections)) {
-      mkdirp(path.join(SOUNDS_DIR, cat));
-    }
-
-    const total = installSounds(selections, themeData, tmpDir);
-    writeInstalled({ themes: selectedThemes.map((t) => t.name), mode: "custom" });
-    installHooksConfig();
-
-    printSummary(selections);
-  } finally {
-    killPreview();
-    fs.rmSync(tmpDir, { recursive: true, force: true });
   }
+
+  // Build initial grid from currently installed files
+  const soundOnlyRows = rows.filter(r => r.type === 'sound');
+  const initialGrid = soundOnlyRows.map(soundRow => {
+    return HOOKS.map(hook => {
+      return currentFiles[hook.key]?.has(soundRow.fileName) || false;
+    });
+  });
+
+  const gridResult = await new SoundGrid({
+    message: 'Assign sounds to hooks',
+    rows,
+    hooks: HOOKS,
+    initialGrid,
+  }).prompt();
+
+  killPreview();
+
+  if (p.isCancel(gridResult)) {
+    p.cancel("Cancelled.");
+    process.exit(0);
+  }
+
+  // Convert grid result to selections
+  const selections = {};
+  for (const hook of HOOKS) {
+    const items = gridResult[hook.key];
+    if (items && items.length > 0) {
+      selections[hook.key] = items.map(item => ({
+        themeName: item.theme,
+        fileName: item.fileName,
+      }));
+    }
+  }
+
+  for (const cat of Object.keys(selections)) {
+    mkdirp(path.join(SOUNDS_DIR, cat));
+  }
+
+  const total = installSounds(selections);
+  writeInstalled({ themes: selectedThemes.map((t) => t.name), mode: "custom" });
+  installHooksConfig();
+
+  printSummary(selections);
 
   return true;
 }
@@ -980,6 +871,7 @@ async function interactiveInstall(autoYes) {
   // --yes: quick install first theme
   if (autoYes) {
     await quickInstall(themes[0]);
+    p.log.info(`To customize which sounds play on each hook, run:\n${color.gray(p.S_BAR)}\n${color.gray(p.S_BAR)}  ${color.cyan("npx claude-code-sounds")}\n${color.gray(p.S_BAR)}\n${color.gray(p.S_BAR)}  and choose ${color.bold("Modify install")}.`);
     p.outro("Start a new Claude Code session to hear it.");
     return;
   }
@@ -988,7 +880,7 @@ async function interactiveInstall(autoYes) {
     message: "How do you want to install?",
     options: [
       { value: "quick", label: "Quick install", hint: "One theme, all defaults" },
-      { value: "custom", label: "Custom mix", hint: "Pick sounds from multiple themes" },
+      { value: "custom", label: "Custom mix", hint: "Pick sounds per hook from multiple themes" },
     ],
   });
 
@@ -1013,6 +905,7 @@ async function interactiveInstall(autoYes) {
     }
 
     await quickInstall(themes.find((t) => t.name === themeValue));
+    p.log.info(`To customize which sounds play on each hook, run:\n${color.gray(p.S_BAR)}\n${color.gray(p.S_BAR)}  ${color.cyan("npx claude-code-sounds")}\n${color.gray(p.S_BAR)}\n${color.gray(p.S_BAR)}  and choose ${color.bold("Modify install")}.`);
   } else {
     const themeValues = await p.multiselect({
       message: "Select themes to include:",
