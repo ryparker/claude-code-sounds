@@ -140,16 +140,16 @@ const HOOKS_CONFIG = {
 
 const HOOKS = [
   { key: "start", abbr: "str", description: "Session starting" },
-  { key: "end", abbr: "end", description: "Session over" },
+  { key: "prompt", abbr: "pmt", description: "User submitted prompt" },
   { key: "permission", abbr: "prm", description: "Permission prompt" },
   { key: "stop", abbr: "stp", description: "Done responding" },
   { key: "subagent", abbr: "sub", description: "Spawning subagent" },
-  { key: "idle", abbr: "idl", description: "Waiting for input" },
-  { key: "error", abbr: "err", description: "Tool failure" },
-  { key: "prompt", abbr: "pmt", description: "User submitted prompt" },
   { key: "task-completed", abbr: "tsk", description: "Task finished" },
+  { key: "error", abbr: "err", description: "Tool failure" },
   { key: "compact", abbr: "cmp", description: "Context compaction" },
+  { key: "idle", abbr: "idl", description: "Waiting for input" },
   { key: "teammate-idle", abbr: "tmt", description: "Teammate went idle" },
+  { key: "end", abbr: "end", description: "Session over" },
 ];
 
 /**
