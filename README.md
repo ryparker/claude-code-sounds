@@ -47,6 +47,8 @@ npx claude-code-sounds --theme portal     # Install a specific theme directly
 npx claude-code-sounds --mix              # Jump to sound assignment grid
 npx claude-code-sounds --yes              # Install defaults, skip all prompts
 npx claude-code-sounds --list             # List available themes
+npx claude-code-sounds --mute             # Mute all sounds
+npx claude-code-sounds --unmute           # Unmute all sounds
 npx claude-code-sounds --uninstall        # Remove all sounds and hooks
 npx claude-code-sounds --help             # Show help
 ```
@@ -143,6 +145,16 @@ You can also drop any `.wav` or `.mp3` into the sound directories manually:
 ```
 
 The script picks randomly from whatever files are in each directory.
+
+## Muting
+
+Mute sounds without uninstalling — three ways:
+
+- **Slash command** (inside Claude Code): type `/mute` or `/unmute`
+- **CLI flag**: `npx claude-code-sounds --mute` or `--unmute`
+- **Interactive menu**: run `npx claude-code-sounds` and select "Mute sounds" / "Unmute sounds"
+
+Muting creates a sentinel file at `~/.claude/sounds/.muted`. The hook script checks for it and exits immediately, so there's zero overhead when muted.
 
 ## Uninstalling
 
