@@ -626,14 +626,21 @@ async function interactiveInstall(autoYes) {
   const existing = detectExistingInstall();
 
   if (existing && !autoYes) {
+    const muted = lib.isMuted(paths);
+    const muteStatus = muted ? color.yellow(" (muted)") : "";
     p.log.info(
-      `Already installed — ${color.bold(existing.themeDisplays.join(", "))} (${existing.totalEnabled} sounds enabled)`
+      `Already installed — ${color.bold(existing.themeDisplays.join(", "))} (${existing.totalEnabled} sounds enabled)${muteStatus}`
     );
+
+    const muteOption = muted
+      ? { value: "unmute", label: "Unmute sounds", hint: "Sounds are currently muted" }
+      : { value: "mute", label: "Mute sounds", hint: "Silence sounds without uninstalling" };
 
     const action = await p.select({
       message: "What would you like to do?",
       options: [
         { value: "modify", label: "Modify install", hint: "Add themes, change sounds" },
+        muteOption,
         { value: "fresh", label: "Fresh install", hint: "Start over from scratch" },
         { value: "uninstall", label: "Uninstall", hint: "Remove all sounds and hooks" },
       ],
@@ -642,6 +649,18 @@ async function interactiveInstall(autoYes) {
     if (p.isCancel(action)) {
       p.cancel("Cancelled.");
       process.exit(0);
+    }
+
+    if (action === "mute") {
+      lib.setMuted(true, paths);
+      p.outro("Sounds muted.");
+      return;
+    }
+
+    if (action === "unmute") {
+      lib.setMuted(false, paths);
+      p.outro("Sounds unmuted.");
+      return;
     }
 
     if (action === "uninstall") {
