@@ -39,20 +39,6 @@ The bash installer requires `jq` (`brew install jq`).
 
 </details>
 
-## Usage
-
-```bash
-npx claude-code-sounds                    # Interactive install
-npx claude-code-sounds --theme portal     # Install a specific theme directly
-npx claude-code-sounds --mix              # Jump to sound assignment grid
-npx claude-code-sounds --yes              # Install defaults, skip all prompts
-npx claude-code-sounds --list             # List available themes
-npx claude-code-sounds --mute             # Mute all sounds
-npx claude-code-sounds --unmute           # Unmute all sounds
-npx claude-code-sounds --uninstall        # Remove all sounds and hooks
-npx claude-code-sounds --help             # Show help
-```
-
 ## Themes
 
 | Theme | Sounds | Vibe |
@@ -75,7 +61,68 @@ npx claude-code-sounds --help             # Show help
 
 Each theme maps sounds across all 11 Claude Code lifecycle events.
 
-## Hook Events
+## Usage
+
+```bash
+npx claude-code-sounds                    # Interactive install
+npx claude-code-sounds --theme portal     # Install a specific theme directly
+npx claude-code-sounds --mix              # Jump to sound assignment grid
+npx claude-code-sounds --yes              # Install defaults, skip all prompts
+npx claude-code-sounds --list             # List available themes
+npx claude-code-sounds --mute             # Mute all sounds
+npx claude-code-sounds --unmute           # Unmute all sounds
+npx claude-code-sounds --uninstall        # Remove all sounds and hooks
+npx claude-code-sounds --help             # Show help
+```
+
+## Muting
+
+Mute sounds without uninstalling — three ways:
+
+- **Slash command** (inside Claude Code): type `/mute` or `/unmute`
+- **CLI flag**: `npx claude-code-sounds --mute` or `--unmute`
+- **Interactive menu**: run `npx claude-code-sounds` and select "Mute sounds" / "Unmute sounds"
+
+Muting creates a sentinel file at `~/.claude/sounds/.muted`. The hook script checks for it and exits immediately, so there's zero overhead when muted.
+
+## Customizing
+
+Re-run with `--mix` to open the sound assignment grid, where you can reassign sounds to hooks, add themes, or preview clips:
+
+```bash
+npx claude-code-sounds --mix
+```
+
+![Sound assignment grid](images/sound-grid.png)
+
+You can also drop any `.wav` or `.mp3` into the sound directories manually:
+
+```
+~/.claude/sounds/
+├── start/        # add files here for session start
+├── stop/         # add files here for response complete
+├── error/        # add files here for failures
+└── ...
+```
+
+The script picks randomly from whatever files are in each directory.
+
+## Uninstalling
+
+```bash
+npx claude-code-sounds --uninstall
+```
+
+This removes all sound files, the hook script, and the hooks config from `settings.json`.
+
+<details>
+<summary><h2 style="display:inline">How It Works</h2></summary>
+
+A single script (`~/.claude/hooks/play-sound.sh`) handles all events. It takes a category name as an argument, picks a random `.wav` or `.mp3` from `~/.claude/sounds/<category>/`, and plays it with `afplay`.
+
+Hooks are configured in `~/.claude/settings.json` — each Claude Code lifecycle event calls the script with the appropriate category.
+
+### Hook Events
 
 | Event | Hook | When |
 |---|---|---|
@@ -91,7 +138,10 @@ Each theme maps sounds across all 11 Claude Code lifecycle events.
 | `compact` | `PreCompact` | Context compaction |
 | `teammate-idle` | `TeammateIdle` | Teammate went idle |
 
-## Creating a Theme
+</details>
+
+<details>
+<summary><h2 style="display:inline">Creating a Theme</h2></summary>
 
 Themes live in `themes/<name>/` with two items:
 
@@ -118,51 +168,7 @@ Defines metadata and maps sound files to hook categories:
 
 Place audio files (`.wav` or `.mp3`) in `themes/<name>/sounds/` with filenames matching the `name` field in `theme.json`.
 
-## How It Works
-
-A single script (`~/.claude/hooks/play-sound.sh`) handles all events. It takes a category name as an argument, picks a random `.wav` or `.mp3` from `~/.claude/sounds/<category>/`, and plays it with `afplay`.
-
-Hooks are configured in `~/.claude/settings.json` — each Claude Code lifecycle event calls the script with the appropriate category.
-
-## Customizing
-
-Re-run with `--mix` to open the sound assignment grid, where you can reassign sounds to hooks, add themes, or preview clips:
-
-```bash
-npx claude-code-sounds --mix
-```
-
-![Sound assignment grid](images/sound-grid.png)
-
-You can also drop any `.wav` or `.mp3` into the sound directories manually:
-
-```
-~/.claude/sounds/
-├── start/        # add files here for session start
-├── stop/         # add files here for response complete
-├── error/        # add files here for failures
-└── ...
-```
-
-The script picks randomly from whatever files are in each directory.
-
-## Muting
-
-Mute sounds without uninstalling — three ways:
-
-- **Slash command** (inside Claude Code): type `/mute` or `/unmute`
-- **CLI flag**: `npx claude-code-sounds --mute` or `--unmute`
-- **Interactive menu**: run `npx claude-code-sounds` and select "Mute sounds" / "Unmute sounds"
-
-Muting creates a sentinel file at `~/.claude/sounds/.muted`. The hook script checks for it and exits immediately, so there's zero overhead when muted.
-
-## Uninstalling
-
-```bash
-npx claude-code-sounds --uninstall
-```
-
-This removes all sound files, the hook script, and the hooks config from `settings.json`.
+</details>
 
 ## Disclaimer
 
