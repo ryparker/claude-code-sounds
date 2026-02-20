@@ -71,6 +71,8 @@ npx claude-code-sounds --yes              # Install defaults, skip all prompts
 npx claude-code-sounds --list             # List available themes
 npx claude-code-sounds --mute             # Mute all sounds
 npx claude-code-sounds --unmute           # Unmute all sounds
+npx claude-code-sounds --dnd              # Auto-mute when in video calls
+npx claude-code-sounds --no-dnd           # Disable auto-mute
 npx claude-code-sounds --uninstall        # Remove all sounds and hooks
 npx claude-code-sounds --help             # Show help
 ```
@@ -84,6 +86,14 @@ Mute sounds without uninstalling — three ways:
 - **Interactive menu**: run `npx claude-code-sounds` and select "Mute sounds" / "Unmute sounds"
 
 Muting creates a sentinel file at `~/.claude/sounds/.muted`. The hook script checks for it and exits immediately, so there's zero overhead when muted.
+
+### Do Not Disturb
+
+Sounds are automatically muted when active video calls are detected (Zoom, FaceTime, Webex). This is enabled by default.
+
+Edit `~/.claude/sounds/.dnd` to add or remove app names — one process name per line, `#` for comments.
+
+To disable: `npx claude-code-sounds --no-dnd` or use the interactive menu. Re-enable with `--dnd`.
 
 ## Customizing
 

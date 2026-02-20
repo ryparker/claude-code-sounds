@@ -1,6 +1,6 @@
 {
   "name": "claude-code-sounds",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "description": "Sound themes for Claude Code lifecycle hooks",
   "bin": {
     "claude-code-sounds": "bin/cli.js"

@@ -381,6 +381,8 @@ function showHelp() {
     npx claude-code-sounds --list       List available themes
     npx claude-code-sounds --mute       Mute all sounds
     npx claude-code-sounds --unmute     Unmute all sounds
+    npx claude-code-sounds --dnd        Auto-mute when in video calls
+    npx claude-code-sounds --no-dnd     Disable auto-mute
     npx claude-code-sounds --uninstall  Remove all sounds and hooks
     npx claude-code-sounds --help       Show this help
 
@@ -391,6 +393,8 @@ function showHelp() {
     -l, --list          List available themes
         --mute          Mute all sounds
         --unmute        Unmute all sounds
+        --dnd           Auto-mute when in video calls
+        --no-dnd        Disable auto-mute
     -h, --help          Show this help
 `);
 }
@@ -636,11 +640,17 @@ async function interactiveInstall(autoYes) {
       ? { value: "unmute", label: "Unmute sounds", hint: "Sounds are currently muted" }
       : { value: "mute", label: "Mute sounds", hint: "Silence sounds without uninstalling" };
 
+    const dnd = lib.isDnd(paths);
+    const dndOption = dnd
+      ? { value: "dnd-off", label: "Disable Do Not Disturb", hint: "Stop auto-muting during calls" }
+      : { value: "dnd-on", label: "Enable Do Not Disturb", hint: "Auto-mute during video calls" };
+
     const action = await p.select({
       message: "What would you like to do?",
       options: [
         { value: "modify", label: "Modify install", hint: "Add themes, change sounds" },
         muteOption,
+        dndOption,
         { value: "fresh", label: "Fresh install", hint: "Start over from scratch" },
         { value: "uninstall", label: "Uninstall", hint: "Remove all sounds and hooks" },
       ],
@@ -660,6 +670,18 @@ async function interactiveInstall(autoYes) {
     if (action === "unmute") {
       lib.setMuted(false, paths);
       p.outro("Sounds unmuted.");
+      return;
+    }
+
+    if (action === "dnd-on") {
+      lib.setDnd(true, paths);
+      p.outro("Do Not Disturb enabled. Edit ~/.claude/sounds/.dnd to customize.");
+      return;
+    }
+
+    if (action === "dnd-off") {
+      lib.setDnd(false, paths);
+      p.outro("Do Not Disturb disabled.");
       return;
     }
 
@@ -839,6 +861,13 @@ if (flags.has("--help") || flags.has("-h")) {
 } else if (flags.has("--unmute")) {
   lib.setMuted(false, paths);
   console.log("  Sounds unmuted.");
+} else if (flags.has("--dnd")) {
+  lib.setDnd(true, paths);
+  console.log("  Do Not Disturb enabled. Sounds auto-mute when video call apps are detected.");
+  console.log("  Edit ~/.claude/sounds/.dnd to customize the app list.");
+} else if (flags.has("--no-dnd")) {
+  lib.setDnd(false, paths);
+  console.log("  Do Not Disturb disabled.");
 } else if (flags.has("--uninstall") || flags.has("--remove")) {
   p.intro(color.bold("claude-code-sounds"));
   uninstallAll();

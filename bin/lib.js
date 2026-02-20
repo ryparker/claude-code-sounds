@@ -133,6 +133,41 @@ function setMuted(muted, paths) {
   }
 }
 
+const DND_DEFAULTS = [
+  "# Auto-mute during active calls",
+  "# One process name per line, # for comments",
+  "# Tip: use meeting-specific processes, not main apps (they stay open after calls)",
+  "# Find process names with: pgrep -la <app>",
+  "CptHost",
+  "FaceTime",
+  "Webex",
+];
+
+function isDnd(paths) {
+  return fs.existsSync(path.join(paths.SOUNDS_DIR, ".dnd"));
+}
+
+function setDnd(enabled, paths) {
+  const dndPath = path.join(paths.SOUNDS_DIR, ".dnd");
+  if (enabled) {
+    mkdirp(paths.SOUNDS_DIR);
+    fs.writeFileSync(dndPath, DND_DEFAULTS.join("\n") + "\n");
+    // Ensure the installed hook script supports DND
+    _updateHookScript(paths);
+  } else if (fs.existsSync(dndPath)) {
+    fs.unlinkSync(dndPath);
+  }
+}
+
+function _updateHookScript(paths) {
+  const hookSrc = path.join(paths.PKG_DIR, "hooks", "play-sound.sh");
+  const hookDest = path.join(paths.HOOKS_DIR, "play-sound.sh");
+  if (fs.existsSync(hookDest) && fs.existsSync(hookSrc)) {
+    fs.copyFileSync(hookSrc, hookDest);
+    fs.chmodSync(hookDest, 0o755);
+  }
+}
+
 // ─── Detect Existing Install ─────────────────────────────────────────────────
 
 function detectExistingInstall(paths) {
@@ -230,6 +265,11 @@ function installHooksConfig(paths) {
       }
     }
   }
+
+  // Enable Do Not Disturb by default (auto-mute during video calls)
+  if (!isDnd(paths)) {
+    setDnd(true, paths);
+  }
 }
 
 function uninstallAll(paths) {
@@ -300,6 +340,9 @@ module.exports = {
   writeInstalled,
   isMuted,
   setMuted,
+  DND_DEFAULTS,
+  isDnd,
+  setDnd,
   detectExistingInstall,
   installSounds,
   installHooksConfig,

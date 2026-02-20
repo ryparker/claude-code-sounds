@@ -6,6 +6,15 @@ CATEGORY="${1:-}"
 cat > /dev/null 2>&1
 
 [[ -f "$SOUNDS_DIR/.muted" ]] && exit 0
+
+# Auto-mute: skip when video call apps are running
+if [[ -f "$SOUNDS_DIR/.dnd" ]]; then
+  while IFS= read -r proc || [[ -n "$proc" ]]; do
+    [[ -z "$proc" || "$proc" == \#* ]] && continue
+    pgrep -xi "$proc" > /dev/null 2>&1 && exit 0
+  done < "$SOUNDS_DIR/.dnd"
+fi
+
 [[ -z "$CATEGORY" ]] && exit 0
 DIR="$SOUNDS_DIR/$CATEGORY"
 [[ ! -d "$DIR" ]] && exit 0
