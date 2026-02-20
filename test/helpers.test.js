@@ -44,6 +44,13 @@ describe("readSettings / writeSettings", () => {
     const { paths } = makeTempPaths(t);
     assert.deepEqual(lib.readSettings(paths), {});
   });
+
+  it("returns empty object when file is corrupted", (t) => {
+    const { paths } = makeTempPaths(t);
+    lib.mkdirp(paths.CLAUDE_DIR);
+    fs.writeFileSync(paths.SETTINGS_PATH, "NOT VALID JSON{{{");
+    assert.deepEqual(lib.readSettings(paths), {});
+  });
 });
 
 describe("readInstalled / writeInstalled", () => {
@@ -74,6 +81,13 @@ describe("readInstalled / writeInstalled", () => {
     assert.deepEqual(result.themes, ["wc3-peon", "zelda-oot"]);
     assert.equal(result.mode, "custom");
   });
+
+  it("returns null when file is corrupted", (t) => {
+    const { paths } = makeTempPaths(t);
+    lib.mkdirp(paths.SOUNDS_DIR);
+    fs.writeFileSync(paths.INSTALLED_PATH, "CORRUPTED{{{");
+    assert.equal(lib.readInstalled(paths), null);
+  });
 });
 
 describe("listThemes", () => {
@@ -102,6 +116,27 @@ describe("listThemes", () => {
     );
     fs.mkdirSync(path.join(tmpDir, "themes", "bad"), { recursive: true });
     // no theme.json in 'bad'
+
+    const customPaths = lib.createPaths(path.join(tmpDir, ".claude"), tmpDir);
+    const themes = lib.listThemes(customPaths);
+    assert.equal(themes.length, 1);
+    assert.equal(themes[0].name, "good");
+  });
+
+  it("skips corrupted theme.json", (t) => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "ccs-themes-"));
+    t.after(() => fs.rmSync(tmpDir, { recursive: true, force: true }));
+
+    fs.mkdirSync(path.join(tmpDir, "themes", "good"), { recursive: true });
+    fs.writeFileSync(
+      path.join(tmpDir, "themes", "good", "theme.json"),
+      JSON.stringify({ name: "Good", description: "test", sounds: {} })
+    );
+    fs.mkdirSync(path.join(tmpDir, "themes", "corrupt"), { recursive: true });
+    fs.writeFileSync(
+      path.join(tmpDir, "themes", "corrupt", "theme.json"),
+      "NOT VALID JSON{{{"
+    );
 
     const customPaths = lib.createPaths(path.join(tmpDir, ".claude"), tmpDir);
     const themes = lib.listThemes(customPaths);
@@ -213,5 +248,72 @@ describe("isMuted / setMuted", () => {
     const { paths } = makeTempPaths(t);
     lib.setMuted(false, paths); // should not throw
     assert.equal(lib.isMuted(paths), false);
+  });
+});
+
+describe("atomic writes", () => {
+  it("leaves no .tmp files after writeSettings", (t) => {
+    const { paths } = makeTempPaths(t);
+    lib.writeSettings({ test: true }, paths);
+    assert.ok(!fs.existsSync(paths.SETTINGS_PATH + ".tmp"));
+    assert.ok(fs.existsSync(paths.SETTINGS_PATH));
+  });
+
+  it("leaves no .tmp files after writeInstalled", (t) => {
+    const { paths } = makeTempPaths(t);
+    lib.writeInstalled({ themes: ["test"] }, paths);
+    assert.ok(!fs.existsSync(paths.INSTALLED_PATH + ".tmp"));
+    assert.ok(fs.existsSync(paths.INSTALLED_PATH));
+  });
+});
+
+describe("isDnd / setDnd", () => {
+  it("returns false when not enabled", (t) => {
+    const { paths } = makeTempPaths(t);
+    assert.equal(lib.isDnd(paths), false);
+  });
+
+  it("enables and disables", (t) => {
+    const { paths } = makeTempPaths(t);
+    lib.setDnd(true, paths);
+    assert.equal(lib.isDnd(paths), true);
+    lib.setDnd(false, paths);
+    assert.equal(lib.isDnd(paths), false);
+  });
+
+  it("creates sounds dir when enabling", (t) => {
+    const { paths } = makeTempPaths(t);
+    assert.ok(!fs.existsSync(paths.SOUNDS_DIR));
+    lib.setDnd(true, paths);
+    assert.ok(fs.existsSync(paths.SOUNDS_DIR));
+  });
+
+  it("disable is safe when not enabled", (t) => {
+    const { paths } = makeTempPaths(t);
+    lib.setDnd(false, paths); // should not throw
+    assert.equal(lib.isDnd(paths), false);
+  });
+
+  it(".dnd file contains DND_DEFAULTS content", (t) => {
+    const { paths } = makeTempPaths(t);
+    lib.setDnd(true, paths);
+    const content = fs.readFileSync(path.join(paths.SOUNDS_DIR, ".dnd"), "utf-8");
+    assert.equal(content, lib.DND_DEFAULTS.join("\n") + "\n");
+  });
+});
+
+describe("DND_DEFAULTS", () => {
+  it("is a non-empty array of strings", () => {
+    assert.ok(Array.isArray(lib.DND_DEFAULTS));
+    assert.ok(lib.DND_DEFAULTS.length > 0);
+    for (const entry of lib.DND_DEFAULTS) {
+      assert.equal(typeof entry, "string");
+    }
+  });
+
+  it("contains expected process names", () => {
+    const joined = lib.DND_DEFAULTS.join("\n");
+    assert.ok(joined.includes("CptHost"), "missing CptHost");
+    assert.ok(joined.includes("FaceTime"), "missing FaceTime");
   });
 });

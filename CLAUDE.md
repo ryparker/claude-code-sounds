@@ -59,7 +59,7 @@ Each category in `theme.json` has `description` and `files[]` (each with `name` 
 
 ### Key files
 
-- **`bin/cli.js`** (~1040 lines) — Main CLI: arg parsing, interactive TUI (raw-mode ANSI menus with vim keys), theme discovery, sound customization with borrowing, hook installation
+- **`bin/cli.js`** (~880 lines) — Main CLI: arg parsing, interactive TUI (raw-mode ANSI menus with vim keys), theme discovery, sound customization with borrowing, hook installation
 - **`hooks/play-sound.sh`** — Event handler: drains stdin, collects `.wav`/`.mp3` from category dir, picks random, plays background `afplay`
 - **`install.sh`** — Bash alternative installer (uses `jq` for JSON)
 - **`scripts/detect-watermarks.py`** — Detects and trims audio watermarks using fingerprint matching and auto-clustering. Watermark references stored in `scripts/watermarks/`. Not tracked in git.
@@ -68,14 +68,13 @@ Each category in `theme.json` has `description` and `files[]` (each with `name` 
 
 - `~/.claude/sounds/.installed.json` — Tracks active themes and file mappings
 - `~/.claude/sounds/<category>/` — Active sound files
-- `~/.claude/sounds/<category>/.disabled/` — Deselected native sounds (for reconfigure)
 - `~/.claude/settings.json` — Hook config under `.hooks` key
 
 ## Conventions
 
 - All bash scripts use `set -e` and `#!/bin/bash`
 - All hooks have 5-second timeout and run non-blocking
-- `npm pack` only includes `bin/`, `hooks/`, `themes/`, `images/`
+- `npm pack` only includes `bin/`, `hooks/`, `themes/`, `commands/`, `images/`
 - Publish uses npm Trusted Publishing (OIDC, no token) triggered by GitHub Release with `vX.Y.Z` tag matching `package.json` version
 - Theme sound files use descriptive kebab-case names (e.g. `ready-to-work.wav`, `zealot-my-life-for-aiur.wav`)
 - `scripts/` and `scripts/watermarks/` are not tracked in git

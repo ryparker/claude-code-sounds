@@ -67,7 +67,12 @@ function listThemes(paths) {
   for (const name of fs.readdirSync(paths.THEMES_DIR)) {
     const themeJson = path.join(paths.THEMES_DIR, name, "theme.json");
     if (!fs.existsSync(themeJson)) continue;
-    const meta = JSON.parse(fs.readFileSync(themeJson, "utf-8"));
+    let meta;
+    try {
+      meta = JSON.parse(fs.readFileSync(themeJson, "utf-8"));
+    } catch {
+      continue;
+    }
     let soundCount = 0;
     if (meta.sounds) {
       for (const cat of Object.values(meta.sounds)) {
@@ -97,26 +102,34 @@ function resolveThemeSoundPath(themeName, fileName, paths) {
 
 function readSettings(paths) {
   if (fs.existsSync(paths.SETTINGS_PATH)) {
-    return JSON.parse(fs.readFileSync(paths.SETTINGS_PATH, "utf-8"));
+    try {
+      return JSON.parse(fs.readFileSync(paths.SETTINGS_PATH, "utf-8"));
+    } catch {}
   }
   return {};
 }
 
 function writeSettings(settings, paths) {
   mkdirp(paths.CLAUDE_DIR);
-  fs.writeFileSync(paths.SETTINGS_PATH, JSON.stringify(settings, null, 2) + "\n");
+  const tmp = paths.SETTINGS_PATH + ".tmp";
+  fs.writeFileSync(tmp, JSON.stringify(settings, null, 2) + "\n");
+  fs.renameSync(tmp, paths.SETTINGS_PATH);
 }
 
 function readInstalled(paths) {
   if (fs.existsSync(paths.INSTALLED_PATH)) {
-    return JSON.parse(fs.readFileSync(paths.INSTALLED_PATH, "utf-8"));
+    try {
+      return JSON.parse(fs.readFileSync(paths.INSTALLED_PATH, "utf-8"));
+    } catch {}
   }
   return null;
 }
 
 function writeInstalled(data, paths) {
   mkdirp(paths.SOUNDS_DIR);
-  fs.writeFileSync(paths.INSTALLED_PATH, JSON.stringify(data, null, 2) + "\n");
+  const tmp = paths.INSTALLED_PATH + ".tmp";
+  fs.writeFileSync(tmp, JSON.stringify(data, null, 2) + "\n");
+  fs.renameSync(tmp, paths.INSTALLED_PATH);
 }
 
 function isMuted(paths) {
@@ -221,23 +234,26 @@ function installSounds(selections, paths) {
     const catDir = path.join(paths.SOUNDS_DIR, cat);
     mkdirp(catDir);
 
-    try {
-      for (const f of fs.readdirSync(catDir)) {
-        if (f.endsWith(".wav") || f.endsWith(".mp3")) {
-          fs.unlinkSync(path.join(catDir, f));
-        }
-      }
-    } catch {}
-
+    // Copy new files first
+    const newFiles = new Set();
     for (const item of items) {
       const srcPath = resolveThemeSoundPath(item.themeName, item.fileName, paths);
       const destPath = path.join(catDir, item.fileName);
-
       if (fs.existsSync(srcPath)) {
         fs.copyFileSync(srcPath, destPath);
         total++;
       }
+      newFiles.add(item.fileName);
     }
+
+    // Then remove old files not in the new set
+    try {
+      for (const f of fs.readdirSync(catDir)) {
+        if ((f.endsWith(".wav") || f.endsWith(".mp3")) && !newFiles.has(f)) {
+          fs.unlinkSync(path.join(catDir, f));
+        }
+      }
+    } catch {}
   }
 
   return total;

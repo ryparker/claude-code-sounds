@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { execSync, spawn } = require("child_process");
+const { execFileSync, spawn } = require("child_process");
 const p = require("@clack/prompts");
 const { Prompt } = require("@clack/core");
 const color = require("picocolors");
@@ -25,13 +25,9 @@ const installHooksConfig = () => lib.installHooksConfig(paths);
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function exec(cmd, opts = {}) {
-  return execSync(cmd, { encoding: "utf-8", stdio: "pipe", ...opts });
-}
-
 function hasCommand(name) {
   try {
-    exec(`which ${name}`);
+    execFileSync("which", [name], { stdio: "pipe" });
     return true;
   } catch {
     return false;

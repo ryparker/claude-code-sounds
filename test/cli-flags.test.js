@@ -38,7 +38,7 @@ describe("--help", () => {
 
   it("lists all flags", () => {
     const { stdout } = run("--help");
-    for (const flag of ["--theme", "--mix", "--yes", "--list", "--help", "--mute", "--unmute", "--uninstall"]) {
+    for (const flag of ["--theme", "--mix", "--yes", "--list", "--help", "--mute", "--unmute", "--dnd", "--no-dnd", "--uninstall"]) {
       assert.ok(stdout.includes(flag), `missing flag: ${flag}`);
     }
   });
@@ -75,6 +75,22 @@ describe("-l alias", () => {
     const { stdout, exitCode } = run("-l");
     assert.equal(exitCode, 0);
     assert.ok(stdout.includes("wc3-peon"));
+  });
+});
+
+describe("--dnd", () => {
+  it("exits 0 and mentions Do Not Disturb", () => {
+    const { stdout, exitCode } = run("--dnd");
+    assert.equal(exitCode, 0);
+    assert.ok(stdout.includes("Do Not Disturb"));
+  });
+});
+
+describe("--no-dnd", () => {
+  it("exits 0 and mentions disabled", () => {
+    const { stdout, exitCode } = run("--no-dnd");
+    assert.equal(exitCode, 0);
+    assert.ok(stdout.includes("disabled"));
   });
 });
 
