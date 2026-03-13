@@ -20,7 +20,7 @@ describe("resolveThemeSoundPath", () => {
     const result = lib.resolveThemeSoundPath("my-theme", "sound.wav", paths);
     assert.equal(
       result,
-      path.join(paths.THEMES_DIR, "my-theme", "sounds", "sound.wav")
+      path.join(paths.THEMES_DIR, "my-theme", "sounds", "sound.wav"),
     );
   });
 });
@@ -112,7 +112,7 @@ describe("listThemes", () => {
     fs.mkdirSync(path.join(tmpDir, "themes", "good"), { recursive: true });
     fs.writeFileSync(
       path.join(tmpDir, "themes", "good", "theme.json"),
-      JSON.stringify({ name: "Good", description: "test", sounds: {} })
+      JSON.stringify({ name: "Good", description: "test", sounds: {} }),
     );
     fs.mkdirSync(path.join(tmpDir, "themes", "bad"), { recursive: true });
     // no theme.json in 'bad'
@@ -130,12 +130,12 @@ describe("listThemes", () => {
     fs.mkdirSync(path.join(tmpDir, "themes", "good"), { recursive: true });
     fs.writeFileSync(
       path.join(tmpDir, "themes", "good", "theme.json"),
-      JSON.stringify({ name: "Good", description: "test", sounds: {} })
+      JSON.stringify({ name: "Good", description: "test", sounds: {} }),
     );
     fs.mkdirSync(path.join(tmpDir, "themes", "corrupt"), { recursive: true });
     fs.writeFileSync(
       path.join(tmpDir, "themes", "corrupt", "theme.json"),
-      "NOT VALID JSON{{{"
+      "NOT VALID JSON{{{",
     );
 
     const customPaths = lib.createPaths(path.join(tmpDir, ".claude"), tmpDir);
@@ -155,10 +155,13 @@ describe("listThemes", () => {
         name: "Counted",
         description: "test",
         sounds: {
-          start: { description: "s", files: [{ name: "a.wav" }, { name: "b.wav" }] },
+          start: {
+            description: "s",
+            files: [{ name: "a.wav" }, { name: "b.wav" }],
+          },
           end: { description: "e", files: [{ name: "c.wav" }] },
         },
-      })
+      }),
     );
 
     const customPaths = lib.createPaths(path.join(tmpDir, ".claude"), tmpDir);
@@ -297,7 +300,10 @@ describe("isDnd / setDnd", () => {
   it(".dnd file contains DND_DEFAULTS content", (t) => {
     const { paths } = makeTempPaths(t);
     lib.setDnd(true, paths);
-    const content = fs.readFileSync(path.join(paths.SOUNDS_DIR, ".dnd"), "utf-8");
+    const content = fs.readFileSync(
+      path.join(paths.SOUNDS_DIR, ".dnd"),
+      "utf-8",
+    );
     assert.equal(content, lib.DND_DEFAULTS.join("\n") + "\n");
   });
 });

@@ -38,7 +38,18 @@ describe("--help", () => {
 
   it("lists all flags", () => {
     const { stdout } = run("--help");
-    for (const flag of ["--theme", "--mix", "--yes", "--list", "--help", "--mute", "--unmute", "--dnd", "--no-dnd", "--uninstall"]) {
+    for (const flag of [
+      "--theme",
+      "--mix",
+      "--yes",
+      "--list",
+      "--help",
+      "--mute",
+      "--unmute",
+      "--dnd",
+      "--no-dnd",
+      "--uninstall",
+    ]) {
       assert.ok(stdout.includes(flag), `missing flag: ${flag}`);
     }
   });
@@ -101,11 +112,15 @@ describe("--theme nonexistent", () => {
   });
 
   // On Linux, --theme exits early with "afplay" error before theme lookup
-  it("mentions the theme name in output", { skip: !isMacOS && "requires afplay" }, () => {
-    const { stdout, stderr } = run("--theme nonexistent");
-    const output = stdout + stderr;
-    assert.ok(output.includes("nonexistent"));
-  });
+  it(
+    "mentions the theme name in output",
+    { skip: !isMacOS && "requires afplay" },
+    () => {
+      const { stdout, stderr } = run("--theme nonexistent");
+      const output = stdout + stderr;
+      assert.ok(output.includes("nonexistent"));
+    },
+  );
 
   it("shows available themes", { skip: !isMacOS && "requires afplay" }, () => {
     const { stdout, stderr } = run("--theme nonexistent");

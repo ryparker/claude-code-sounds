@@ -2,10 +2,7 @@
   "name": "Diablo 2",
   "description": "Deckard Cain, item drops, and the Prime Evils — Stay awhile and listen.",
   "author": "ryparker",
-  "sources": [
-    "myinstants.com",
-    "soundfxcenter.com"
-  ],
+  "sources": ["myinstants.com", "soundfxcenter.com"],
   "sounds": {
     "start": {
       "description": "Session starting — Deckard Cain greets you",

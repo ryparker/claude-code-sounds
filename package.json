@@ -29,7 +29,9 @@
     "images/"
   ],
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "engines": {
     "node": ">=20"
@@ -37,5 +39,8 @@
   "dependencies": {
     "@clack/core": "^1.0.1",
     "@clack/prompts": "^1.0.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1"
   }
 }

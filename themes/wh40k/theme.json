@@ -2,9 +2,7 @@
   "name": "Warhammer 40k",
   "description": "In the grim darkness of the far future, there is only coding -- Space Marine commands, Chaos war cries, and Ork battle shouts from Dawn of War",
   "author": "ryparker",
-  "sources": [
-    "101soundboards.com"
-  ],
+  "sources": ["101soundboards.com"],
   "sounds": {
     "start": {
       "description": "Session starting -- the Emperor calls",

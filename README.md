@@ -12,7 +12,7 @@ Plays sound effects when sessions start, prompts are submitted, responses finish
 
 Ships with 17 themes. Bring your own sounds or create new ones.
 
-*"Something need doing?"*
+_"Something need doing?"_
 
 </div>
 
@@ -41,25 +41,25 @@ The bash installer requires `jq` (`brew install jq`).
 
 ## Themes
 
-| Theme | Sounds | Vibe |
-|---|---|---|
-| **Age of Empires 2** (`aoe2`) | 48 | *"Wololo!"* — Villager taunts, monks, and age advance fanfares |
-| **Call of Duty** (`cod`) | 38 | *"Enemy AC-130 above!"* — Killstreaks, hitmarkers, and Captain Price |
-| **Command & Conquer** (`cnc`) | 52 | *"Construction complete"* — EVA announcements, unit voices, and Red Alert |
-| **Diablo 2** (`diablo2`) | 46 | *"Stay awhile and listen"* — Deckard Cain, item drops, and the Prime Evils |
-| **Halo** (`halo`) | 52 | *"Wake me when you need me"* — Master Chief, Cortana, and the multiplayer announcer |
-| **League of Legends** (`league-of-legends`) | 43 | *"Welcome to Summoner's Rift"* — Champion voice lines, announcer calls, and ping sounds |
-| **Metal Gear Solid** (`mgs`) | 40 | *"Kept you waiting, huh?"* — Codec calls, alert sounds, and Snake |
-| **Pokemon Gen 3** (`pokemon-gen3`) | 51 | *"A wild TREECKO appeared!"* — GBA battle cries, Hoenn fanfares, and RSE bleeps |
-| **Portal** (`portal`) | 42 | *"Are you still there?"* — Turrets, portal guns, and Aperture Science |
-| **Short Circuit** (`short-circuit`) | 41 | *"Number 5 is alive!"* — The lovable sentient robot from the 1986 classic |
-| **Star Wars** (`star-wars`) | 36 | *"May the Force be with you"* — Lightsabers, R2-D2, and the dark side |
-| **StarCraft** (`starcraft`) | 50 | *"Not enough minerals"* — Terran, Protoss, and Zerg voice lines |
-| **Super Mario Bros** (`mario`) | 47 | *"Let's-a go!"* — Coins, power-ups, and Mario's voice from NES to N64 |
-| **Warhammer 40k** (`wh40k`) | 50 | *"For the Emperor!"* — Space Marines, Chaos war cries, and Ork shouts |
-| **WC3 Orc Peon** (`wc3-peon`) | 57 | *"Something need doing?"* — Peons, Grunts, Shamans, and Grom Hellscream |
-| **Zelda: Breath of the Wild** (`zelda-botw`) | 42 | *"It's dangerous to go alone"* — Sheikah Slate sounds, Korok discoveries, and Guardian alerts |
-| **Zelda: Ocarina of Time** (`zelda-oot`) | 47 | *"Hey! Listen!"* — Navi, Link, and iconic OOT jingles |
+| Theme                                        | Sounds | Vibe                                                                                          |
+| -------------------------------------------- | ------ | --------------------------------------------------------------------------------------------- |
+| **Age of Empires 2** (`aoe2`)                | 48     | _"Wololo!"_ — Villager taunts, monks, and age advance fanfares                                |
+| **Call of Duty** (`cod`)                     | 38     | _"Enemy AC-130 above!"_ — Killstreaks, hitmarkers, and Captain Price                          |
+| **Command & Conquer** (`cnc`)                | 52     | _"Construction complete"_ — EVA announcements, unit voices, and Red Alert                     |
+| **Diablo 2** (`diablo2`)                     | 46     | _"Stay awhile and listen"_ — Deckard Cain, item drops, and the Prime Evils                    |
+| **Halo** (`halo`)                            | 52     | _"Wake me when you need me"_ — Master Chief, Cortana, and the multiplayer announcer           |
+| **League of Legends** (`league-of-legends`)  | 43     | _"Welcome to Summoner's Rift"_ — Champion voice lines, announcer calls, and ping sounds       |
+| **Metal Gear Solid** (`mgs`)                 | 40     | _"Kept you waiting, huh?"_ — Codec calls, alert sounds, and Snake                             |
+| **Pokemon Gen 3** (`pokemon-gen3`)           | 51     | _"A wild TREECKO appeared!"_ — GBA battle cries, Hoenn fanfares, and RSE bleeps               |
+| **Portal** (`portal`)                        | 42     | _"Are you still there?"_ — Turrets, portal guns, and Aperture Science                         |
+| **Short Circuit** (`short-circuit`)          | 41     | _"Number 5 is alive!"_ — The lovable sentient robot from the 1986 classic                     |
+| **Star Wars** (`star-wars`)                  | 36     | _"May the Force be with you"_ — Lightsabers, R2-D2, and the dark side                         |
+| **StarCraft** (`starcraft`)                  | 50     | _"Not enough minerals"_ — Terran, Protoss, and Zerg voice lines                               |
+| **Super Mario Bros** (`mario`)               | 47     | _"Let's-a go!"_ — Coins, power-ups, and Mario's voice from NES to N64                         |
+| **Warhammer 40k** (`wh40k`)                  | 50     | _"For the Emperor!"_ — Space Marines, Chaos war cries, and Ork shouts                         |
+| **WC3 Orc Peon** (`wc3-peon`)                | 57     | _"Something need doing?"_ — Peons, Grunts, Shamans, and Grom Hellscream                       |
+| **Zelda: Breath of the Wild** (`zelda-botw`) | 42     | _"It's dangerous to go alone"_ — Sheikah Slate sounds, Korok discoveries, and Guardian alerts |
+| **Zelda: Ocarina of Time** (`zelda-oot`)     | 47     | _"Hey! Listen!"_ — Navi, Link, and iconic OOT jingles                                         |
 
 Each theme maps sounds across all 11 Claude Code lifecycle events.
 
@@ -136,19 +136,19 @@ Hooks are configured in `~/.claude/settings.json` — each Claude Code lifecycle
 
 ### Hook Events
 
-| Event | Hook | When |
-|---|---|---|
-| `start` | `SessionStart` | Session begins |
-| `end` | `SessionEnd` | Session ends |
-| `prompt` | `UserPromptSubmit` | You submit a prompt |
-| `stop` | `Stop` | Claude finishes responding |
-| `permission` | `Notification` | Permission prompt appears |
-| `idle` | `Notification` | Waiting for your input |
-| `subagent` | `SubagentStart` | Subagent spawned |
-| `error` | `PostToolUseFailure` | Tool call failed |
-| `task-completed` | `TaskCompleted` | Task marked done |
-| `compact` | `PreCompact` | Context compaction |
-| `teammate-idle` | `TeammateIdle` | Teammate went idle |
+| Event            | Hook                 | When                       |
+| ---------------- | -------------------- | -------------------------- |
+| `start`          | `SessionStart`       | Session begins             |
+| `end`            | `SessionEnd`         | Session ends               |
+| `prompt`         | `UserPromptSubmit`   | You submit a prompt        |
+| `stop`           | `Stop`               | Claude finishes responding |
+| `permission`     | `Notification`       | Permission prompt appears  |
+| `idle`           | `Notification`       | Waiting for your input     |
+| `subagent`       | `SubagentStart`      | Subagent spawned           |
+| `error`          | `PostToolUseFailure` | Tool call failed           |
+| `task-completed` | `TaskCompleted`      | Task marked done           |
+| `compact`        | `PreCompact`         | Context compaction         |
+| `teammate-idle`  | `TeammateIdle`       | Teammate went idle         |
 
 </details>
 
@@ -168,9 +168,7 @@ Defines metadata and maps sound files to hook categories:
   "sounds": {
     "start": {
       "description": "Session starting",
-      "files": [
-        { "name": "descriptive-name.wav" }
-      ]
+      "files": [{ "name": "descriptive-name.wav" }]
     }
   }
 }

@@ -1,0 +1,105 @@
+{
+  "name": "League of Legends",
+  "description": "Welcome to Summoner's Rift — champion voice lines, announcer calls, and iconic game sounds",
+  "author": "ryparker",
+  "sources": ["myinstants.com"],
+  "sounds": {
+    "start": {
+      "description": "Session starting — welcome to the Rift",
+      "files": [
+        { "name": "welcome-to-summoners-rift.mp3" },
+        { "name": "teemo-captain-on-duty.mp3" },
+        { "name": "first-blood.mp3" },
+        { "name": "draven-welcome-to-league.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over — defeat screen",
+      "files": [
+        { "name": "defeat.mp3" },
+        { "name": "jhin-the-show-never-ends.mp3" },
+        { "name": "shutdown.mp3" },
+        { "name": "summoner-disconnected-en.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — ready to engage",
+      "files": [
+        { "name": "rammus-ok.mp3" },
+        { "name": "ezreal-who-needs-a-map.mp3" },
+        { "name": "jhin-how-lovely.mp3" },
+        { "name": "lux-stay-positive.mp3" },
+        { "name": "lux-we-can-do-this.mp3" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — task complete",
+      "files": [
+        { "name": "jhin-perfection.mp3" },
+        { "name": "alistar-you-cant-milk-those.mp3" },
+        { "name": "double-kill.mp3" },
+        { "name": "ace.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — danger ping",
+      "files": [
+        { "name": "missing-ping.mp3" },
+        { "name": "danger-ping.mp3" },
+        { "name": "ahri-dont-you-trust-me.mp3" },
+        { "name": "nocturne-darkness.mp3" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — champion idle",
+      "files": [
+        { "name": "lulu-laugh.mp3" },
+        { "name": "jhin-laugh.mp3" },
+        { "name": "teemo-laugh.mp3" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — summoning an ally",
+      "files": [
+        { "name": "yasuo-hasagi.mp3" },
+        { "name": "yasuo-ultimate.mp3" },
+        { "name": "lux-demacia.mp3" },
+        { "name": "on-my-way-ping.mp3" },
+        { "name": "lee-sin.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — an ally has been slain",
+      "files": [
+        { "name": "ally-has-been-slain.mp3" },
+        { "name": "jinx-everybody-panic.mp3" },
+        { "name": "teemo-thats-gotta-sting.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — pentakill",
+      "files": [
+        { "name": "pentakill.mp3" },
+        { "name": "legendary-kill.mp3" },
+        { "name": "triple-kill.mp3" },
+        { "name": "quadra-kill.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — transforming",
+      "files": [
+        { "name": "jhin-champion-select.mp3" },
+        { "name": "jhin-gun-shot.mp3" },
+        { "name": "queue-pop.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — ping notification",
+      "files": [
+        { "name": "message-notification.mp3" },
+        { "name": "pm-notification.mp3" },
+        { "name": "ping-missing.mp3" }
+      ]
+    }
+  }
+}

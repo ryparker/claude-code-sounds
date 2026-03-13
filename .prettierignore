@@ -1,0 +1,5 @@
+node_modules/
+themes/*/sounds/
+images/
+*.mp3
+*.wav

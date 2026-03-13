@@ -19,25 +19,33 @@ describe("installSounds", () => {
     const { paths } = makeTempPaths(t);
     const total = lib.installSounds(
       { start: [{ themeName: "wc3-peon", fileName: "ready-to-work.mp3" }] },
-      paths
+      paths,
     );
     assert.equal(total, 1);
-    assert.ok(fs.existsSync(path.join(paths.SOUNDS_DIR, "start", "ready-to-work.mp3")));
+    assert.ok(
+      fs.existsSync(path.join(paths.SOUNDS_DIR, "start", "ready-to-work.mp3")),
+    );
   });
 
   it("clears existing sounds before copying", (t) => {
     const { paths } = makeTempPaths(t);
     lib.installSounds(
       { start: [{ themeName: "wc3-peon", fileName: "ready-to-work.mp3" }] },
-      paths
+      paths,
     );
     lib.installSounds(
-      { start: [{ themeName: "wc3-peon", fileName: "something-need-doing.mp3" }] },
-      paths
+      {
+        start: [
+          { themeName: "wc3-peon", fileName: "something-need-doing.mp3" },
+        ],
+      },
+      paths,
     );
 
     const files = fs.readdirSync(path.join(paths.SOUNDS_DIR, "start"));
-    const soundFiles = files.filter((f) => f.endsWith(".wav") || f.endsWith(".mp3"));
+    const soundFiles = files.filter(
+      (f) => f.endsWith(".wav") || f.endsWith(".mp3"),
+    );
     assert.equal(soundFiles.length, 1);
     assert.equal(soundFiles[0], "something-need-doing.mp3");
   });
@@ -52,7 +60,7 @@ describe("installSounds", () => {
         ],
         end: [{ themeName: "wc3-peon", fileName: "well-done.mp3" }],
       },
-      paths
+      paths,
     );
     assert.equal(total, 3);
   });
@@ -67,7 +75,7 @@ describe("installSounds", () => {
     const { paths } = makeTempPaths(t);
     const total = lib.installSounds(
       { start: [{ themeName: "wc3-peon", fileName: "nonexistent.wav" }] },
-      paths
+      paths,
     );
     assert.equal(total, 0);
   });
@@ -126,7 +134,10 @@ describe("uninstallAll", () => {
   it("removes hooks script", (t) => {
     const { paths } = makeTempPaths(t);
     fs.mkdirSync(paths.HOOKS_DIR, { recursive: true });
-    fs.writeFileSync(path.join(paths.HOOKS_DIR, "play-sound.sh"), "#!/bin/bash");
+    fs.writeFileSync(
+      path.join(paths.HOOKS_DIR, "play-sound.sh"),
+      "#!/bin/bash",
+    );
 
     const removed = lib.uninstallAll(paths);
     assert.ok(removed.hookScript);

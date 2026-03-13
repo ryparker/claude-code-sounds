@@ -17,9 +17,7 @@ Thanks for your interest in contributing! This project adds sound themes to Clau
   "sounds": {
     "start": {
       "description": "When this category plays",
-      "files": [
-        { "name": "descriptive-name.wav" }
-      ]
+      "files": [{ "name": "descriptive-name.wav" }]
     }
   }
 }
@@ -31,19 +29,19 @@ Thanks for your interest in contributing! This project adds sound themes to Clau
 
 Each theme should provide sounds for these hook events:
 
-| Category | Hook Event | Description |
-|---|---|---|
-| `start` | SessionStart | Session begins |
-| `end` | SessionEnd | Session ends |
-| `permission` | Notification | Permission prompt |
-| `idle` | Notification | Idle prompt |
-| `stop` | Stop | Agent stopped |
-| `subagent` | SubagentStart | Subagent spawned |
-| `error` | PostToolUseFailure | Tool use failed |
-| `prompt` | UserPromptSubmit | User sends prompt |
-| `task-completed` | TaskCompleted | Task finished |
-| `compact` | PreCompact | Context compaction |
-| `teammate-idle` | TeammateIdle | Teammate went idle |
+| Category         | Hook Event         | Description        |
+| ---------------- | ------------------ | ------------------ |
+| `start`          | SessionStart       | Session begins     |
+| `end`            | SessionEnd         | Session ends       |
+| `permission`     | Notification       | Permission prompt  |
+| `idle`           | Notification       | Idle prompt        |
+| `stop`           | Stop               | Agent stopped      |
+| `subagent`       | SubagentStart      | Subagent spawned   |
+| `error`          | PostToolUseFailure | Tool use failed    |
+| `prompt`         | UserPromptSubmit   | User sends prompt  |
+| `task-completed` | TaskCompleted      | Task finished      |
+| `compact`        | PreCompact         | Context compaction |
+| `teammate-idle`  | TeammateIdle       | Teammate went idle |
 
 ## Testing Locally
 

@@ -2,10 +2,7 @@
   "name": "StarCraft",
   "description": "Iconic StarCraft and Brood War unit voice lines — Terran, Protoss, and Zerg quotes from the battlefield",
   "author": "ryparker",
-  "sources": [
-    "soundfxcenter.com",
-    "myinstants.com"
-  ],
+  "sources": ["soundfxcenter.com", "myinstants.com"],
   "sounds": {
     "start": {
       "description": "Session starting — reporting for duty",

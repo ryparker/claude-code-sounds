@@ -2,10 +2,7 @@
   "name": "Pokemon Gen 3",
   "description": "Pokemon Ruby/Sapphire/Emerald sound effects — GBA battle cries, Hoenn fanfares, and advance-generation bleeps",
   "author": "ryparker",
-  "sources": [
-    "sounds-resource.com",
-    "myinstants.com"
-  ],
+  "sources": ["sounds-resource.com", "myinstants.com"],
   "sounds": {
     "start": {
       "description": "Session starting — a wild Claude appeared in the tall grass!",

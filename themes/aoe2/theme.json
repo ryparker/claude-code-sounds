@@ -2,9 +2,7 @@
   "name": "Age of Empires 2",
   "description": "Iconic Age of Empires 2 taunts, villager sounds, and game effects — Wololo!",
   "author": "ryparker",
-  "sources": [
-    "myinstants.com"
-  ],
+  "sources": ["myinstants.com"],
   "sounds": {
     "start": {
       "description": "Session starting — game horn and fanfare",

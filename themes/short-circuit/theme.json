@@ -2,11 +2,7 @@
   "name": "Short Circuit",
   "description": "Number 5 is alive! Sound clips from the 1986 classic Short Circuit featuring the lovable sentient robot",
   "author": "ryparker",
-  "sources": [
-    "soundboard.com",
-    "myinstants.com",
-    "soundbible.com"
-  ],
+  "sources": ["soundboard.com", "myinstants.com", "soundbible.com"],
   "sounds": {
     "start": {
       "description": "Session starting — Number 5 comes alive",
@@ -86,10 +82,7 @@
     },
     "compact": {
       "description": "Context compaction — memory overload",
-      "files": [
-        { "name": "dying-robot.mp3" },
-        { "name": "no.mp3" }
-      ]
+      "files": [{ "name": "dying-robot.mp3" }, { "name": "no.mp3" }]
     },
     "teammate-idle": {
       "description": "Teammate went idle — Number 5 notices",

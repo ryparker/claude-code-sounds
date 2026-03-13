@@ -9,9 +9,17 @@ describe("HOOKS", () => {
 
   it("contains all canonical hook keys", () => {
     const expected = new Set([
-      "start", "end", "prompt", "stop", "permission",
-      "idle", "subagent", "error", "task-completed",
-      "compact", "teammate-idle",
+      "start",
+      "end",
+      "prompt",
+      "stop",
+      "permission",
+      "idle",
+      "subagent",
+      "error",
+      "task-completed",
+      "compact",
+      "teammate-idle",
     ]);
     const actual = new Set(HOOKS.map((h) => h.key));
     assert.deepEqual(actual, expected);
@@ -29,7 +37,11 @@ describe("HOOKS", () => {
     const abbrs = HOOKS.map((h) => h.abbr);
     assert.equal(new Set(abbrs).size, abbrs.length, "abbreviations not unique");
     for (const hook of HOOKS) {
-      assert.equal(hook.abbr.length, 3, `${hook.key} abbr "${hook.abbr}" is not 3 chars`);
+      assert.equal(
+        hook.abbr.length,
+        3,
+        `${hook.key} abbr "${hook.abbr}" is not 3 chars`,
+      );
     }
   });
 });
@@ -37,9 +49,16 @@ describe("HOOKS", () => {
 describe("HOOKS_CONFIG", () => {
   it("covers all lifecycle events", () => {
     const expected = new Set([
-      "SessionStart", "SessionEnd", "Notification", "Stop",
-      "SubagentStart", "PostToolUseFailure", "UserPromptSubmit",
-      "TaskCompleted", "PreCompact", "TeammateIdle",
+      "SessionStart",
+      "SessionEnd",
+      "Notification",
+      "Stop",
+      "SubagentStart",
+      "PostToolUseFailure",
+      "UserPromptSubmit",
+      "TaskCompleted",
+      "PreCompact",
+      "TeammateIdle",
     ]);
     const actual = new Set(Object.keys(HOOKS_CONFIG));
     assert.deepEqual(actual, expected);
@@ -51,7 +70,7 @@ describe("HOOKS_CONFIG", () => {
         for (const hook of matcher.hooks) {
           assert.ok(
             hook.command.includes("play-sound.sh"),
-            `${event}: command missing play-sound.sh`
+            `${event}: command missing play-sound.sh`,
           );
         }
       }

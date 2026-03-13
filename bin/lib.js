@@ -21,7 +21,7 @@ function createPaths(claudeDir, pkgDir) {
 function defaultPaths() {
   return createPaths(
     path.join(os.homedir(), ".claude"),
-    path.resolve(__dirname, "..")
+    path.resolve(__dirname, ".."),
   );
 }
 
@@ -42,19 +42,130 @@ const HOOKS = [
 ];
 
 const HOOKS_CONFIG = {
-  SessionStart: [{ matcher: "startup", hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" start', timeout: 5 }] }],
-  SessionEnd: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" end', timeout: 5 }] }],
-  Notification: [
-    { matcher: "permission_prompt", hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" permission', timeout: 5 }] },
-    { matcher: "idle_prompt", hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" idle', timeout: 5 }] },
+  SessionStart: [
+    {
+      matcher: "startup",
+      hooks: [
+        {
+          type: "command",
+          command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" start',
+          timeout: 5,
+        },
+      ],
+    },
   ],
-  Stop: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" stop', timeout: 5 }] }],
-  SubagentStart: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" subagent', timeout: 5 }] }],
-  PostToolUseFailure: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" error', timeout: 5 }] }],
-  UserPromptSubmit: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" prompt', timeout: 5 }] }],
-  TaskCompleted: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" task-completed', timeout: 5 }] }],
-  PreCompact: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" compact', timeout: 5 }] }],
-  TeammateIdle: [{ hooks: [{ type: "command", command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" teammate-idle', timeout: 5 }] }],
+  SessionEnd: [
+    {
+      hooks: [
+        {
+          type: "command",
+          command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" end',
+          timeout: 5,
+        },
+      ],
+    },
+  ],
+  Notification: [
+    {
+      matcher: "permission_prompt",
+      hooks: [
+        {
+          type: "command",
+          command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" permission',
+          timeout: 5,
+        },
+      ],
+    },
+    {
+      matcher: "idle_prompt",
+      hooks: [
+        {
+          type: "command",
+          command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" idle',
+          timeout: 5,
+        },
+      ],
+    },
+  ],
+  Stop: [
+    {
+      hooks: [
+        {
+          type: "command",
+          command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" stop',
+          timeout: 5,
+        },
+      ],
+    },
+  ],
+  SubagentStart: [
+    {
+      hooks: [
+        {
+          type: "command",
+          command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" subagent',
+          timeout: 5,
+        },
+      ],
+    },
+  ],
+  PostToolUseFailure: [
+    {
+      hooks: [
+        {
+          type: "command",
+          command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" error',
+          timeout: 5,
+        },
+      ],
+    },
+  ],
+  UserPromptSubmit: [
+    {
+      hooks: [
+        {
+          type: "command",
+          command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" prompt',
+          timeout: 5,
+        },
+      ],
+    },
+  ],
+  TaskCompleted: [
+    {
+      hooks: [
+        {
+          type: "command",
+          command:
+            '/bin/bash "$HOME/.claude/hooks/play-sound.sh" task-completed',
+          timeout: 5,
+        },
+      ],
+    },
+  ],
+  PreCompact: [
+    {
+      hooks: [
+        {
+          type: "command",
+          command: '/bin/bash "$HOME/.claude/hooks/play-sound.sh" compact',
+          timeout: 5,
+        },
+      ],
+    },
+  ],
+  TeammateIdle: [
+    {
+      hooks: [
+        {
+          type: "command",
+          command:
+            '/bin/bash "$HOME/.claude/hooks/play-sound.sh" teammate-idle',
+          timeout: 5,
+        },
+      ],
+    },
+  ],
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -93,7 +204,10 @@ function listThemes(paths) {
 
 function readThemeJson(themeName, paths) {
   return JSON.parse(
-    fs.readFileSync(path.join(paths.THEMES_DIR, themeName, "theme.json"), "utf-8")
+    fs.readFileSync(
+      path.join(paths.THEMES_DIR, themeName, "theme.json"),
+      "utf-8",
+    ),
   );
 }
 
@@ -202,7 +316,8 @@ function detectExistingInstall(paths) {
   const installed = readInstalled(paths);
   if (!installed) return null;
 
-  const themeNames = installed.themes || (installed.theme ? [installed.theme] : []);
+  const themeNames =
+    installed.themes || (installed.theme ? [installed.theme] : []);
   if (themeNames.length === 0) return null;
 
   let totalEnabled = 0;
@@ -229,7 +344,11 @@ function detectExistingInstall(paths) {
   if (totalEnabled === 0) return null;
 
   const displays = themeNames.map((n) => {
-    try { return readThemeJson(n, paths).name; } catch { return n; }
+    try {
+      return readThemeJson(n, paths).name;
+    } catch {
+      return n;
+    }
   });
 
   return {
@@ -252,7 +371,11 @@ function installSounds(selections, paths) {
     // Copy new files first
     const newFiles = new Set();
     for (const item of items) {
-      const srcPath = resolveThemeSoundPath(item.themeName, item.fileName, paths);
+      const srcPath = resolveThemeSoundPath(
+        item.themeName,
+        item.fileName,
+        paths,
+      );
       const destPath = path.join(catDir, item.fileName);
       if (fs.existsSync(srcPath)) {
         fs.copyFileSync(srcPath, destPath);
@@ -292,7 +415,10 @@ function installHooksConfig(paths) {
     mkdirp(paths.COMMANDS_DIR);
     for (const file of fs.readdirSync(cmdsSrc)) {
       if (file.endsWith(".md")) {
-        fs.copyFileSync(path.join(cmdsSrc, file), path.join(paths.COMMANDS_DIR, file));
+        fs.copyFileSync(
+          path.join(cmdsSrc, file),
+          path.join(paths.COMMANDS_DIR, file),
+        );
       }
     }
   }
@@ -307,7 +433,12 @@ function installHooksConfig(paths) {
 }
 
 function uninstallAll(paths) {
-  const removed = { sounds: false, hookScript: false, hooksConfig: false, commands: false };
+  const removed = {
+    sounds: false,
+    hookScript: false,
+    hooksConfig: false,
+    commands: false,
+  };
 
   if (fs.existsSync(paths.SOUNDS_DIR)) {
     fs.rmSync(paths.SOUNDS_DIR, { recursive: true });

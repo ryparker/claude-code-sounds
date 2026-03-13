@@ -2,10 +2,7 @@
   "name": "Halo",
   "description": "Iconic Halo announcer callouts, Cortana voice lines, and Master Chief quotes from the legendary FPS series",
   "author": "ryparker",
-  "sources": [
-    "myinstants.com",
-    "soundboard.com"
-  ],
+  "sources": ["myinstants.com", "soundboard.com"],
   "sounds": {
     "start": {
       "description": "Session starting — Spartan deploying",

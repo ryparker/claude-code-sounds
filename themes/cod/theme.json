@@ -2,9 +2,7 @@
   "name": "Call of Duty",
   "description": "Iconic Call of Duty multiplayer announcer callouts, killstreaks, and Zombies sound effects from Modern Warfare, Warzone, and Black Ops",
   "author": "ryparker",
-  "sources": [
-    "myinstants.com"
-  ],
+  "sources": ["myinstants.com"],
   "sounds": {
     "start": {
       "description": "Session starting — deploying to the AO",
