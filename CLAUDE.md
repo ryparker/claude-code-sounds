@@ -18,12 +18,22 @@ npm pack --dry-run
 # Full interactive install (macOS only — requires afplay)
 node bin/cli.js --yes
 
+# Formatting
+npm run format           # Auto-fix with Prettier
+npm run format:check     # Check only (used in CI)
+
+# Tests
+npm test
+
+# Optimize audio (requires ffmpeg) — WAV→MP3, loudnorm, silence trim, strip tags
+./optimize-audio.sh
+
 # Detect audio watermarks (requires ffmpeg, numpy)
 python3 scripts/detect-watermarks.py themes/*/sounds/         # Scan
 python3 scripts/detect-watermarks.py --fix themes/*/sounds/   # Scan and trim
 ```
 
-CI runs on Node 20, 22 and must pass: theme.json validation (including sound file existence), ShellCheck (warning severity), Node syntax check, smoke tests, and package sanity.
+CI runs on Node 20, 22 and must pass: Prettier formatting, theme.json validation (including sound file existence and optimization check), ShellCheck (warning severity), Node syntax check, smoke tests, and package sanity.
 
 ## Architecture
 
@@ -59,9 +69,11 @@ Each category in `theme.json` has `description` and `files[]` (each with `name` 
 
 ### Key files
 
-- **`bin/cli.js`** (~880 lines) — Main CLI: arg parsing, interactive TUI (raw-mode ANSI menus with vim keys), theme discovery, sound customization with borrowing, hook installation
+- **`bin/cli.js`** (~975 lines) — Main CLI: arg parsing, interactive TUI (raw-mode ANSI menus with vim keys), theme discovery, sound customization with borrowing, hook installation
 - **`hooks/play-sound.sh`** — Event handler: drains stdin, collects `.wav`/`.mp3` from category dir, picks random, plays background `afplay`
+- **`helpers/mic-active.swift`** — macOS helper that checks if any video call app is actively using the microphone (used by DND feature)
 - **`install.sh`** — Bash alternative installer (uses `jq` for JSON)
+- **`optimize-audio.sh`** — Production audio pipeline: WAV→MP3 conversion, two-pass loudnorm (-16 LUFS), silence trimming, metadata stripping. Run on all new clips before committing. Supersedes `normalize-audio.sh`.
 - **`scripts/detect-watermarks.py`** — Detects and trims audio watermarks using fingerprint matching and auto-clustering. Watermark references stored in `scripts/watermarks/`. Not tracked in git.
 
 ### Installation state
@@ -72,9 +84,9 @@ Each category in `theme.json` has `description` and `files[]` (each with `name` 
 
 ## Conventions
 
-- All bash scripts use `set -e` and `#!/bin/bash`
+- Bash scripts use `#!/bin/bash` (some use `set -e`, but `optimize-audio.sh` deliberately avoids it due to ffmpeg error handling)
 - All hooks have 5-second timeout and run non-blocking
-- `npm pack` only includes `bin/`, `hooks/`, `themes/`, `commands/`, `images/`
+- `npm pack` only includes `bin/`, `commands/`, `helpers/`, `hooks/`, `themes/`, `images/`
 - Publish uses npm Trusted Publishing (OIDC, no token) triggered by GitHub Release with `vX.Y.Z` tag matching `package.json` version
 - Theme sound files use descriptive kebab-case names (e.g. `ready-to-work.wav`, `zealot-my-life-for-aiur.wav`)
 - `scripts/` and `scripts/watermarks/` are not tracked in git

@@ -178,6 +178,16 @@ Defines metadata and maps sound files to hook categories:
 
 Place audio files (`.wav` or `.mp3`) in `themes/<name>/sounds/` with filenames matching the `name` field in `theme.json`.
 
+### Optimizing audio
+
+Run the optimization script before committing new sounds:
+
+```bash
+./optimize-audio.sh
+```
+
+This converts WAV to MP3, normalizes loudness to -16 LUFS, trims silence, and strips metadata. Requires `ffmpeg`.
+
 </details>
 
 ## Disclaimer
