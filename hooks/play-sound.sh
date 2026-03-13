@@ -15,6 +15,10 @@ if [[ -f "$SOUNDS_DIR/.dnd" ]]; then
   done < "$SOUNDS_DIR/.dnd"
 fi
 
+# Auto-mute: skip when microphone is in use (e.g. Superwhisper, dictation)
+MIC_CHECK="$SOUNDS_DIR/.mic-active"
+[[ -x "$MIC_CHECK" ]] && "$MIC_CHECK" > /dev/null 2>&1 && exit 0
+
 [[ -z "$CATEGORY" ]] && exit 0
 DIR="$SOUNDS_DIR/$CATEGORY"
 [[ ! -d "$DIR" ]] && exit 0

@@ -80,6 +80,42 @@ describe("themes", () => {
           }
         }
       });
+
+      it("all sound files are optimized (no ID3 tags, no WAV)", () => {
+        const d = loadData();
+        for (const [cat, val] of Object.entries(d.sounds)) {
+          for (const f of val.files) {
+            assert.match(f.name, /\.mp3$/, `${cat}: ${f.name} is not MP3 — run ./optimize-audio.sh`);
+            const soundPath = path.join(THEMES_DIR, themeName, "sounds", f.name);
+            if (!fs.existsSync(soundPath)) continue;
+            const buf = Buffer.alloc(3);
+            const fd = fs.openSync(soundPath, "r");
+            fs.readSync(fd, buf, 0, 3, 0);
+            fs.closeSync(fd);
+            const header = buf.toString("ascii");
+            assert.notEqual(header, "ID3", `${cat}: ${f.name} has ID3 metadata — run ./optimize-audio.sh`);
+          }
+        }
+      });
+
+      it("every sound file on disk is assigned in theme.json", () => {
+        const d = loadData();
+        const assigned = new Set();
+        for (const val of Object.values(d.sounds)) {
+          for (const f of val.files) assigned.add(f.name);
+        }
+        const soundsDir = path.join(THEMES_DIR, themeName, "sounds");
+        if (!fs.existsSync(soundsDir)) return;
+        const onDisk = fs.readdirSync(soundsDir).filter((f) =>
+          /\.(wav|mp3)$/.test(f)
+        );
+        const unassigned = onDisk.filter((f) => !assigned.has(f));
+        assert.equal(
+          unassigned.length,
+          0,
+          `unassigned sound files: ${unassigned.join(", ")}`
+        );
+      });
     });
 
     try {

@@ -175,8 +175,8 @@ class SoundGrid extends Prompt {
 
         if (currentRowIdx < scrollTop) {
           scrollTop = Math.max(0, currentRowIdx - 1);
-        } else if (currentRowIdx >= scrollTop + maxVisible) {
-          scrollTop = currentRowIdx - maxVisible + 1;
+        } else if (currentRowIdx >= scrollTop + maxVisible - 2) {
+          scrollTop = currentRowIdx - maxVisible + 3;
         }
         if (scrollTop > 0 && myRows[scrollTop]?.type === 'sound') {
           for (let i = scrollTop - 1; i >= Math.max(0, scrollTop - 2); i--) {

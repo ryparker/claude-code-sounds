@@ -71,7 +71,8 @@
         { "name": "unit-created.mp3" },
         { "name": "attack-enemy-now.mp3" },
         { "name": "taunt-wood-please.mp3" },
-        { "name": "taunt-stone-please.mp3" }
+        { "name": "taunt-stone-please.mp3" },
+        { "name": "stable.mp3" }
       ]
     },
     "error": {

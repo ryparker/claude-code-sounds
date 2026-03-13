@@ -10,7 +10,7 @@
 
 Plays sound effects when sessions start, prompts are submitted, responses finish, errors occur, and more.
 
-Ships with 15 themes. Bring your own sounds or create new ones.
+Ships with 17 themes. Bring your own sounds or create new ones.
 
 *"Something need doing?"*
 
@@ -48,6 +48,7 @@ The bash installer requires `jq` (`brew install jq`).
 | **Command & Conquer** (`cnc`) | 52 | *"Construction complete"* — EVA announcements, unit voices, and Red Alert |
 | **Diablo 2** (`diablo2`) | 46 | *"Stay awhile and listen"* — Deckard Cain, item drops, and the Prime Evils |
 | **Halo** (`halo`) | 52 | *"Wake me when you need me"* — Master Chief, Cortana, and the multiplayer announcer |
+| **League of Legends** (`league-of-legends`) | 43 | *"Welcome to Summoner's Rift"* — Champion voice lines, announcer calls, and ping sounds |
 | **Metal Gear Solid** (`mgs`) | 40 | *"Kept you waiting, huh?"* — Codec calls, alert sounds, and Snake |
 | **Pokemon Gen 3** (`pokemon-gen3`) | 51 | *"A wild TREECKO appeared!"* — GBA battle cries, Hoenn fanfares, and RSE bleeps |
 | **Portal** (`portal`) | 42 | *"Are you still there?"* — Turrets, portal guns, and Aperture Science |
@@ -57,6 +58,7 @@ The bash installer requires `jq` (`brew install jq`).
 | **Super Mario Bros** (`mario`) | 47 | *"Let's-a go!"* — Coins, power-ups, and Mario's voice from NES to N64 |
 | **Warhammer 40k** (`wh40k`) | 50 | *"For the Emperor!"* — Space Marines, Chaos war cries, and Ork shouts |
 | **WC3 Orc Peon** (`wc3-peon`) | 57 | *"Something need doing?"* — Peons, Grunts, Shamans, and Grom Hellscream |
+| **Zelda: Breath of the Wild** (`zelda-botw`) | 42 | *"It's dangerous to go alone"* — Sheikah Slate sounds, Korok discoveries, and Guardian alerts |
 | **Zelda: Ocarina of Time** (`zelda-oot`) | 47 | *"Hey! Listen!"* — Navi, Link, and iconic OOT jingles |
 
 Each theme maps sounds across all 11 Claude Code lifecycle events.
@@ -184,6 +186,6 @@ Place audio files (`.wav` or `.mp3`) in `themes/<name>/sounds/` with filenames m
 
 This project is an unofficial fan project provided free of charge for personal, non-commercial use. It is not affiliated with, endorsed by, or sponsored by any game publisher or rights holder.
 
-All game audio is the property of its respective owners: Blizzard Entertainment (Warcraft, StarCraft, Diablo), Nintendo/Game Freak (Zelda, Mario, Pokemon), Lucasfilm/Disney (Star Wars), Konami (Metal Gear Solid), Valve (Portal), Electronic Arts/Westwood Studios (Command & Conquer), Xbox Game Studios/Ensemble Studios (Age of Empires), Games Workshop/Relic Entertainment (Warhammer 40,000), Xbox Game Studios/Bungie/343 Industries (Halo), Activision/Infinity Ward (Call of Duty), TriStar Pictures (Short Circuit). All trademarks and registered trademarks are the property of their respective owners.
+All game audio is the property of its respective owners: Blizzard Entertainment (Warcraft, StarCraft, Diablo), Nintendo/Game Freak (Zelda, Mario, Pokemon), Lucasfilm/Disney (Star Wars), Konami (Metal Gear Solid), Valve (Portal), Electronic Arts/Westwood Studios (Command & Conquer), Xbox Game Studios/Ensemble Studios (Age of Empires), Games Workshop/Relic Entertainment (Warhammer 40,000), Xbox Game Studios/Bungie/343 Industries (Halo), Activision/Infinity Ward (Call of Duty), Riot Games (League of Legends), TriStar Pictures (Short Circuit). All trademarks and registered trademarks are the property of their respective owners.
 
 If you are a rights holder and would like content removed, please [open an issue](https://github.com/ryparker/claude-code-sounds/issues) and it will be taken down promptly.

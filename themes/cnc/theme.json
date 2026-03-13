@@ -16,7 +16,8 @@
         { "name": "power-up.mp3" },
         { "name": "radar-power-on.mp3" },
         { "name": "ts-startup.mp3" },
-        { "name": "building-placed.mp3" }
+        { "name": "building-placed.mp3" },
+        { "name": "ts-system.mp3" }
       ]
     },
     "end": {
@@ -25,7 +26,8 @@
         { "name": "selling.mp3" },
         { "name": "power-down.mp3" },
         { "name": "gdi-success.mp3" },
-        { "name": "tanya-kiss-it-bye-bye.mp3" }
+        { "name": "tanya-kiss-it-bye-bye.mp3" },
+        { "name": "gdi-recycle.mp3" }
       ]
     },
     "prompt": {
@@ -36,7 +38,9 @@
         { "name": "allies-yes-sir.mp3" },
         { "name": "soviet-affirmative.mp3" },
         { "name": "soviet-yes-sir.mp3" },
-        { "name": "allies-at-once.mp3" }
+        { "name": "allies-at-once.mp3" },
+        { "name": "spy-on-my-way.mp3" },
+        { "name": "tanya-yes-sir.mp3" }
       ]
     },
     "stop": {
@@ -46,7 +50,9 @@
         { "name": "allies-very-well.mp3" },
         { "name": "allies-of-course.mp3" },
         { "name": "allies-agreed.mp3" },
-        { "name": "soviet-acknowledged.mp3" }
+        { "name": "soviet-acknowledged.mp3" },
+        { "name": "tanya-im-there.mp3" },
+        { "name": "spy-indeed.mp3" }
       ]
     },
     "permission": {
@@ -56,7 +62,9 @@
         { "name": "allies-reporting.mp3" },
         { "name": "incoming-transmission.mp3" },
         { "name": "gdi-incoming-transmission.mp3" },
-        { "name": "ts-auth.mp3" }
+        { "name": "ts-auth.mp3" },
+        { "name": "spy-commander.mp3" },
+        { "name": "spy-for-king-and-country.mp3" }
       ]
     },
     "idle": {
@@ -66,7 +74,9 @@
         { "name": "gdi-on-hold.mp3" },
         { "name": "nod-on-hold.mp3" },
         { "name": "no-money.mp3" },
-        { "name": "ts-reminder.mp3" }
+        { "name": "ts-reminder.mp3" },
+        { "name": "ts-notify.mp3" },
+        { "name": "tanya-thats-all-you-got.mp3" }
       ]
     },
     "subagent": {
@@ -76,7 +86,9 @@
         { "name": "building.mp3" },
         { "name": "unit-ready.mp3" },
         { "name": "soviet-at-once.mp3" },
-        { "name": "soviet-reporting.mp3" }
+        { "name": "soviet-reporting.mp3" },
+        { "name": "nuke-ready.mp3" },
+        { "name": "got-a-present-for-ya.mp3" }
       ]
     },
     "error": {
@@ -86,7 +98,10 @@
         { "name": "nod-unable-to-comply.mp3" },
         { "name": "insufficient-funds.mp3" },
         { "name": "unit-lost.mp3" },
-        { "name": "tanya-death.mp3" }
+        { "name": "tanya-death.mp3" },
+        { "name": "building-destroyed.mp3" },
+        { "name": "explosion.mp3" },
+        { "name": "man-die.mp3" }
       ]
     },
     "task-completed": {
@@ -95,7 +110,9 @@
         { "name": "unit-promoted.mp3" },
         { "name": "tanya-yeah.mp3" },
         { "name": "tanya-shake-it-baby.mp3" },
-        { "name": "cha-ching.mp3" }
+        { "name": "cha-ching.mp3" },
+        { "name": "credit-in.mp3" },
+        { "name": "tanya-lets-rock.mp3" }
       ]
     },
     "compact": {
@@ -104,7 +121,9 @@
         { "name": "nod-low-power.mp3" },
         { "name": "repairing.mp3" },
         { "name": "gdi-warning.mp3" },
-        { "name": "nod-incoming-transmission.mp3" }
+        { "name": "nod-incoming-transmission.mp3" },
+        { "name": "nuke-launch.mp3" },
+        { "name": "tesla-shot.mp3" }
       ]
     },
     "teammate-idle": {
@@ -113,7 +132,9 @@
         { "name": "base-under-attack.mp3" },
         { "name": "radar-alert.mp3" },
         { "name": "soviet-comrade.mp3" },
-        { "name": "alarm.mp3" }
+        { "name": "alarm.mp3" },
+        { "name": "tanya-chew-on-this.mp3" },
+        { "name": "tanya-laugh.mp3" }
       ]
     }
   }

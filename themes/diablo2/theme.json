@@ -87,7 +87,8 @@
       "files": [
         { "name": "level-up.mp3" },
         { "name": "gem-drop.mp3" },
-        { "name": "gold-pickup.mp3" }
+        { "name": "gold-pickup.mp3" },
+        { "name": "prime-evils-death.mp3" }
       ]
     },
     "compact": {

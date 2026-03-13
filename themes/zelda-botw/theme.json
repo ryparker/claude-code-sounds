@@ -1,0 +1,110 @@
+{
+  "name": "Zelda: Breath of the Wild",
+  "description": "\"It's dangerous to go alone\" — Sheikah Slate sounds, Korok discoveries, and Guardian alerts from Hyrule",
+  "author": "ryparker",
+  "sources": [
+    "myinstants.com",
+    "101soundboards.com",
+    "vgmtreasurechest.com",
+    "sounds-resource.com"
+  ],
+  "sounds": {
+    "start": {
+      "description": "Session starting — Link awakens",
+      "files": [
+        { "name": "botw-opening.mp3" },
+        { "name": "chest-opening.mp3" },
+        { "name": "spirit-orb-fanfare.mp3" },
+        { "name": "zelda-may-you-be-victorious.mp3" }
+      ]
+    },
+    "end": {
+      "description": "Session over — quest complete",
+      "files": [
+        { "name": "cooking-normal.mp3" },
+        { "name": "cooking-great-success.mp3" },
+        { "name": "item-get-extended.mp3" }
+      ]
+    },
+    "prompt": {
+      "description": "User submitted prompt — ready to listen",
+      "files": [
+        { "name": "botw-interact.mp3" },
+        { "name": "food-item-get.mp3" },
+        { "name": "zelda-item-catch.mp3" },
+        { "name": "zelda-link-now.mp3" },
+        { "name": "zelda-do-it-link.mp3" }
+      ]
+    },
+    "stop": {
+      "description": "Done responding — puzzle solved",
+      "files": [
+        { "name": "puzzle-solved.mp3" },
+        { "name": "heart-container-fanfare.mp3" },
+        { "name": "legendary-item-get.mp3" },
+        { "name": "zelda-its-working.mp3" }
+      ]
+    },
+    "permission": {
+      "description": "Permission prompt — Guardian spotted",
+      "files": [
+        { "name": "guardian-alert.mp3" },
+        { "name": "zelda-blood-moon-rises.mp3" },
+        { "name": "blood-moon-omen.mp3" },
+        { "name": "zelda-prepare-yourself-link.mp3" }
+      ]
+    },
+    "idle": {
+      "description": "Waiting for input — exploring Hyrule",
+      "files": [
+        { "name": "fairy-fountain.mp3" },
+        { "name": "botw-bird-chirping.mp3" },
+        { "name": "botw-raven-call.mp3" },
+        { "name": "botw-owl-hoot.mp3" }
+      ]
+    },
+    "subagent": {
+      "description": "Spawning subagent — Korok helper appears",
+      "files": [
+        { "name": "korok-question.mp3" },
+        { "name": "finding-korok.mp3" },
+        { "name": "botw-construction.mp3" },
+        { "name": "zelda-hurry-link.mp3" }
+      ]
+    },
+    "error": {
+      "description": "Tool failure — game over",
+      "files": [
+        { "name": "botw-game-over.mp3" },
+        { "name": "cooking-fail.mp3" },
+        { "name": "dubious-food.mp3" }
+      ]
+    },
+    "task-completed": {
+      "description": "Task finished — Korok found!",
+      "files": [
+        { "name": "korok-found.mp3" },
+        { "name": "big-item-get.mp3" },
+        { "name": "chest-item-get.mp3" },
+        { "name": "shrine-spirit-orb.mp3" },
+        { "name": "zelda-finish-him-link.mp3" }
+      ]
+    },
+    "compact": {
+      "description": "Context compaction — Sheikah Slate activated",
+      "files": [
+        { "name": "sheikah-slate.mp3" },
+        { "name": "sheikah-module-extreme.mp3" },
+        { "name": "botw-construction.mp3" }
+      ]
+    },
+    "teammate-idle": {
+      "description": "Teammate went idle — Yahaha!",
+      "files": [
+        { "name": "korok-yahaha.mp3" },
+        { "name": "korok-appears.mp3" },
+        { "name": "korok-riddle-solved.mp3" }
+      ]
+    }
+  }
+}

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+const { execFileSync } = require("child_process");
 
 // ─── Path Factory ────────────────────────────────────────────────────────────
 
@@ -181,6 +182,20 @@ function _updateHookScript(paths) {
   }
 }
 
+function compileMicHelper(paths) {
+  const src = path.join(paths.PKG_DIR, "helpers", "mic-active.swift");
+  const dest = path.join(paths.SOUNDS_DIR, ".mic-active");
+  if (!fs.existsSync(src)) return false;
+  try {
+    mkdirp(paths.SOUNDS_DIR);
+    execFileSync("swiftc", ["-O", src, "-o", dest], { stdio: "pipe" });
+    fs.chmodSync(dest, 0o755);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 // ─── Detect Existing Install ─────────────────────────────────────────────────
 
 function detectExistingInstall(paths) {
@@ -286,6 +301,9 @@ function installHooksConfig(paths) {
   if (!isDnd(paths)) {
     setDnd(true, paths);
   }
+
+  // Compile mic-active helper (auto-mute when microphone is in use)
+  compileMicHelper(paths);
 }
 
 function uninstallAll(paths) {
@@ -362,6 +380,7 @@ module.exports = {
   detectExistingInstall,
   installSounds,
   installHooksConfig,
+  compileMicHelper,
   uninstallAll,
   quickInstall,
 };
