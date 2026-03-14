@@ -1,6 +1,6 @@
 {
   "name": "claude-code-sounds",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Sound themes for Claude Code lifecycle hooks",
   "bin": {
     "claude-code-sounds": "bin/cli.js"
@@ -38,7 +38,8 @@
   },
   "dependencies": {
     "@clack/core": "^1.0.1",
-    "@clack/prompts": "^1.0.1"
+    "@clack/prompts": "^1.0.1",
+    "picocolors": "^1.1.1"
   },
   "devDependencies": {
     "prettier": "^3.8.1"
