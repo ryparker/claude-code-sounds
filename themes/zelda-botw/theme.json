@@ -68,7 +68,6 @@
       "files": [
         { "name": "korok-question.mp3" },
         { "name": "finding-korok.mp3" },
-        { "name": "botw-construction.mp3" },
         { "name": "zelda-hurry-link.mp3" }
       ]
     },
@@ -94,8 +93,7 @@
       "description": "Context compaction — Sheikah Slate activated",
       "files": [
         { "name": "sheikah-slate.mp3" },
-        { "name": "sheikah-module-extreme.mp3" },
-        { "name": "botw-construction.mp3" }
+        { "name": "sheikah-module-extreme.mp3" }
       ]
     },
     "teammate-idle": {
